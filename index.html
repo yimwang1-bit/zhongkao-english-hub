@@ -73,353 +73,582 @@
     .paper-thumb-box:hover img { transform: scale(1.05); }
     .paper-thumb-box img { transition: transform 0.2s ease; }
 
-    /* ==================== DRILL WORKBOOK (A4 PREVIEW & PRINT/PDF) ==================== */
+    /* ==================== L8 E-BOOKLET (DUAL-PAGE SPREAD PREVIEW & A4 LANDSCAPE PDF) ==================== */
     #workbookPrintRoot { display: none; }
-    .wb-sheet {
-      background: #ffffff;
-      color: #111827;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      font-size: 13px;
-      line-height: 1.65;
+    .eb-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .eb-spread {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       width: 100%;
-      max-width: 794px;
-      margin: 0 auto;
-      padding: 32px 36px;
+      max-width: 1122px;
+      min-height: 760px;
+      background: #ffffff;
+      color: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-size: 11.5px;
+      line-height: 1.5;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.22);
       box-sizing: border-box;
-      border-radius: 6px;
-      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
+      overflow: hidden;
     }
-    .wb-en {
-      font-family: Georgia, "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
+    .eb-spread::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 24px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, rgba(15,23,42,0) 0%, rgba(15,23,42,0.06) 44%, rgba(15,23,42,0.13) 50%, rgba(15,23,42,0.05) 56%, rgba(15,23,42,0) 100%);
+      pointer-events: none;
     }
-    .wb-header {
-      border-bottom: 2.5px double #1e293b;
-      padding-bottom: 12px;
-      margin-bottom: 16px;
+    .eb-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px 24px 14px 24px;
+      box-sizing: border-box;
+      min-width: 0;
     }
-    .wb-top-meta {
+    .eb-page-left {
+      padding-right: 26px;
+      border-right: 1px dashed #cbd5e1;
+    }
+    .eb-page-right {
+      padding-left: 26px;
+    }
+    .eb-page-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
+      padding-bottom: 6px;
+      margin-bottom: 9px;
+      border-bottom: 1.5px solid #e2e8f0;
+      font-size: 10px;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+    .eb-page-body {
+      flex: 1;
+      min-height: 0;
+    }
+    .eb-page-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 6px;
+      margin-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 9.5px;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+    .eb-pgno {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-weight: 700;
+      color: #334155;
+      letter-spacing: 0.5px;
+    }
+    .eb-en {
+      font-family: Georgia, "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
+    }
+
+    /* Color-coded L8 Question-Type Tags */
+    .eb-qtag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 9.5px;
+      font-weight: 700;
+      border: 1px solid currentColor;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+    .eb-qtag-l8 {
+      display: inline-block;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-size: 8.5px;
+      font-weight: 800;
+      background: currentColor;
+    }
+    .eb-qtag-l8 > span { color: #ffffff; }
+    .eb-theme-blue   { color: #1d4ed8; background: #eff6ff; border-color: #93c5fd; }
+    .eb-theme-violet { color: #6d28d9; background: #f5f3ff; border-color: #c4b5fd; }
+    .eb-theme-green  { color: #047857; background: #ecfdf5; border-color: #6ee7b7; }
+    .eb-theme-amber  { color: #b45309; background: #fffbeb; border-color: #fcd34d; }
+    .eb-theme-teal   { color: #0f766e; background: #f0fdfa; border-color: #5eead4; }
+    .eb-theme-rose   { color: #be123c; background: #fff1f2; border-color: #fda4af; }
+    .eb-theme-pink   { color: #9d174d; background: #fdf2f8; border-color: #f9a8d4; }
+    .eb-theme-indigo { color: #3730a3; background: #eef2ff; border-color: #a5b4fc; }
+    .eb-theme-slate  { color: #334155; background: #f1f5f9; border-color: #cbd5e1; }
+
+    /* Cover & TOC */
+    .eb-cover-box {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1.5px solid #1e293b;
+      border-radius: 8px;
+      padding: 18px 18px 14px;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 34%, #ffffff 100%);
+      box-sizing: border-box;
+    }
+    .eb-cover-kicker {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #475569;
+    }
+    .eb-cover-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin: 12px 0 6px;
+    }
+    .eb-cover-sub {
       font-size: 11px;
       color: #475569;
-      margin-bottom: 6px;
+      margin-bottom: 12px;
     }
-    .wb-badge {
-      display: inline-block;
-      padding: 1px 8px;
-      border: 1px solid #334155;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 10.5px;
-      color: #0f172a;
-    }
-    .wb-title {
-      text-align: center;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: #0f172a;
-      margin: 4px 0 3px;
-    }
-    .wb-subtitle {
-      text-align: center;
-      font-size: 11.5px;
-      color: #475569;
-      margin-bottom: 10px;
-    }
-    .wb-info-row {
+    .eb-cover-tags {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 6px 14px;
-      font-size: 12px;
-      color: #1e293b;
-      padding: 6px 10px;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+    .eb-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
       background: #f8fafc;
       border: 1px solid #cbd5e1;
-      border-radius: 4px;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 11px;
       margin-bottom: 10px;
     }
-    .wb-score-table {
+    .eb-score-tbl {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11px;
+      font-size: 10px;
       text-align: center;
     }
-    .wb-score-table th, .wb-score-table td {
+    .eb-score-tbl th, .eb-score-tbl td {
       border: 1px solid #94a3b8;
-      padding: 3.5px 6px;
+      padding: 3px 4px;
     }
-    .wb-score-table th {
+    .eb-score-tbl th {
       background: #f1f5f9;
       font-weight: 700;
       color: #0f172a;
     }
-    .wb-section {
-      margin-bottom: 14px;
-    }
-    .wb-sec-head {
+    .eb-toc-row {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: baseline;
-      gap: 10px;
-      border-left: 4px solid #1e293b;
-      background: #f8fafc;
-      padding: 5px 10px;
-      margin-bottom: 10px;
-      break-after: avoid;
-      page-break-after: avoid;
+      gap: 8px;
+      padding: 6px 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      background: #fcfcfd;
     }
-    .wb-sec-title {
-      font-size: 14px;
+    .eb-toc-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .eb-toc-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .eb-toc-meta {
+      font-size: 9.5px;
+      color: #64748b;
+    }
+    .eb-toc-pg {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #1e293b;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* Section Header Bar inside Page */
+    .eb-sec-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      border-left: 3.5px solid #1e293b;
+      background: #f8fafc;
+      padding: 5px 8px;
+      border-radius: 0 5px 5px 0;
+      margin-bottom: 7px;
+    }
+    .eb-sec-title {
+      font-size: 12.5px;
       font-weight: 800;
       color: #0f172a;
     }
-    .wb-sec-meta {
-      font-size: 11px;
+    .eb-sec-meta {
+      font-size: 9.5px;
       color: #475569;
-      white-space: nowrap;
     }
-    .wb-sec-desc {
-      font-size: 11.5px;
+    .eb-sec-desc {
+      font-size: 10.5px;
       color: #334155;
-      margin: 0 0 8px;
-      padding: 0 2px;
-      break-after: avoid;
-      page-break-after: avoid;
+      margin: 0 0 7px;
     }
-    .wb-passage {
+
+    /* Reading Passages & Blanks */
+    .eb-passage {
       border: 1px solid #cbd5e1;
       background: #fcfcfd;
-      border-radius: 4px;
-      padding: 10px 14px;
-      margin-bottom: 10px;
-      font-size: 13px;
-      line-height: 1.8;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.72;
       color: #0f172a;
     }
-    .wb-passage p {
-      margin: 0 0 7px;
-      text-indent: 2em;
+    .eb-passage p {
+      margin: 0 0 6px;
+      text-indent: 1.8em;
     }
-    .wb-passage p:last-child { margin-bottom: 0; }
-    .wb-blank {
+    .eb-passage p:last-child { margin-bottom: 0; }
+    .eb-blank {
       display: inline-block;
-      min-width: 46px;
+      min-width: 38px;
       text-align: center;
       text-indent: 0;
       border-bottom: 1.2px solid #0f172a;
       font-weight: 700;
-      font-size: 12px;
-      line-height: 1.15;
-      margin: 0 2px;
-      padding: 0 4px;
-    }
-    .wb-wordbank {
-      border: 1.2px solid #475569;
-      border-radius: 4px;
-      padding: 7px 10px;
-      margin-bottom: 10px;
-      background: #ffffff;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-    .wb-wordbank-title {
       font-size: 11px;
-      font-weight: 700;
-      color: #334155;
-      margin-bottom: 5px;
+      line-height: 1.1;
+      margin: 0 2px;
+      padding: 0 3px;
     }
-    .wb-wordbank-grid {
+    .eb-blank-long {
+      min-width: 72px;
+      border-bottom: 1.4px solid #b45309;
+      color: #b45309;
+    }
+
+    /* Word Bank */
+    .eb-wordbank {
+      border: 1.2px solid #0f766e;
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-bottom: 8px;
+      background: #f0fdfa;
+    }
+    .eb-wordbank-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 4px;
+    }
+    .eb-wordbank-grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 5px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
       text-align: center;
     }
-    .wb-wordbank-word {
-      border: 1px dashed #cbd5e1;
-      border-radius: 3px;
-      padding: 3px 4px;
+    .eb-wordbank-word {
+      border: 1px dashed #5eead4;
+      border-radius: 4px;
+      padding: 2.5px 4px;
       font-family: Georgia, "Times New Roman", serif;
       font-weight: 700;
-      font-size: 12px;
+      font-size: 11px;
       color: #0f172a;
-      background: #f8fafc;
+      background: #ffffff;
     }
-    .wb-q-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 7px 18px;
+
+    /* Questions */
+    .eb-q-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
-    .wb-q-item {
-      padding: 4px 6px;
+    .eb-q-item {
+      padding: 3px 6px;
       border-bottom: 1px dashed #e2e8f0;
-      break-inside: avoid;
-      page-break-inside: avoid;
     }
-    .wb-q-stem {
-      font-size: 12.5px;
+    .eb-q-item:last-child { border-bottom: none; }
+    .eb-q-stem {
+      font-size: 11px;
       font-weight: 600;
       color: #0f172a;
-      margin-bottom: 2.5px;
+      margin-bottom: 2px;
     }
-    .wb-q-opts-inline {
+    .eb-q-opts-inline {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px 14px;
-      padding-left: 20px;
-      font-size: 12.5px;
+      gap: 2px 12px;
+      padding-left: 18px;
+      font-size: 11px;
       color: #1e293b;
     }
-    .wb-q-opts-stack {
-      padding-left: 22px;
-      font-size: 12px;
-      line-height: 1.5;
+    .eb-q-opts-grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 10px;
+      padding-left: 18px;
+      font-size: 10.8px;
+      color: #1e293b;
+    }
+    .eb-q-opts-stack {
+      padding-left: 18px;
+      font-size: 10.5px;
+      line-height: 1.42;
       color: #1e293b;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 1.5px;
     }
-    .wb-opt-correct {
+    .eb-opt-ok {
       font-weight: 700;
       color: #15803d;
       text-decoration: underline;
     }
-    .wb-tag {
+    .eb-micro-tag {
       display: inline-block;
-      margin-left: 6px;
-      padding: 0 5px;
+      margin-left: 4px;
+      padding: 0 4px;
       border: 1px solid #cbd5e1;
       border-radius: 3px;
-      font-size: 10px;
+      font-size: 8.5px;
       font-weight: 500;
       color: #475569;
       background: #f8fafc;
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
     }
-    .wb-cloze-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px 20px;
+    .eb-inline-exp {
+      margin-top: 3px;
+      margin-left: 14px;
+      padding: 3px 6px;
+      background: #f0fdf4;
+      border-left: 2.5px solid #16a34a;
+      font-size: 9.5px;
+      color: #14532d;
+      line-height: 1.4;
     }
-    .wb-cloze-line {
+
+    /* Cloze Two-Step Answer Rows */
+    .eb-cloze-row {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 3px 0;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-    .wb-cloze-row {
-      display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 6px;
-      font-size: 12.5px;
+      padding: 5px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 11px;
     }
-    .wb-write-line {
+    .eb-pos-box {
+      font-size: 9.5px;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 1.5px 6px;
+      min-width: 72px;
+      background: #f8fafc;
+      white-space: nowrap;
+    }
+    .eb-write-line {
       flex: 1;
       border-bottom: 1.2px solid #475569;
-      min-height: 20px;
+      min-height: 18px;
       padding: 0 6px;
       font-family: Georgia, "Times New Roman", serif;
       font-weight: 700;
       color: #15803d;
     }
-    .wb-hint {
-      font-size: 10.5px;
-      color: #64748b;
-      padding-left: 24px;
-    }
-    .wb-writing-item {
+
+    /* 7-choose-5 Sentence Restoration */
+    .eb-restore-opt {
       border: 1px solid #e2e8f0;
-      border-radius: 4px;
-      padding: 6px 10px;
-      margin-bottom: 6px;
-      break-inside: avoid;
-      page-break-inside: avoid;
+      border-radius: 5px;
+      padding: 5px 8px;
+      margin-bottom: 5px;
+      background: #fcfcfd;
+      font-size: 11px;
+      line-height: 1.48;
     }
-    .wb-qa-item {
-      margin-bottom: 6px;
-      break-inside: avoid;
-      page-break-inside: avoid;
+    .eb-restore-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 8px;
     }
-    .wb-qa-q {
-      font-size: 12.5px;
+    .eb-restore-cell {
+      border: 1.2px solid #b45309;
+      border-radius: 5px;
+      text-align: center;
+      padding: 4px;
+      background: #fffbeb;
+      font-size: 10px;
+    }
+    .eb-restore-slot {
+      height: 20px;
+      line-height: 20px;
+      font-weight: 800;
+      font-size: 12px;
+      color: #15803d;
+      border-top: 1px dashed #fcd34d;
+      margin-top: 3px;
+    }
+
+    /* QA & Writing & Essay Mindmap */
+    .eb-qa-item {
+      margin-bottom: 7px;
+    }
+    .eb-qa-q {
+      font-size: 11px;
       font-weight: 700;
       color: #0f172a;
       margin-bottom: 2px;
     }
-    .wb-qa-rule {
-      height: 22px;
+    .eb-qa-rule {
+      height: 20px;
       border-bottom: 1px solid #94a3b8;
-      margin-left: 14px;
+      margin-left: 12px;
     }
-    .wb-inline-exp {
-      margin-top: 5px;
-      margin-left: 16px;
-      padding: 4px 8px;
-      background: #f0fdf4;
-      border-left: 3px solid #16a34a;
-      font-size: 11px;
-      color: #14532d;
+    .eb-writing-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 4px 7px;
+      margin-bottom: 4.5px;
+      background: #ffffff;
+    }
+    .eb-mindmap {
+      border: 1.2px solid #a5b4fc;
+      border-radius: 7px;
+      background: #eef2ff;
+      padding: 9px 10px;
+      margin-bottom: 8px;
+    }
+    .eb-mm-center {
+      text-align: center;
+      font-weight: 800;
+      font-size: 11.5px;
+      color: #ffffff;
+      background: #3730a3;
+      border-radius: 999px;
+      padding: 3px 12px;
+      width: fit-content;
+      margin: 0 auto 8px;
+    }
+    .eb-mm-branches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .eb-mm-node {
+      background: #ffffff;
+      border: 1px solid #c7d2fe;
+      border-radius: 5px;
+      padding: 6px 7px;
+      font-size: 10px;
+      line-height: 1.45;
+    }
+    .eb-mm-node strong {
+      display: block;
+      color: #3730a3;
+      margin-bottom: 2px;
+    }
+    .eb-checklist {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 7px 9px;
+      background: #f8fafc;
+      font-size: 9.8px;
       line-height: 1.5;
     }
-    .wb-page-break {
-      break-before: page;
-      page-break-before: always;
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 2px dashed #cbd5e1;
+    .eb-essay-lines {
+      margin-top: 6px;
     }
-    .wb-key-strip {
+    .eb-essay-line {
+      height: 26px;
+      border-bottom: 1px solid #94a3b8;
+    }
+    .eb-note-box {
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #f8fafc;
+      font-size: 10px;
+      color: #475569;
+    }
+
+    /* Answer Key Compact Tables */
+    .eb-key-strip {
       background: #f8fafc;
       border: 1px solid #cbd5e1;
       border-radius: 4px;
-      padding: 6px 10px;
-      font-size: 12px;
-      margin-bottom: 8px;
+      padding: 4px 7px;
+      font-size: 10px;
+      margin-bottom: 5px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     }
-    .wb-key-table {
+    .eb-key-tbl {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11.5px;
-      margin-bottom: 14px;
+      font-size: 9.5px;
+      line-height: 1.38;
+      margin-bottom: 7px;
     }
-    .wb-key-table th, .wb-key-table td {
+    .eb-key-tbl th, .eb-key-tbl td {
       border: 1px solid #cbd5e1;
-      padding: 4px 7px;
+      padding: 2.5px 5px;
       text-align: left;
       vertical-align: top;
     }
-    .wb-key-table th {
+    .eb-key-tbl th {
       background: #f1f5f9;
       font-weight: 700;
       color: #0f172a;
     }
-    .wb-key-table tr {
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-    .wb-footer {
-      margin-top: 18px;
-      padding-top: 8px;
-      border-top: 1px solid #cbd5e1;
-      display: flex;
-      justify-content: space-between;
-      font-size: 10.5px;
-      color: #64748b;
+
+    @media (max-width: 820px) {
+      .eb-spread {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .eb-spread::after { display: none; }
+      .eb-page-left { border-right: none; border-bottom: 2px dashed #cbd5e1; padding-right: 20px; }
+      .eb-page-right { padding-left: 20px; }
     }
 
     @page {
-      size: A4 portrait;
-      margin: 11mm 14mm 12mm 14mm;
+      size: A4 landscape;
+      margin: 0;
     }
     @media print {
       html, body {
         background: #ffffff !important;
-        color: #111827 !important;
+        color: #0f172a !important;
         margin: 0 !important;
         padding: 0 !important;
         height: auto !important;
@@ -433,18 +662,38 @@
       body.workbook-print-active #workbookPrintRoot {
         display: block !important;
       }
-      #workbookPrintRoot .wb-sheet {
+      #workbookPrintRoot .eb-stack {
+        display: block !important;
+        gap: 0 !important;
+      }
+      #workbookPrintRoot .eb-spread {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        min-height: 210mm !important;
         max-width: none !important;
-        width: 100% !important;
-        padding: 0 !important;
         margin: 0 !important;
+        border: none !important;
         border-radius: 0 !important;
         box-shadow: none !important;
+        break-after: page;
+        page-break-after: always;
+        overflow: hidden !important;
       }
-      #workbookPrintRoot .wb-page-break {
-        border-top: none !important;
-        margin-top: 0 !important;
-        padding-top: 0 !important;
+      #workbookPrintRoot .eb-spread:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+      #workbookPrintRoot .eb-page {
+        padding: 9mm 10mm 8mm 10mm !important;
+      }
+      #workbookPrintRoot .eb-page-left {
+        padding-right: 9mm !important;
+        border-right: 1px dashed #cbd5e1 !important;
+      }
+      #workbookPrintRoot .eb-page-right {
+        padding-left: 9mm !important;
       }
     }
   </style>
@@ -849,21 +1098,24 @@
     </div>
   </div>
 
-  <!-- ==================== A4 DRILL WORKBOOK PREVIEW & PRINT/PDF MODAL ==================== -->
-  <div id="workbookModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
-    <div class="bg-[var(--background)] border border-[var(--border)] rounded-2xl w-full max-w-[1040px] h-[94vh] flex flex-col overflow-hidden shadow-2xl">
+  <!-- ==================== L8 DUAL-PAGE E-BOOKLET READER & PDF EXPORT MODAL ==================== -->
+  <div id="workbookModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3">
+    <div class="bg-[var(--background)] border border-[var(--border)] rounded-2xl w-full max-w-[1260px] h-[95vh] flex flex-col overflow-hidden shadow-2xl">
       <!-- Top Action Header -->
-      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-3 flex flex-wrap items-center justify-between gap-2 shrink-0">
+      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-2.5 min-w-0">
-          <span class="px-2 py-0.5 rounded text-xs font-bold bg-[var(--primary)] text-[var(--primary-foreground)] shrink-0">A4 练习册</span>
-          <h3 id="wbModalTitle" class="text-sm font-bold truncate">个人重组靶向训练册 · 打印与 PDF 导出</h3>
+          <span class="px-2 py-0.5 rounded text-xs font-bold bg-[var(--primary)] text-[var(--primary-foreground)] shrink-0">L8 双页电子册</span>
+          <h3 id="wbModalTitle" class="text-sm font-bold truncate">L8 考纲题型重组电子册 · 双页翻阅与 PDF 导出</h3>
+          <span id="wbSpreadCounter" class="text-xs font-mono px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)] shrink-0">第 1 / 1 跨页</span>
         </div>
-        <div class="flex flex-wrap items-center gap-2 text-xs shrink-0">
+        <div class="flex flex-wrap items-center gap-1.5 text-xs shrink-0">
+          <button data-wbview="flip" class="wb-view-btn pill-btn active px-2.5 py-1.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">📖 双页翻阅</button>
+          <button data-wbview="scroll" class="wb-view-btn pill-btn px-2.5 py-1.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">📜 全册连览</button>
           <button id="btnWbExportPdf" class="px-3.5 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">
-            📄 导出 PDF
+            📄 导出双页 PDF
           </button>
-          <button id="btnWbPrint" class="px-3.5 py-1.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--content)] text-[var(--foreground)] cursor-pointer hover:opacity-90 transition">
-            🖨️ 直接打印
+          <button id="btnWbPrint" class="px-3 py-1.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--content)] text-[var(--foreground)] cursor-pointer hover:opacity-90 transition">
+            🖨️ 打印
           </button>
           <button id="btnCloseWbModal" class="px-2.5 py-1.5 rounded-lg bg-[var(--error)] text-white font-semibold cursor-pointer">
             ✕ 关闭
@@ -871,40 +1123,51 @@
         </div>
       </div>
 
-      <!-- Workbook Options Bar -->
-      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-2.5 flex flex-col gap-2 shrink-0 text-xs">
+      <!-- E-Booklet Options Bar -->
+      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-2 flex flex-col gap-1.5 shrink-0 text-xs">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="flex flex-wrap items-center gap-1.5">
-            <span class="font-semibold text-[var(--muted-foreground)] mr-1">排版版本：</span>
-            <button data-wbedition="student_with_key" class="wb-ed-btn pill-btn active px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">学生卷 + 末尾答案册</button>
-            <button data-wbedition="student_only" class="wb-ed-btn pill-btn px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">纯学生练习卷</button>
-            <button data-wbedition="teacher" class="wb-ed-btn pill-btn px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">教师讲义版（逐题解析）</button>
+            <span class="font-semibold text-[var(--muted-foreground)]">电子册版本：</span>
+            <button data-wbedition="student_with_key" class="wb-ed-btn pill-btn active px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">学生电子册 + 独立答案册</button>
+            <button data-wbedition="student_only" class="wb-ed-btn pill-btn px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">纯学生练习册</button>
+            <button data-wbedition="teacher" class="wb-ed-btn pill-btn px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">教师批注讲义册</button>
           </div>
           <label class="flex items-center gap-1.5 cursor-pointer select-none text-[var(--muted-foreground)]">
             <input id="wbOptHints" type="checkbox" class="accent-[var(--primary)]" />
-            <span>显示考纲标签 / 短文填空词性提示</span>
+            <span>显示考纲细则 / 短文填空词性提示</span>
           </label>
         </div>
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[var(--foreground)]">
-          <span class="font-semibold text-[var(--muted-foreground)]">包含模块：</span>
-          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="grammar" checked class="accent-[var(--primary)]" /><span>一、语法选择(10)</span></label>
-          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="cloze" checked class="accent-[var(--primary)]" /><span>二、短文填空(10)</span></label>
-          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="writing" checked class="accent-[var(--primary)]" /><span>三、作文排雷(8)</span></label>
-          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="qa" checked class="accent-[var(--primary)]" /><span>四、回答问题(5)</span></label>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[var(--foreground)]">
+          <span class="font-semibold text-[var(--muted-foreground)]">L8 题型选配：</span>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="grammar" checked class="accent-[var(--primary)]" /><span>语法选择(10)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="semcloze" checked class="accent-[var(--primary)]" /><span>完形填空(10)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="reading" checked class="accent-[var(--primary)]" /><span>阅读理解(5)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="restore" checked class="accent-[var(--primary)]" /><span>七选五(5)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="cloze" checked class="accent-[var(--primary)]" /><span>短文填空(10)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="qa" checked class="accent-[var(--primary)]" /><span>回答问题(5)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="writing" checked class="accent-[var(--primary)]" /><span>红线排雷(8)</span></label>
+          <label class="flex items-center gap-1 cursor-pointer select-none"><input type="checkbox" data-wbsec="essay" checked class="accent-[var(--primary)]" /><span>导图写作(1篇)</span></label>
         </div>
-        <div id="wbPdfTip" class="text-[11px] text-[var(--muted-foreground)] bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5">
-          💡 <strong>导出 PDF 提示：</strong>点击「导出 PDF」后，在系统打印弹窗的<strong>目标打印机</strong>中选择「<strong>另存为 PDF</strong>」（纸张大小 A4，勾选背景图形效果更佳），即可保存高清矢量 PDF 练习册。
+        <div id="wbPdfTip" class="text-[11px] text-[var(--muted-foreground)] bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1">
+          💡 <strong>导出双页电子册 PDF：</strong>点击「导出双页 PDF」后，在系统打印弹窗将目标打印机选为「<strong>另存为 PDF</strong>」（页面方向自动为 <strong>A4 横向双页对开</strong>，勾选「<strong>背景图形</strong>」以保留彩色 L8 题型 Tag）。
         </div>
       </div>
 
-      <!-- Scrollable A4 Paper Preview Area -->
-      <div class="flex-1 overflow-y-auto bg-[var(--content)] p-3 sm:p-6">
+      <!-- Dual-Page Spread Stage -->
+      <div class="flex-1 overflow-y-auto bg-[var(--content)] p-3 sm:p-5 relative">
         <div id="wbPreviewHost"></div>
+      </div>
+
+      <!-- Bottom Flipbook Spread Bar -->
+      <div id="wbSpreadNavBar" class="bg-[var(--card)] border-t border-[var(--border)] px-4 py-2 flex items-center justify-between gap-2 shrink-0 text-xs">
+        <button id="btnWbPrevSpread" class="px-3 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer disabled:opacity-35">‹ 上一跨页</button>
+        <div id="wbSpreadPills" class="flex items-center gap-1.5 overflow-x-auto py-0.5"></div>
+        <button id="btnWbNextSpread" class="px-3 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer disabled:opacity-35">下一跨页 ›</button>
       </div>
     </div>
   </div>
 
-  <!-- Dedicated Print-Only Mount Point (hidden on screen, sole visible element when printing workbook) -->
+  <!-- Dedicated Print-Only Mount Point (hidden on screen, sole visible element when printing e-booklet) -->
   <div id="workbookPrintRoot" aria-hidden="true"></div>
 
   <script>
@@ -950,10 +1213,23 @@
 
     let DEFAULT_STUDENTS = [];
 
+    const L8_DRILL_ORDER = ['grammar', 'semcloze', 'reading', 'restore', 'cloze', 'qa', 'writing', 'essay'];
+
     const DRILLS = {
       grammar: {
+        l8: {
+          qtypeId: 'w_read_grammar_cloze',
+          tabLabel: 'A. 语法选择(10)',
+          shortName: '语法选择（语篇三选一）',
+          excelName: '短文-单词语法选择',
+          uiTag: '语篇内嵌单选',
+          examRole: 'L8 笔试 · 中考第一大题',
+          scoreSpec: '10题 × 1分 = 10分',
+          maxScore: 10,
+          theme: 'blue'
+        },
         title: '重组语法选择微篇（10小题 · 全新主题：AI 校园绿植管家）',
-        desc: '将高频失分点（one of + 复数、in a ... way、since+完成时、so...that、spend doing、had better do、few/a few、副词修饰、It is adj. to do）打散重组进全新短文中。',
+        desc: '匹配 L8「语法选择（语篇三选一）」：将高频失分点（one of+复数、in a...way、since+完成时、so...that、spend doing、had better do、few/a few、副词修饰、It is adj. to do）打散重组进全新短文中。',
         passage: `Last term, our school started a "Smart Garden" club. It has become one of the most popular <b>(1)</b> in our school. Students manage the garden <b>(2)</b> a digital way using small sensors.<br><br><b>(3)</b> last September, the club members <b>(4)</b> over 20 kinds of vegetables. At first, <b>(5)</b> students knew how to use the smart water system, so the plants grew <b>(6)</b>. Our science teacher told us, "It is not hard for you <b>(7)</b> the system if you read the guide carefully. You had better <b>(8)</b> the data every afternoon."<br><br>After spending two weeks <b>(9)</b> the watering plan, we were <b>(10)</b> excited that we shared our fresh tomatoes with the whole class!`,
         questions: [
           { q: '1. one of the most popular ___', opts: ['A. club', 'B. clubs', 'C. club\'s'], ans: 1, tag: '8A-U2 · one of+复数', exp: 'one of + the + 最高级 + 复数名词（clubs）。' },
@@ -968,7 +1244,101 @@
           { q: '10. we were ___ excited that we shared...', opts: ['A. very', 'B. so', 'C. such'], ans: 1, tag: '8B-G2 · so...that', exp: 'so + 形容词 + that 从句。' }
         ]
       },
+      semcloze: {
+        l8: {
+          qtypeId: 'w_read_semantic_cloze',
+          tabLabel: 'B. 完形填空(10)',
+          shortName: '完形填空（语篇四选一）',
+          excelName: '短文-单词语义选择',
+          uiTag: '语篇内嵌单选',
+          examRole: 'L8 笔试 · 中考第二大题',
+          scoreSpec: '10题 × 1分 = 10分',
+          maxScore: 10,
+          theme: 'violet'
+        },
+        title: '重组完形填空微篇（10小题 · 全新主题：海岛旧灯塔的守护者）',
+        desc: '匹配 L8「完形填空（语篇四选一）」：专攻跨段复现线索、高频动词短语（pass away / come up with / look over / lead sb. to do）、逻辑副词（However）与 -less 词缀辨析。',
+        passage: `Old Captain Chen lived alone on a quiet island. Ten years ago, his wife <b>(1)</b> from an illness, and his children moved to big cities. Every morning, he <b>(2)</b> to the mainland town to buy fresh food, and tied his small wooden boat carefully to the pier when he returned.<br><br>Recently, the island's old lighthouse broke down. Fixing it would <b>(3)</b> a long time and lots of money. <b>(4)</b>, Captain Chen didn't give up. He <b>(5)</b> a clever idea: he invited engineering students from a local university to help.<br><br>The students didn't <b>(6)</b> working in the strong sea wind. First, they <b>(7)</b> every wire carefully to find the hidden problems. After five days of teamwork, the bright light shone across the sea again! Captain Chen was very <b>(8)</b> the result. "Your help is <b>(9)</b> to every fisherman here," he said with tears in his eyes. That experience <b>(10)</b> many students to care more about coastal villages.`,
+        questions: [
+          { q: '1. his wife ___ from an illness', opts: ['A. ran away', 'B. passed away', 'C. gave away', 'D. put away'], ans: 1, tag: '8A-U2 · 动词短语', exp: 'pass away 意为“离世”，区别于 run away（逃跑）。' },
+          { q: '2. he ___ to the mainland town ... tied his wooden boat', opts: ['A. swam', 'B. flew', 'C. sailed', 'D. walked'], ans: 2, tag: '病灶4 · 跨句线索复现', exp: '下文出现 tied his small wooden boat，锁定坐船航行 sailed。' },
+          { q: '3. Fixing it would ___ a long time and lots of money.', opts: ['A. cost', 'B. spend', 'C. pay', 'D. take'], ans: 3, tag: '8A-U3 · take/cost/spend', exp: '固定用法 take a long time（花费时间）；cost 多用于金钱。' },
+          { q: '4. ___, Captain Chen didn\'t give up.', opts: ['A. However', 'B. Instead', 'C. Finally', 'D. Suddenly'], ans: 0, tag: '8B-G2 · 逻辑副词转折', exp: '前难后不放弃表转折且带逗号，用 However。' },
+          { q: '5. He ___ a clever idea', opts: ['A. came out of', 'B. came up with', 'C. came back to', 'D. came into'], ans: 1, tag: '8A-U4 · come up with', exp: 'come up with an idea（想出主意），非 come out of。' },
+          { q: '6. The students didn\'t ___ working in the strong wind.', opts: ['A. forget', 'B. wish', 'C. mind', 'D. stop'], ans: 2, tag: '8A-U3 · mind doing', exp: 'mind doing sth. 表示“介意做某事”，符合助人为乐语境。' },
+          { q: '7. they ___ every wire carefully to find hidden problems.', opts: ['A. looked at', 'B. looked after', 'C. looked over', 'D. looked up'], ans: 2, tag: '8A-U3 · look over', exp: 'look over 表示“仔细检查”，区别于 look at（看）。' },
+          { q: '8. Captain Chen was very ___ the result.', opts: ['A. satisfied with', 'B. worried about', 'C. strict with', 'D. angry with'], ans: 0, tag: '8A-U2 · be satisfied with', exp: 'be satisfied with 表示“对……满意”，介词必用 with。' },
+          { q: '9. "Your help is ___ to every fisherman here"', opts: ['A. useless', 'B. helpless', 'C. careless', 'D. priceless'], ans: 3, tag: '8A-U2 · -less 词缀', exp: 'priceless 意为“无价的、极其宝贵的”，非否定含义。' },
+          { q: '10. That experience ___ many students to care more...', opts: ['A. wished', 'B. led', 'C. made', 'D. hoped'], ans: 1, tag: '8A-U4 · lead sb. to do', exp: 'lead sb. to do sth. 意为“引领某人做某事”；make 后不带 to。' }
+        ]
+      },
+      reading: {
+        l8: {
+          qtypeId: 'w_read_comprehension',
+          tabLabel: 'C. 阅读理解(5)',
+          shortName: '中考阅读理解（四选一）',
+          excelName: '阅读理解',
+          uiTag: '单选 · B篇深层专项',
+          examRole: 'L8 笔试 · 中考第三大题',
+          scoreSpec: '5题 × 2分 = 10分',
+          maxScore: 10,
+          theme: 'green'
+        },
+        title: '深层阅读理解 B 篇重组（5小题 · 科普说明：会“喝雨水”的校园长椅）',
+        desc: '匹配 L8「中考阅读理解（四选一）」：直击四大拉分题型——细节检索、词义猜测（budget-friendly 释义定位）、推理判断、文章出处与主旨大意。',
+        passage: `In many rainy cities in southern China, students often find wet benches in the schoolyard after a heavy shower. Last autumn, a group of eighth-graders in Foshan came up with a smart solution: the "Rain-Catcher Bench".<br><br>The bench looks like an ordinary wooden seat at first sight. However, its top is made of narrow bamboo strips with tiny gaps between them. When rain falls, water passes smoothly through the gaps into a hidden tank below instead of staying on the seat. In just five minutes after the rain stops, the bench top dries completely so students can sit down comfortably.<br><br>What happens to the collected water? A small pipe sends it directly to the nearby flower beds. Even better, the whole system is surprisingly <b><u>budget-friendly</u></b>—it costs less than 80 yuan to build with recycled pipes, so almost every school can pay for it without worry. The team also added a tiny solar light under the seat so students can read safely at dusk.<br><br>"Big changes don't always require expensive machines," said team leader Zhou Lin. "If we look closely at daily problems around us, simple ideas can make campus life much greener."`,
+        questions: [
+          { q: '1. How does the bench top dry so quickly after rain?', opts: ['A. A tiny heater dries the bamboo.', 'B. Rainwater runs through tiny gaps into a tank below.', 'C. Students wipe it with a special cloth.', 'D. A roof automatically covers the seat.'], ans: 1, tag: '9-R1 · 细节定位', exp: '第二段明确说明 water passes smoothly through the gaps into a hidden tank below。' },
+          { q: '2. What does the underlined word "budget-friendly" in Paragraph 3 mean?', opts: ['A. Popular', 'B. Cheap', 'C. Heavy', 'D. Modern'], ans: 1, tag: '9-R1 · 词义猜测（破折号释义）', exp: '破折号后直接释义 costs less than 80 yuan ... almost every school can pay for it，故为 Cheap（便宜实惠）。' },
+          { q: '3. What is the collected rainwater used for?', opts: ['A. Washing the schoolyard floor.', 'B. Drinking water for the students.', 'C. Watering the nearby flower beds.', 'D. Powering the tiny solar light.'], ans: 2, tag: '9-R1 · 细节检索', exp: '第三段首句指出 A small pipe sends it directly to the nearby flower beds。' },
+          { q: '4. Where is this passage most probably from?', opts: ['A. A travel guidebook.', 'B. A sports newspaper.', 'C. A science magazine for teens.', 'D. A storybook about animals.'], ans: 2, tag: '9-R1 · 出处推断', exp: '全文围绕八年级学生环保小发明的原理与意义展开，最可能出自青少年科普杂志。' },
+          { q: '5. What is the best title for the passage?', opts: ['A. Rainy Weather in Southern China', 'B. How to Grow Flowers at School', 'C. A Smart Bench That Saves Rainwater', 'D. Why Solar Lights Are Expensive'], ans: 2, tag: '9-R1 · 主旨大意', exp: '抓全篇高频核心对象 Rain-Catcher Bench 及其集水环保功能，排除局部细节干扰项。' }
+        ]
+      },
+      restore: {
+        l8: {
+          qtypeId: 'w_read_sentence_restore',
+          tabLabel: 'D. 七选五还原(5)',
+          shortName: '七选五 / 还原句子',
+          excelName: '短文-句子选择',
+          uiTag: '语篇句子配对',
+          examRole: 'L8 笔试 · 篇章衔接新题型',
+          scoreSpec: '5空 × 2分 = 10分（7选5）',
+          maxScore: 10,
+          theme: 'amber'
+        },
+        title: '七选五还原句子重组训练（5空 · 紧扣外研 8A-U4 Digital Life）',
+        desc: '匹配 L8「七选五 / 还原句子（短文-句子选择）」：从 A–G 七个备选句中选出 5 句还原回短文空缺处（2项多余），训练段落首句概括、代词指代与逻辑转折衔接。',
+        passage: `Digital devices like smartphones and tablets have made our study much more convenient. However, spending too much time on screens can make our eyes feel tired and hurt our sleep. <b>(1)</b><br><br>First, follow the "20-20-20" eye rule. <b>(2)</b> This simple habit gives your eyes a quick rest and keeps your sight clear.<br><br>Second, build a "phone-free" study zone. When you do homework, messages and game notices can easily break your focus. <b>(3)</b> You will be surprised at how much faster you finish your tasks.<br><br>Third, use technology to create, not just to watch. Watching short videos for hours brings little real knowledge. <b>(4)</b> For example, you can record English dialogues, draw digital mind maps, or design a smart study schedule.<br><br><b>(5)</b> Turn off all screens at least 30 minutes before bedtime so your brain can slow down and enjoy a deep sleep.`,
+        options: [
+          { key: 'A', text: 'A. Finally, protect your sleep time every night.' },
+          { key: 'B', text: 'B. Here are some practical habits to help you stay healthy in a digital world.' },
+          { key: 'C', text: 'C. Every 20 minutes, look at something 20 feet away for at least 20 seconds.' },
+          { key: 'D', text: 'D. Buying the newest mobile phone is the best way to improve your grades.' },
+          { key: 'E', text: 'E. Instead, try using apps as useful tools to build new skills.' },
+          { key: 'F', text: 'F. Therefore, put your phone in another room until you finish your study plan.' },
+          { key: 'G', text: 'G. Most middle school students never use the Internet for homework.' }
+        ],
+        blanks: [
+          { num: 1, ans: 'B', tag: '段尾引出下文', exp: '第一段末尾承上启下，用 Here are some practical habits 引出下文四条建议。' },
+          { num: 2, ans: 'C', tag: '同词复现（20-20-20）', exp: '前句提出 "20-20-20" eye rule，C 项直接解释三个 20 的具体含义。' },
+          { num: 3, ans: 'F', tag: '因果衔接（Therefore）', exp: '前句说消息会打断专注，F 项用 Therefore 给出“把手机放另一个房间”的对策。' },
+          { num: 4, ans: 'E', tag: '对比转折（Instead）', exp: '前句否定长时间刷短视频，E 项用 Instead 转入“把应用当作创造工具”，呼应后句 For example。' },
+          { num: 5, ans: 'A', tag: '序数逻辑（First/Second/Third/Finally）', exp: '呼应前文 First / Second / Third，且与后句 bedtime / deep sleep 紧密对应。' }
+        ]
+      },
       cloze: {
+        l8: {
+          qtypeId: 'w_read_word_cloze_12to10',
+          tabLabel: 'E. 短文填空(10)',
+          shortName: '短文填空（12选10变形）',
+          excelName: '短文-单词填空',
+          uiTag: '答题卡 · 词库变形',
+          examRole: 'L8 笔试 · 中考第四大题',
+          scoreSpec: '10空 × 1.5分 = 15分',
+          maxScore: 15,
+          theme: 'teal'
+        },
         title: '短文填空“两步法”重组训练（10空 · 12选10需变形）',
         desc: '备选词库（2词多余）：<code>suggestion / difference / step / crowd / understand / invent / cost / company / patient / since / tire / with</code>',
         passage: `Last month, Leo visited a science museum. The hall was <b>(1)</b> with young visitors. Leo wanted to see a new <b>(2)</b> — a solar-powered backpack. When he <b>(3)</b> onto the display stage, a guide greeted him warmly.<br><br>The guide explained the <b>(4)</b> between old backpacks and smart ones <b>(5)</b>. She also helped Leo <b>(6)</b> how the solar panel works. "This new model only <b>(7)</b> 120 yuan, so most students can afford it," she said. It was designed by a local <b>(8)</b> young engineers.<br><br>Before leaving, the guide gave Leo many useful <b>(9)</b> on how to build his own model. <b>(10)</b> that day, Leo has fallen in love with engineering.`,
@@ -985,9 +1355,43 @@
           { num: 10, hint: '主句为现在完成时（介词/连词）', ans: ['since', 'Since'], exp: '主句 has fallen 提示句首填 Since。' }
         ]
       },
+      qa: {
+        l8: {
+          qtypeId: 'w_read_mcq_basic',
+          tabLabel: 'F. 回答问题(5)',
+          shortName: '读写综合 · 回答问题',
+          excelName: '阅读读写综合 Part A',
+          uiTag: '规范简答 · 防扣分SOP',
+          examRole: 'L8 笔试 · 广东读写综合 A',
+          scoreSpec: '5题 × 2分 = 10分',
+          maxScore: 10,
+          theme: 'rose'
+        },
+        title: '回答问题“防扣分 SOP”重组演练（5题 · 满分10分标准）',
+        desc: '匹配 L8 广东读写综合 A 篇：检测三大扣分习惯——① 疑问词介词开头（In/By/To/Because）② 时态一致 ③ 代词指代精准。',
+        passage: `In 2024, a 14-year-old boy named Lin Tao built a "Voice Library" in his community. Many blind old people couldn't read newspapers easily, so he wanted to help them by recording daily news on his phone. He placed a small smart speaker inside the community reading room, and the elderly can listen to the news there every morning. "Hearing young voices makes us feel warm," said Grandma Li.`,
+        questions: [
+          { q: '1. When did Lin Tao build the "Voice Library"?', placeholder: '注意介词！如：In ...', accept: ['in 2024'], std: 'In 2024.', exp: 'When 问年份必须带介词 In。' },
+          { q: '2. Why did Lin Tao build the "Voice Library"?', placeholder: '注意 Because 或 To 开头...', accept: ['because many blind old people couldn\'t read newspapers easily', 'because he wanted to help blind old people', 'to help blind old people', 'to help them'], std: 'Because many blind old people couldn\'t read newspapers easily. / To help blind old people.', exp: 'Why 用 Because + 过去时完整句，或 To do 表目的。' },
+          { q: '3. How did he help the blind old people?', placeholder: '注意方式介词 By...', accept: ['by recording daily news on his phone', 'by recording daily news'], std: 'By recording daily news on his phone.', exp: 'How 问方式必须用 By + doing。' },
+          { q: '4. Where can the elderly listen to the news every morning?', placeholder: '注意 there 指哪里 + 介词！', accept: ['in the community reading room', 'inside the community reading room'], std: 'In/Inside the community reading room.', exp: 'there 指 community reading room（非 speaker），且必带 In/Inside。' },
+          { q: '5. How does hearing young voices make Grandma Li feel?', placeholder: '形容词或完整句...', accept: ['warm', 'it makes her feel warm', 'she feels warm'], std: 'Warm. / It makes her feel warm.', exp: '简答 Warm. 或注意人称与三单转换。' }
+        ]
+      },
       writing: {
+        l8: {
+          qtypeId: 'w_write_guided_passage',
+          tabLabel: 'G. 红线排雷(8)',
+          shortName: '要点写作 · 十大红线排雷',
+          excelName: 'read and write · 句法纠偏',
+          uiTag: '写作排雷单选',
+          examRole: 'L8 笔试 · 书面表达前哨',
+          scoreSpec: '8题 × 1分 = 8分',
+          maxScore: 8,
+          theme: 'pink'
+        },
         title: '作文“十大红线”实战排雷诊所（8道重组病句）',
-        desc: '选出唯一零语法/拼写/语序硬伤的 15 分满分改写版！',
+        desc: '匹配 L8「要点提示类书面表达」句法前哨：选出唯一零语法/拼写/语序硬伤的 15 分满分改写版！',
         questions: [
           { q: '病句 1：The Science Festival on next Friday in our hall. It is attract many students.', opts: ['A. The Science Festival will hold next Friday. It is attracting many students.', 'B. The Science Festival will be held next Friday in our hall. It attracts many students.', 'C. The Science Festival is on next Friday. It attract many students.'], ans: 1, tag: '9-G2 · 被动+唯一谓语', exp: '活动“被举办”用 will be held；第二句主语三单直接用 attracts。' },
           { q: '病句 2：We will share our inventors to each other and talk about our mobile photoes.', opts: ['A. We will share our inventions with each other and talk about our mobile phones.', 'B. We will share our inventors with each other and talk about our mobile phones.', 'C. We will share our inventions to each other and talk about our mobile photos.'], ans: 0, tag: '8A-U3/U4 · 形近词+搭配', exp: 'invention（发明物）、share sth. with sb.、mobile phones。' },
@@ -999,17 +1403,42 @@
           { q: '病句 8：In the end. I hope everyone can find your interesed activity and share it for me.', opts: ['A. In the end, I hope everyone can find the activity they are interested in and share it with me.', 'B. In the end. I hope everyone can find their interesting activity and share it with me.', 'C. In the end, I hope everyone can find their interested activity and share it to me.'], ans: 0, tag: '9-W1 · 标点+搭配', exp: 'In the end, 逗号 + be interested in + share with。' }
         ]
       },
-      qa: {
-        title: '回答问题“防扣分 SOP”重组演练（5题 · 满分10分标准）',
-        desc: '检测三大扣分习惯：① 疑问词介词开头（In/By/To/Because）② 时态一致 ③ 代词指代精准。',
-        passage: `In 2024, a 14-year-old boy named Lin Tao built a "Voice Library" in his community. Many blind old people couldn't read newspapers easily, so he wanted to help them by recording daily news on his phone. He placed a small smart speaker inside the community reading room, and the elderly can listen to the news there every morning. "Hearing young voices makes us feel warm," said Grandma Li.`,
-        questions: [
-          { q: '1. When did Lin Tao build the "Voice Library"?', placeholder: '注意介词！如：In ...', accept: ['in 2024'], std: 'In 2024.', exp: 'When 问年份必须带介词 In。' },
-          { q: '2. Why did Lin Tao build the "Voice Library"?', placeholder: '注意 Because 或 To 开头...', accept: ['because many blind old people couldn\'t read newspapers easily', 'because he wanted to help blind old people', 'to help blind old people', 'to help them'], std: 'Because many blind old people couldn\'t read newspapers easily. / To help blind old people.', exp: 'Why 用 Because + 过去时完整句，或 To do 表目的。' },
-          { q: '3. How did he help the blind old people?', placeholder: '注意方式介词 By...', accept: ['by recording daily news on his phone', 'by recording daily news'], std: 'By recording daily news on his phone.', exp: 'How 问方式必须用 By + doing。' },
-          { q: '4. Where can the elderly listen to the news every morning?', placeholder: '注意 there 指哪里 + 介词！', accept: ['in the community reading room', 'inside the community reading room'], std: 'In/Inside the community reading room.', exp: 'there 指 community reading room（非 speaker），且必带 In/Inside。' },
-          { q: '5. How does hearing young voices make Grandma Li feel?', placeholder: '形容词或完整句...', accept: ['warm', 'it makes her feel warm', 'she feels warm'], std: 'Warm. / It makes her feel warm.', exp: '简答 Warm. 或注意人称与三单转换。' }
-        ]
+      essay: {
+        l8: {
+          qtypeId: 'w_write_mindmap_essay',
+          tabLabel: 'H. 导图写作(1篇)',
+          shortName: '思维导图类书面表达',
+          excelName: 'essay',
+          uiTag: '写作编辑器 · 80词',
+          examRole: 'L8 笔试 · 中考第五大题',
+          scoreSpec: '1篇约80词 = 15分',
+          maxScore: 15,
+          theme: 'indigo'
+        },
+        title: '思维导图类书面表达实战（1篇约80词 · 校园小发明展邀请邮件）',
+        desc: '匹配 L8「思维导图类书面表达（essay）」：按广东中考 15 分满分标准完成邀请邮件，并逐项勾选《十大红线自查表》。',
+        prompt: '假设你是李华，你们学校下周五将在科技礼堂举办一场名为 "Smart Life, Better Future" 的校园小发明展示活动（Little Inventors Show）。请根据下方思维导图提示，给交换生朋友 Peter 写一封 80 词左右的英文邀请邮件。',
+        mindmapCenter: 'Little Inventors Show 邀请邮件',
+        branches: [
+          { title: '① 活动简介', items: ['时间：下周五 (next Friday)', '地点：科技礼堂 (science hall)', '意义：激发创造力 / 解决生活问题'] },
+          { title: '② 展示发明', items: ['介绍你的小发明（如智能护眼台灯）', '核心用途与至少 2 个好处', '亮点句式：Not only...but also...'] },
+          { title: '③ 邀请期待', items: ['真诚邀请 Peter 参加', '期待交流建议 (suggestions)', '注意：In the end, 逗号结尾'] }
+        ],
+        checklist: [
+          '每句话有且只有 1 个谓语动词（无缺 be，无 is influence / was felt）',
+          'will / can / didn\'t / make / let / help 后动词已还原原形',
+          '未把 invention 写成 inventor，未把 phone 写成 photo',
+          '未给 advice / knowledge / information 加 -s',
+          '核对高频易错拼写：true / tired / expect / artificial',
+          '固定搭配：will be held / share sth. with sb. / be interested in',
+          'In the end, / First, / What\'s more, 后面用逗号而非句号',
+          '至少运用 1 组高阶满分句式（Not only...but also / It is adj. for us to do）'
+        ],
+        salutation: 'Dear Peter,',
+        opening: 'How is everything going?',
+        signoff: 'Yours,\nLi Hua',
+        modelEssay: `Dear Peter,\n\nHow is everything going? I'm writing to invite you to our school's "Little Inventors Show", which will be held in our science hall next Friday. Its theme is "Smart Life, Better Future", aiming to encourage our creativity and solve real-life problems.\n\nDuring the show, students will share their inventions with each other. I plan to present my smart reading lamp. Not only can it adjust brightness automatically to stop our eyes from feeling tired, but it also reminds us to take breaks. I believe it can make our study life get much healthier and more convenient.\n\nIn the end, I sincerely expect you to join us and give me some useful suggestions. Looking forward to your early reply!\n\nYours,\nLi Hua`,
+        modelHighlights: '高分点拆解：① which will be held 非限定性定语从句 + 被动语态精准避雷；② share their inventions with / feeling tired / make...get / expect / suggestions 全部零硬伤；③ Not only can it..., but it also... 倒装满分句式升格。'
       }
     };
 
@@ -1868,18 +2297,36 @@
       };
     }
 
-    // STUDENT TAB 4: RECOMBINED DRILL STUDIO
+    // STUDENT TAB 4: L8-MATCHED RECOMBINED DRILL STUDIO
+    function renderL8TagBadge(l8) {
+      return `<span class="eb-qtag eb-theme-${l8.theme}"><span class="eb-qtag-l8"><span>L8</span></span><span>${wbEsc(l8.shortName)}</span></span>`;
+    }
+
+    async function jumpToQuestionTypeStandard(qtypeId) {
+      await ensureQuestionTypeCatalog();
+      const target = (qtypeCatalog && qtypeCatalog.types || []).find(t => t.id === qtypeId);
+      if (!target) return;
+      qtypeState.modality = target.modality;
+      qtypeState.skill = target.skill;
+      qtypeState.selectedId = target.id;
+      activeExamStdSub = 'qtypes';
+      showGlobalView('examstd');
+    }
+
     function renderStudentDrill(s) {
       const wrap = document.getElementById('stab-drill');
+      if (!DRILLS[currentDrillMode]) currentDrillMode = 'grammar';
       const bank = DRILLS[currentDrillMode];
+      const l8 = bank.l8;
       let score = 0, total = 0, bodyHtml = '';
 
-      if (currentDrillMode === 'grammar' || currentDrillMode === 'writing') {
+      if (currentDrillMode === 'grammar' || currentDrillMode === 'semcloze' || currentDrillMode === 'reading' || currentDrillMode === 'writing') {
         const kp = currentDrillMode + '_';
         total = bank.questions.length;
         bank.questions.forEach((q, i) => { if (drillAnswers[kp + i] === q.ans) score++; });
+        const gridCols = currentDrillMode === 'grammar' ? 'sm:grid-cols-3' : (currentDrillMode === 'semcloze' ? 'sm:grid-cols-2 lg:grid-cols-4' : '');
         bodyHtml = `
-          ${bank.passage ? `<div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7">${bank.passage}</div>` : ''}
+          ${bank.passage ? `<div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7 eb-en">${bank.passage}</div>` : ''}
           <div class="space-y-3">
             ${bank.questions.map((q, idx) => {
               const ch = drillAnswers[kp + idx], ansd = ch !== undefined, ok = ch === q.ans;
@@ -1889,7 +2336,7 @@
                     <strong>${q.q}</strong>
                     <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">${q.tag}</span>
                   </div>
-                  <div class="grid grid-cols-1 ${currentDrillMode === 'grammar' ? 'sm:grid-cols-3' : ''} gap-2">
+                  <div class="grid grid-cols-1 ${gridCols} gap-2">
                     ${q.opts.map((o, oi) => {
                       let cls = 'border-[var(--border)] bg-[var(--card)]';
                       if (ansd) {
@@ -1903,12 +2350,38 @@
                 </div>`;
             }).join('')}
           </div>`;
+      } else if (currentDrillMode === 'restore') {
+        total = bank.blanks.length;
+        const chk = !!drillAnswers['restore_chk'];
+        if (chk) bank.blanks.forEach(b => { if ((drillAnswers['restore_' + b.num] || '') === b.ans) score++; });
+        bodyHtml = `
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7 eb-en">${bank.passage}</div>
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-1.5 text-xs">
+            <div class="font-bold text-[var(--primary)] mb-1">备选句子池（A–G · 7 选 5，2 项多余）</div>
+            ${bank.options.map(o => `<div class="eb-en py-1 border-b border-[var(--border)]/60 last:border-none">${o.text}</div>`).join('')}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+            ${bank.blanks.map(b => {
+              const val = drillAnswers['restore_' + b.num] || '';
+              const ok = chk && val === b.ans;
+              return `
+                <div class="bg-[var(--content)] border ${chk ? (ok ? 'border-[var(--success)]' : 'border-[var(--error)]') : 'border-[var(--border)]'} rounded-xl p-3 space-y-2">
+                  <div class="flex items-center justify-between"><strong>第 (${b.num}) 空</strong><span class="text-[11px] text-[var(--muted-foreground)]">${b.tag}</span></div>
+                  <select data-dres="${b.num}" class="w-full rounded-lg px-2 py-1.5 text-xs font-semibold">
+                    <option value="">请选择 A–G...</option>
+                    ${bank.options.map(o => `<option value="${o.key}" ${val === o.key ? 'selected' : ''}>选 ${o.key}</option>`).join('')}
+                  </select>
+                  ${chk ? `<div class="${ok ? 'text-[var(--success)]' : 'text-[var(--error)]'}"><strong>${ok ? '✓ 正确' : '✗ 正解：' + b.ans}</strong><br/><span class="text-[var(--muted-foreground)]">${b.exp}</span></div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>
+          <div class="flex justify-end"><button id="btnChkRestore" class="px-4 py-2 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">提交批改七选五</button></div>`;
       } else if (currentDrillMode === 'cloze') {
         total = bank.blanks.length;
         const chk = !!drillAnswers['cloze_chk'];
         if (chk) bank.blanks.forEach(b => { if (b.ans.map(a => a.toLowerCase()).includes((drillAnswers['cloze_' + b.num] || '').trim().toLowerCase())) score++; });
         bodyHtml = `
-          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7">${bank.passage}</div>
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7 eb-en">${bank.passage}</div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             ${bank.blanks.map(b => {
               const val = drillAnswers['cloze_' + b.num] || '';
@@ -1917,7 +2390,7 @@
                 <div class="bg-[var(--content)] border ${chk ? (ok ? 'border-[var(--success)]' : 'border-[var(--error)]') : 'border-[var(--border)]'} rounded-xl p-3 space-y-1.5">
                   <div class="flex justify-between"><strong>第 (${b.num}) 空</strong><span class="text-[var(--muted-foreground)]">${b.hint}</span></div>
                   <input data-dcl="${b.num}" type="text" value="${val.replace(/"/g, '&quot;')}" placeholder="输入变形后单词..." class="w-full rounded-lg px-2.5 py-1.5 text-xs" />
-                  ${chk ? `<div class="${ok ? 'text-[var(--success)]' : 'text-[var(--error)]'}"><strong>${ok ? '✓ 正确' : '✗ 正解：' + b.ans[0]}</strong> — <span class="text-[var(--muted-foreground)]">${b.exp}</span></div>` : ''}
+                  ${chk ? `<div class="${ok ? 'text-[var(--success)]' : 'text-[var(--error)]'}"><strong>${ok ? '✓ 正确' : '✗ 正解：' + (b.ans.find(a => /^[A-Z]/.test(a)) || b.ans[0])}</strong> — <span class="text-[var(--muted-foreground)]">${b.exp}</span></div>` : ''}
                 </div>`;
             }).join('')}
           </div>
@@ -1930,7 +2403,7 @@
           if (q.accept.some(a => norm === a || (norm.length > 5 && norm.includes(a)))) score++;
         });
         bodyHtml = `
-          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7">${bank.passage}</div>
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7 eb-en">${bank.passage}</div>
           <div class="space-y-3 text-xs">
             ${bank.questions.map((q, i) => {
               const val = drillAnswers['qa_' + i] || '';
@@ -1945,49 +2418,132 @@
             }).join('')}
           </div>
           <div class="flex justify-end"><button id="btnChkQa" class="px-4 py-2 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">批改回答规范度</button></div>`;
+      } else if (currentDrillMode === 'essay') {
+        total = bank.checklist.length;
+        bank.checklist.forEach((_, idx) => { if (drillAnswers['essay_chk_' + idx]) score++; });
+        const draft = drillAnswers['essay_draft'] || '';
+        const wordCount = (draft.trim().match(/[A-Za-z0-9'-]+/g) || []).length;
+        const showModel = !!drillAnswers['essay_model'];
+        bodyHtml = `
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-xs leading-relaxed space-y-3">
+            <p class="text-[var(--foreground)] font-medium">${bank.prompt}</p>
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5 space-y-2.5">
+              <div class="text-center font-bold text-xs text-[var(--primary)]">🧭 思维导图提示：${bank.mindmapCenter}</div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+                ${bank.branches.map(br => `
+                  <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-2.5 space-y-1">
+                    <div class="font-bold text-[var(--foreground)]">${br.title}</div>
+                    <ul class="space-y-0.5 text-[var(--muted-foreground)]">${br.items.map(it => `<li>• ${it}</li>`).join('')}</ul>
+                  </div>`).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
+            <div class="lg:col-span-7 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold">✍️ 考场作答区（建议 80–100 词）</span>
+                <span id="essayWordCount" class="font-mono px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)]">当前词数：${wordCount}</span>
+              </div>
+              <div class="text-[var(--muted-foreground)] eb-en px-1">${bank.salutation} ${bank.opening}</div>
+              <textarea id="essayDraftInput" rows="8" placeholder="在此输入正文内容，写完后在右侧逐条完成《十大红线自查表》打勾验收..." class="w-full rounded-xl p-3 text-xs leading-relaxed eb-en">${wbEsc(draft)}</textarea>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[var(--muted-foreground)] eb-en">Yours, Li Hua</span>
+                <button id="btnToggleEssayModel" class="px-3.5 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">${showModel ? '收起 15 分满分范文' : '查看 15 分满分升格范文'}</button>
+              </div>
+            </div>
+            <div class="lg:col-span-5 bg-[var(--content)] border border-[var(--border)] rounded-xl p-3.5 space-y-2">
+              <div class="font-bold text-[var(--primary)]">🛡️ 2 分钟《作文十大红线自查表》（已勾选 ${score}/${total}）</div>
+              <div class="space-y-1.5">
+                ${bank.checklist.map((item, idx) => `
+                  <label class="flex items-start gap-2 cursor-pointer select-none leading-snug">
+                    <input type="checkbox" data-echk="${idx}" ${drillAnswers['essay_chk_' + idx] ? 'checked' : ''} class="mt-0.5 accent-[var(--primary)]" />
+                    <span class="${drillAnswers['essay_chk_' + idx] ? 'line-through text-[var(--muted-foreground)]' : ''}">${item}</span>
+                  </label>`).join('')}
+              </div>
+            </div>
+          </div>
+          ${showModel ? `
+            <div class="bg-[var(--content)] border border-[var(--success)] rounded-xl p-4 space-y-2 text-xs">
+              <div class="font-bold text-[var(--success)]">⭐ 15 分满分升格范文（对照自查）</div>
+              <pre class="whitespace-pre-wrap eb-en text-xs leading-6 font-sans text-[var(--foreground)] m-0">${wbEsc(bank.modelEssay)}</pre>
+              <div class="pt-2 border-t border-[var(--border)] text-[var(--muted-foreground)]">${bank.modelHighlights}</div>
+            </div>` : ''}`;
       }
 
       wrap.innerHTML = `
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h3 class="text-sm font-bold">${s.name} · 知识点重组靶向训练台（外研社考纲题型映射）</h3>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <h3 class="text-sm font-bold">${s.name} · L8 考纲题型重组靶向训练台</h3>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[var(--content)] border border-[var(--border)] text-[var(--primary)]">匹配公立 L8 全部 8 大笔试题型</span>
+              </div>
               <p class="text-xs text-[var(--muted-foreground)]">${bank.desc}</p>
             </div>
             <div class="flex flex-wrap items-center gap-2 text-xs">
-              <span class="bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5 font-mono">得分：<strong class="text-[var(--primary)]">${score}</strong> / ${total}</span>
+              <span class="bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5 font-mono">${currentDrillMode === 'essay' ? '自查项' : '得分'}：<strong class="text-[var(--primary)]">${score}</strong> / ${total}</span>
               <button id="btnResetD" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">重做</button>
-              <button id="btnOpenWorkbook" class="px-3 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">📘 整合练习册（预览 / 导出 PDF）</button>
-              <button id="btnQuickPrintWorkbook" class="px-3 py-1.5 rounded-lg font-semibold border border-[var(--primary)] text-[var(--primary)] bg-[var(--content)] cursor-pointer hover:opacity-90 transition">🖨️ 一键打印 / PDF</button>
+              <button id="btnOpenWorkbook" class="px-3 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">📖 打开 L8 双页电子册（翻阅 / 导出 PDF）</button>
+              <button id="btnQuickPrintWorkbook" class="px-3 py-1.5 rounded-lg font-semibold border border-[var(--primary)] text-[var(--primary)] bg-[var(--content)] cursor-pointer hover:opacity-90 transition">📄 一键导出双页 PDF</button>
             </div>
           </div>
-          <div class="flex flex-wrap gap-2">
-            ${[['grammar','A. 语法选择重组(10)'],['cloze','B. 短文填空两步法(10)'],['writing','C. 作文红线排雷(8)'],['qa','D. 回答问题防扣分(5)']].map(([k, l]) => `
-              <button data-dmode="${k}" class="pill-btn ${currentDrillMode === k ? 'active' : ''} px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">${l}</button>`).join('')}
+          <div class="flex flex-wrap gap-1.5">
+            ${L8_DRILL_ORDER.map(k => {
+              const item = DRILLS[k];
+              return `<button data-dmode="${k}" class="pill-btn ${currentDrillMode === k ? 'active' : ''} px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">${item.l8.tabLabel}</button>`;
+            }).join('')}
           </div>
         </div>
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
-          <h4 class="text-sm font-bold border-b border-[var(--border)] pb-2.5">${bank.title}</h4>
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border)] pb-2.5">
+            <div class="flex flex-wrap items-center gap-2">
+              ${renderL8TagBadge(l8)}
+              <h4 class="text-sm font-bold">${bank.title}</h4>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+              <span class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)] font-mono">${l8.qtypeId} · ${l8.scoreSpec}</span>
+              <button id="btnDrillJumpQtype" class="text-[var(--link)] hover:underline font-semibold cursor-pointer">查看 L8 题型库标准 ↗</button>
+            </div>
+          </div>
           ${bodyHtml}
         </div>`;
 
       wrap.querySelectorAll('[data-dmode]').forEach(b => { b.onclick = () => { currentDrillMode = b.dataset.dmode; renderStudentDrill(s); }; });
       document.getElementById('btnResetD').onclick = () => { Object.keys(drillAnswers).forEach(k => { if (k.startsWith(currentDrillMode + '_')) delete drillAnswers[k]; }); renderStudentDrill(s); };
       document.getElementById('btnOpenWorkbook').onclick = () => openDrillWorkbookModal(s);
-      document.getElementById('btnQuickPrintWorkbook').onclick = () => triggerWorkbookPrint(s, false);
+      document.getElementById('btnQuickPrintWorkbook').onclick = () => triggerWorkbookPrint(s, true);
+      const bJump = document.getElementById('btnDrillJumpQtype');
+      if (bJump) bJump.onclick = () => jumpToQuestionTypeStandard(l8.qtypeId);
       wrap.querySelectorAll('[data-dq]').forEach(b => { b.onclick = () => { drillAnswers[currentDrillMode + '_' + b.dataset.dq] = Number(b.dataset.do); renderStudentDrill(s); }; });
+      wrap.querySelectorAll('[data-dres]').forEach(sel => { sel.onchange = () => { drillAnswers['restore_' + sel.dataset.dres] = sel.value; }; });
+      const bres = document.getElementById('btnChkRestore'); if (bres) bres.onclick = () => { drillAnswers['restore_chk'] = true; renderStudentDrill(s); };
       wrap.querySelectorAll('[data-dcl]').forEach(inp => { inp.oninput = () => { drillAnswers['cloze_' + inp.dataset.dcl] = inp.value; }; });
       wrap.querySelectorAll('[data-dqa]').forEach(inp => { inp.oninput = () => { drillAnswers['qa_' + inp.dataset.dqa] = inp.value; }; });
       const bcl = document.getElementById('btnChkCloze'); if (bcl) bcl.onclick = () => { drillAnswers['cloze_chk'] = true; renderStudentDrill(s); };
       const bqa = document.getElementById('btnChkQa'); if (bqa) bqa.onclick = () => { drillAnswers['qa_chk'] = true; renderStudentDrill(s); };
+      const eDraft = document.getElementById('essayDraftInput');
+      if (eDraft) eDraft.oninput = () => {
+        drillAnswers['essay_draft'] = eDraft.value;
+        const wc = (eDraft.value.trim().match(/[A-Za-z0-9'-]+/g) || []).length;
+        const wcEl = document.getElementById('essayWordCount');
+        if (wcEl) wcEl.textContent = '当前词数：' + wc;
+      };
+      wrap.querySelectorAll('[data-echk]').forEach(cb => { cb.onchange = () => { drillAnswers['essay_chk_' + cb.dataset.echk] = cb.checked; renderStudentDrill(s); }; });
+      const bMod = document.getElementById('btnToggleEssayModel');
+      if (bMod) bMod.onclick = () => { drillAnswers['essay_model'] = !drillAnswers['essay_model']; renderStudentDrill(s); };
     }
 
-    // ==================== 7B. CONSOLIDATED DRILL WORKBOOK (A4 PREVIEW & PRINT/PDF) ====================
+    // ==================== 7B. L8 DUAL-PAGE SPREAD E-BOOKLET ENGINE (PREVIEW & A4 LANDSCAPE PDF) ====================
     const workbookState = {
       isOpen: false,
+      viewMode: 'flip', // 'flip' | 'scroll'
+      spreadIdx: 0,
       edition: 'student_with_key', // 'student_with_key' | 'student_only' | 'teacher'
       showHints: false,
-      sections: { grammar: true, cloze: true, writing: true, qa: true }
+      sections: {
+        grammar: true, semcloze: true, reading: true, restore: true,
+        cloze: true, qa: true, writing: true, essay: true
+      }
     };
 
     function wbEsc(str) {
@@ -1998,10 +2554,11 @@
         .replace(/"/g, '&quot;');
     }
 
-    function formatWbPassage(rawHtml) {
+    function formatEbPassage(rawHtml, longBlanks) {
       const paragraphs = String(rawHtml || '').split(/<br\s*\/?>\s*<br\s*\/?>/i);
+      const cls = longBlanks ? 'eb-blank eb-blank-long' : 'eb-blank';
       return paragraphs.map(p => {
-        const withBlanks = p.replace(/<b>\s*\((\d+)\)\s*<\/b>/gi, '<span class="wb-blank">($1)</span>');
+        const withBlanks = p.replace(/<b>\s*\((\d+)\)\s*<\/b>/gi, `<span class="${cls}">($1)</span>`);
         return `<p>${withBlanks}</p>`;
       }).join('');
     }
@@ -2012,312 +2569,666 @@
       return m[1].split('/').map(w => w.trim()).filter(Boolean);
     }
 
-    function buildDrillWorkbookHtml(s, cfg) {
-      const secOrder = [
-        { key: 'grammar', shortTitle: '语法选择重组', fullTitle: '语法选择重组（全新主题：AI 校园绿植管家）', count: DRILLS.grammar.questions.length, unit: '小题', maxScore: 10 },
-        { key: 'cloze',   shortTitle: '短文填空两步法', fullTitle: '短文填空“两步法”重组训练（12选10需变形）', count: DRILLS.cloze.blanks.length, unit: '空', maxScore: 10 },
-        { key: 'writing', shortTitle: '作文红线排雷', fullTitle: '作文“十大红线”实战排雷诊所（病句改写）', count: DRILLS.writing.questions.length, unit: '小题', maxScore: 8 },
-        { key: 'qa',      shortTitle: '回答问题防扣分', fullTitle: '回答问题“防扣分 SOP”重组演练（满分10分标准）', count: DRILLS.qa.questions.length, unit: '小题', maxScore: 10 }
-      ].filter(item => cfg.sections[item.key]);
+    function ebTagHtml(l8, suffix) {
+      return `<span class="eb-qtag eb-theme-${l8.theme}"><span class="eb-qtag-l8"><span>L8</span></span><span>${wbEsc(l8.shortName)}${suffix ? ' · ' + wbEsc(suffix) : ''}</span></span>`;
+    }
 
-      if (!secOrder.length) {
-        return `<div class="wb-sheet" style="text-align:center;padding:48px 24px;color:#64748b;">请至少勾选上方 1 个练习模块以生成练习册。</div>`;
+    function ebPageFrame(side, pgNo, studentName, tagHtml, bodyHtml, footLabel) {
+      const pStr = 'P' + String(pgNo).padStart(2, '0');
+      const isLeft = side === 'left';
+      return `
+        <div class="eb-page ${isLeft ? 'eb-page-left' : 'eb-page-right'}">
+          <div class="eb-page-head">
+            ${isLeft
+              ? `<span>${wbEsc(studentName)} · 外研社 L8 考纲重组电子册</span>${tagHtml}`
+              : `${tagHtml}<span>广东/佛山中考 120 分冲刺专练</span>`}
+          </div>
+          <div class="eb-page-body">${bodyHtml}</div>
+          <div class="eb-page-foot">
+            ${isLeft
+              ? `<span class="eb-pgno">— ${pStr} —</span><span>${wbEsc(footLabel || 'L8 靶向重组练习')}</span>`
+              : `<span>${wbEsc(footLabel || 'L8 靶向重组练习')}</span><span class="eb-pgno">— ${pStr} —</span>`}
+          </div>
+        </div>`;
+    }
+
+    function buildEbookSpreads(s, cfg) {
+      const selectedKeys = L8_DRILL_ORDER.filter(k => cfg.sections[k]);
+      if (!selectedKeys.length) {
+        return [{
+          label: '提示',
+          html: `<div class="eb-spread" style="display:flex;align-items:center;justify-content:center;min-height:420px;color:#64748b;font-size:14px;">请至少勾选上方 1 个 L8 题型模块以生成双页电子册。</div>`
+        }];
       }
 
-      const cnNums = ['一', '二', '三', '四'];
+      const cnNums = ['一', '二', '三', '四', '五', '六', '七', '八'];
       const optLetters = ['A', 'B', 'C', 'D'];
       const isTeacher = cfg.edition === 'teacher';
       const showKeySection = cfg.edition === 'student_with_key';
       const showHints = cfg.showHints || isTeacher;
-      const totalItems = secOrder.reduce((sum, x) => sum + x.count, 0);
-      const totalScore = secOrder.reduce((sum, x) => sum + x.maxScore, 0);
-      const estMins = Math.max(10, Math.round(totalItems * 1.1));
-      const editionTag = isTeacher ? '教师讲义版（含解析）' : (showKeySection ? '学生练习卷 + 独立答案册' : '学生练习卷（空白作答）');
+      const editionTag = isTeacher ? '教师批注讲义册' : (showKeySection ? '学生电子册 + 独立答案册' : '纯学生练习册');
       const todayStr = new Date().toISOString().slice(0, 10);
+      const clozeAns = (b) => b.ans.find(a => /^[A-Z]/.test(a)) || b.ans[0];
 
-      let sectionsHtml = '';
-      let answerKeyBlocks = '';
+      // Build exercise spreads first (starting at page 3, since P1-P2 is Cover + TOC)
+      const contentSpreads = [];
+      const tocEntries = [];
+      let nextPage = 3;
+      const idxMap = {};
+      selectedKeys.forEach((k, i) => { idxMap[k] = cnNums[i] || String(i + 1); });
 
-      secOrder.forEach((sec, secIdx) => {
-        const cnNo = cnNums[secIdx] || String(secIdx + 1);
+      const pushSpread = (label, leftTag, leftBody, leftFoot, rightTag, rightBody, rightFoot) => {
+        const pL = nextPage, pR = nextPage + 1;
+        nextPage += 2;
+        contentSpreads.push({
+          label,
+          pages: `P${String(pL).padStart(2, '0')}–P${String(pR).padStart(2, '0')}`,
+          html: `<section class="eb-spread">${ebPageFrame('left', pL, s.name, leftTag, leftBody, leftFoot)}${ebPageFrame('right', pR, s.name, rightTag, rightBody, rightFoot)}</section>`
+        });
+        return { pL, pR };
+      };
 
-        if (sec.key === 'grammar') {
-          const bank = DRILLS.grammar;
-          sectionsHtml += `
-            <section class="wb-section">
-              <div class="wb-sec-head">
-                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
-                <div class="wb-sec-meta">共 ${bank.questions.length} 小题 · 满分 ${sec.maxScore} 分</div>
-              </div>
-              <p class="wb-sec-desc">阅读下面短文，按照句子结构的语法性和上下文连贯的要求，从各题所给的 A、B、C 三个选项中选出最佳答案，将字母填入题前括号内。</p>
-              <div class="wb-passage wb-en">${formatWbPassage(bank.passage)}</div>
-              <div class="wb-q-grid-2">
-                ${bank.questions.map(q => {
-                  const ansLetter = optLetters[q.ans] || '';
-                  return `
-                    <div class="wb-q-item">
-                      <div class="wb-q-stem wb-en">
-                        (${isTeacher ? `<span class="wb-opt-correct">&nbsp;${ansLetter}&nbsp;</span>` : '&nbsp;&nbsp;&nbsp;&nbsp;'}) ${wbEsc(q.q)}
-                        ${showHints ? `<span class="wb-tag">${wbEsc(q.tag)}</span>` : ''}
-                      </div>
-                      <div class="wb-q-opts-inline wb-en">
-                        ${q.opts.map((o, oi) => `<span class="${isTeacher && oi === q.ans ? 'wb-opt-correct' : ''}">${wbEsc(o)}</span>`).join('')}
-                      </div>
-                      ${isTeacher ? `<div class="wb-inline-exp"><strong>解析：</strong>${wbEsc(q.exp)}</div>` : ''}
-                    </div>`;
-                }).join('')}
-              </div>
-            </section>`;
-
-          if (showKeySection) {
-            const quick1 = bank.questions.slice(0, 5).map(q => optLetters[q.ans]).join(' ');
-            const quick2 = bank.questions.slice(5).map(q => optLetters[q.ans]).join(' ');
-            answerKeyBlocks += `
-              <div class="wb-section">
-                <div class="wb-sec-head">
-                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与精析</div>
-                  <div class="wb-sec-meta">${bank.questions.length} 小题</div>
-                </div>
-                <div class="wb-key-strip"><strong>速查答案：</strong>1–5：${quick1}　｜　6–10：${quick2}</div>
-                <table class="wb-key-table">
-                  <thead><tr><th style="width:48px;">题号</th><th style="width:52px;">答案</th><th style="width:145px;">外研社考纲考点</th><th>逐题精析</th></tr></thead>
-                  <tbody>
-                    ${bank.questions.map((q, i) => `
-                      <tr>
-                        <td><strong>${i + 1}</strong></td>
-                        <td><strong>${optLetters[q.ans]}</strong></td>
-                        <td>${wbEsc(q.tag)}</td>
-                        <td>${wbEsc(q.exp)}</td>
-                      </tr>`).join('')}
-                  </tbody>
-                </table>
-              </div>`;
-          }
-        }
-
-        if (sec.key === 'cloze') {
-          const bank = DRILLS.cloze;
-          const words = extractClozeWords(bank.desc);
-          const clozeAns = (b) => b.ans.find(a => /^[A-Z]/.test(a)) || b.ans[0];
-          sectionsHtml += `
-            <section class="wb-section">
-              <div class="wb-sec-head">
-                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
-                <div class="wb-sec-meta">共 ${bank.blanks.length} 空 · 满分 ${sec.maxScore} 分</div>
-              </div>
-              <p class="wb-sec-desc">请从方框内选择适当的词并用其正确形式填空，使文章完整连贯。注意每空一词，每词仅用一次，有两词为多余项。</p>
-              ${words.length ? `
-                <div class="wb-wordbank">
-                  <div class="wb-wordbank-title">备选词库（12 选 10 · 需根据句法与时态适当变形）</div>
-                  <div class="wb-wordbank-grid">
-                    ${words.map(w => `<div class="wb-wordbank-word">${wbEsc(w)}</div>`).join('')}
-                  </div>
-                </div>` : `<p class="wb-sec-desc">${bank.desc}</p>`}
-              <div class="wb-passage wb-en">${formatWbPassage(bank.passage)}</div>
-              <div class="wb-cloze-grid">
-                ${bank.blanks.map(b => `
-                  <div class="wb-cloze-line">
-                    <div class="wb-cloze-row">
-                      <strong>${b.num}.</strong>
-                      <span class="wb-write-line">${isTeacher ? wbEsc(clozeAns(b)) : '&nbsp;'}</span>
-                    </div>
-                    ${showHints ? `<div class="wb-hint">词性提示：${wbEsc(b.hint)}</div>` : ''}
-                    ${isTeacher ? `<div class="wb-inline-exp"><strong>解析：</strong>${wbEsc(b.exp)}</div>` : ''}
-                  </div>`).join('')}
-              </div>
-            </section>`;
-
-          if (showKeySection) {
-            answerKeyBlocks += `
-              <div class="wb-section">
-                <div class="wb-sec-head">
-                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与精析</div>
-                  <div class="wb-sec-meta">${bank.blanks.length} 空</div>
-                </div>
-                <div class="wb-key-strip"><strong>速查答案：</strong>${bank.blanks.map(b => `(${b.num}) ${clozeAns(b)}`).join('　')}</div>
-                <table class="wb-key-table">
-                  <thead><tr><th style="width:48px;">空号</th><th style="width:110px;">参考答案</th><th style="width:160px;">两步法词性判定</th><th>变形解析</th></tr></thead>
-                  <tbody>
-                    ${bank.blanks.map(b => `
-                      <tr>
-                        <td><strong>(${b.num})</strong></td>
-                        <td class="wb-en"><strong>${wbEsc(clozeAns(b))}</strong></td>
-                        <td>${wbEsc(b.hint)}</td>
-                        <td>${wbEsc(b.exp)}</td>
-                      </tr>`).join('')}
-                  </tbody>
-                </table>
-              </div>`;
-          }
-        }
-
-        if (sec.key === 'writing') {
-          const bank = DRILLS.writing;
-          sectionsHtml += `
-            <section class="wb-section">
-              <div class="wb-sec-head">
-                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
-                <div class="wb-sec-meta">共 ${bank.questions.length} 小题 · 满分 ${sec.maxScore} 分</div>
-              </div>
-              <p class="wb-sec-desc">${wbEsc(bank.desc)} 请将正确选项字母填入每道病句前的括号内。</p>
-              <div>
-                ${bank.questions.map(q => {
-                  const ansLetter = optLetters[q.ans] || '';
-                  return `
-                    <div class="wb-writing-item">
-                      <div class="wb-q-stem wb-en">
-                        (${isTeacher ? `<span class="wb-opt-correct">&nbsp;${ansLetter}&nbsp;</span>` : '&nbsp;&nbsp;&nbsp;&nbsp;'}) ${wbEsc(q.q)}
-                        ${showHints ? `<span class="wb-tag">${wbEsc(q.tag)}</span>` : ''}
-                      </div>
-                      <div class="wb-q-opts-stack wb-en">
-                        ${q.opts.map((o, oi) => `<div class="${isTeacher && oi === q.ans ? 'wb-opt-correct' : ''}">${wbEsc(o)}</div>`).join('')}
-                      </div>
-                      ${isTeacher ? `<div class="wb-inline-exp"><strong>排雷解析：</strong>${wbEsc(q.exp)}</div>` : ''}
-                    </div>`;
-                }).join('')}
-              </div>
-            </section>`;
-
-          if (showKeySection) {
-            const quickW = bank.questions.map((q, i) => `${i + 1}.${optLetters[q.ans]}`).join('　');
-            answerKeyBlocks += `
-              <div class="wb-section">
-                <div class="wb-sec-head">
-                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与精析</div>
-                  <div class="wb-sec-meta">${bank.questions.length} 小题</div>
-                </div>
-                <div class="wb-key-strip"><strong>速查答案：</strong>${quickW}</div>
-                <table class="wb-key-table">
-                  <thead><tr><th style="width:52px;">题号</th><th style="width:52px;">答案</th><th style="width:145px;">考纲红线考点</th><th>满分改写解析</th></tr></thead>
-                  <tbody>
-                    ${bank.questions.map((q, i) => `
-                      <tr>
-                        <td><strong>病句${i + 1}</strong></td>
-                        <td><strong>${optLetters[q.ans]}</strong></td>
-                        <td>${wbEsc(q.tag)}</td>
-                        <td>${wbEsc(q.exp)}</td>
-                      </tr>`).join('')}
-                  </tbody>
-                </table>
-              </div>`;
-          }
-        }
-
-        if (sec.key === 'qa') {
-          const bank = DRILLS.qa;
-          sectionsHtml += `
-            <section class="wb-section">
-              <div class="wb-sec-head">
-                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
-                <div class="wb-sec-meta">共 ${bank.questions.length} 小题 · 每题 2 分 · 满分 ${sec.maxScore} 分</div>
-              </div>
-              <p class="wb-sec-desc">请阅读下面短文，根据所提供的信息，回答 5 个问题。要求所写答案语法正确、语义完整切题。（${wbEsc(bank.desc)}）</p>
-              <div class="wb-passage wb-en">${formatWbPassage(bank.passage)}</div>
-              <div>
-                ${bank.questions.map(q => `
-                  <div class="wb-qa-item">
-                    <div class="wb-qa-q wb-en">
-                      ${wbEsc(q.q)}
-                      ${showHints ? `<span class="wb-tag">${wbEsc(q.placeholder)}</span>` : ''}
-                    </div>
-                    ${isTeacher
-                      ? `<div class="wb-inline-exp"><strong>参考答案：</strong><span class="wb-en">${wbEsc(q.std)}</span><br/><strong>防扣分要点：</strong>${wbEsc(q.exp)}</div>`
-                      : `<div class="wb-qa-rule"></div>`}
-                  </div>`).join('')}
-              </div>
-            </section>`;
-
-          if (showKeySection) {
-            answerKeyBlocks += `
-              <div class="wb-section">
-                <div class="wb-sec-head">
-                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与防扣分精析</div>
-                  <div class="wb-sec-meta">${bank.questions.length} 小题</div>
-                </div>
-                <table class="wb-key-table">
-                  <thead><tr><th style="width:48px;">题号</th><th style="width:260px;">参考满分答案</th><th>防扣分 SOP 精析</th></tr></thead>
-                  <tbody>
-                    ${bank.questions.map((q, i) => `
-                      <tr>
-                        <td><strong>${i + 1}</strong></td>
-                        <td class="wb-en"><strong>${wbEsc(q.std)}</strong></td>
-                        <td>${wbEsc(q.exp)}</td>
-                      </tr>`).join('')}
-                  </tbody>
-                </table>
-              </div>`;
-          }
-        }
-      });
-
-      const answerAppendixHtml = showKeySection ? `
-        <div class="wb-page-break">
-          <div class="wb-header" style="margin-bottom:14px;">
-            <div class="wb-top-meta">
-              <span class="wb-badge">独立答案解析册</span>
-              <span>本页自动分页 · 可单独撕下供教师批改或学生自查</span>
-            </div>
-            <div class="wb-title" style="font-size:18px;">${wbEsc(s.name)} · 参考答案与考纲逐题精析</div>
+      // 1. Grammar Cloze (Left: Passage + Exam Spec, Right: 10 MCQ)
+      if (cfg.sections.grammar) {
+        const b = DRILLS.grammar, l8 = b.l8, no = idxMap.grammar;
+        const leftBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+            <div class="eb-sec-meta">${wbEsc(l8.qtypeId)} · ${wbEsc(l8.scoreSpec)}</div>
           </div>
-          ${answerKeyBlocks}
-        </div>` : '';
+          <p class="eb-sec-desc">通读短文，按照句子结构的语法性和上下文连贯的要求，从右页各题所给的 A、B、C 三个选项中选出最佳答案。</p>
+          <div class="eb-passage eb-en">${formatEbPassage(b.passage, false)}</div>
+          <div class="eb-note-box">
+            <strong>🏷️ L8 题型定位：</strong>${wbEsc(l8.shortName)}（原表：${wbEsc(l8.excelName)} · ${wbEsc(l8.examRole)}）<br/>
+            <strong>🎯 本篇重组高频靶点：</strong>one of + 复数、in a ... way、since + 现在完成时、few/a few、副词修饰动词、It is adj. for sb. to do、had better do、spend doing、so...that。
+          </div>`;
+        const rightBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、语法选择 · 作答区（10小题）</div>
+            <div class="eb-sec-meta">左文右题对照作答</div>
+          </div>
+          <div class="eb-q-list">
+            ${b.questions.map(q => {
+              const ansL = optLetters[q.ans] || '';
+              return `
+                <div class="eb-q-item">
+                  <div class="eb-q-stem eb-en">(${isTeacher ? `<span class="eb-opt-ok">${ansL}</span>` : '&nbsp;&nbsp;'}) ${wbEsc(q.q)}${showHints ? `<span class="eb-micro-tag">${wbEsc(q.tag)}</span>` : ''}</div>
+                  <div class="eb-q-opts-inline eb-en">${q.opts.map((o, oi) => `<span class="${isTeacher && oi === q.ans ? 'eb-opt-ok' : ''}">${wbEsc(o)}</span>`).join('')}</div>
+                  ${isTeacher ? `<div class="eb-inline-exp"><strong>解析：</strong>${wbEsc(q.exp)}</div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>`;
+        const { pL, pR } = pushSpread(
+          'L8 语法选择',
+          ebTagHtml(l8, '语篇'), leftBody, `${l8.qtypeId} · 语篇页`,
+          ebTagHtml(l8, '10题作答'), rightBody, `${l8.qtypeId} · 题目页`
+        );
+        tocEntries.push({ key: 'grammar', no, l8, pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`, topic: 'AI 校园绿植管家' });
+      }
 
-      return `
-        <div class="wb-sheet">
-          <header class="wb-header">
-            <div class="wb-top-meta">
-              <span class="wb-badge">外研社分级考纲 · 广东中考英语重组专练</span>
-              <span>${editionTag} · 生成日期 ${todayStr}</span>
+      // 2. Semantic Cloze (Left: Passage, Right: 10 4-choice MCQ)
+      if (cfg.sections.semcloze) {
+        const b = DRILLS.semcloze, l8 = b.l8, no = idxMap.semcloze;
+        const leftBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+            <div class="eb-sec-meta">${wbEsc(l8.qtypeId)} · ${wbEsc(l8.scoreSpec)}</div>
+          </div>
+          <p class="eb-sec-desc">通读下面短文，掌握其大意，然后在右页每小题所给的 A、B、C、D 四个选项中选出一个最佳答案。</p>
+          <div class="eb-passage eb-en">${formatEbPassage(b.passage, false)}</div>
+          <div class="eb-note-box">
+            <strong>🏷️ L8 题型定位：</strong>${wbEsc(l8.shortName)}（原表：${wbEsc(l8.excelName)} · ${wbEsc(l8.examRole)}）<br/>
+            <strong>🔍 做题 SOP：</strong>先划出跨句线索词（如 <em>wooden boat</em> → <em>sailed</em>），再辨析高频动词短语（<em>pass away / come up with / look over / be satisfied with</em>）与情感逻辑转折。
+          </div>`;
+        const rightBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、完形填空 · 作答区（10小题）</div>
+            <div class="eb-sec-meta">A / B / C / D 四选一</div>
+          </div>
+          <div class="eb-q-list">
+            ${b.questions.map(q => {
+              const ansL = optLetters[q.ans] || '';
+              return `
+                <div class="eb-q-item">
+                  <div class="eb-q-stem eb-en">(${isTeacher ? `<span class="eb-opt-ok">${ansL}</span>` : '&nbsp;&nbsp;'}) ${wbEsc(q.q)}${showHints ? `<span class="eb-micro-tag">${wbEsc(q.tag)}</span>` : ''}</div>
+                  <div class="eb-q-opts-grid2 eb-en">${q.opts.map((o, oi) => `<span class="${isTeacher && oi === q.ans ? 'eb-opt-ok' : ''}">${wbEsc(o)}</span>`).join('')}</div>
+                  ${isTeacher ? `<div class="eb-inline-exp"><strong>解析：</strong>${wbEsc(q.exp)}</div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>`;
+        const { pL, pR } = pushSpread(
+          'L8 完形填空',
+          ebTagHtml(l8, '语篇'), leftBody, `${l8.qtypeId} · 语篇页`,
+          ebTagHtml(l8, '10题作答'), rightBody, `${l8.qtypeId} · 题目页`
+        );
+        tocEntries.push({ key: 'semcloze', no, l8, pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`, topic: '海岛旧灯塔的守护者' });
+      }
+
+      // 3. Reading Comprehension B (Left: Passage, Right: 5 deep questions)
+      if (cfg.sections.reading) {
+        const b = DRILLS.reading, l8 = b.l8, no = idxMap.reading;
+        const leftBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+            <div class="eb-sec-meta">${wbEsc(l8.qtypeId)} · ${wbEsc(l8.scoreSpec)}</div>
+          </div>
+          <p class="eb-sec-desc">阅读下面科普说明文，从右页每小题所给的四个选项中，选出能回答所提问题或完成所给句子的最佳答案。</p>
+          <div class="eb-passage eb-en">${formatEbPassage(b.passage, false)}</div>
+          <div class="eb-note-box">
+            <strong>🏷️ L8 题型定位：</strong>${wbEsc(l8.shortName)}（原表：${wbEsc(l8.excelName)} · ${wbEsc(l8.examRole)}）<br/>
+            <strong>🎯 深层阅读 SOP：</strong>词义题紧盯破折号/因果同义释义；主旨题抓全篇高频核心对象（拒绝局部细节干扰）；出处题辨别科普/新闻/指南文体特征。
+          </div>`;
+        const rightBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、深层阅读理解 · 作答区（5小题）</div>
+            <div class="eb-sec-meta">每题 2 分 · 满分 10 分</div>
+          </div>
+          <div class="eb-q-list" style="gap:8px;">
+            ${b.questions.map(q => {
+              const ansL = optLetters[q.ans] || '';
+              return `
+                <div class="eb-q-item">
+                  <div class="eb-q-stem eb-en">(${isTeacher ? `<span class="eb-opt-ok">${ansL}</span>` : '&nbsp;&nbsp;'}) ${wbEsc(q.q)}${showHints ? `<span class="eb-micro-tag">${wbEsc(q.tag)}</span>` : ''}</div>
+                  <div class="eb-q-opts-stack eb-en">${q.opts.map((o, oi) => `<div class="${isTeacher && oi === q.ans ? 'eb-opt-ok' : ''}">${wbEsc(o)}</div>`).join('')}</div>
+                  ${isTeacher ? `<div class="eb-inline-exp"><strong>解析：</strong>${wbEsc(q.exp)}</div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>`;
+        const { pL, pR } = pushSpread(
+          'L8 阅读理解',
+          ebTagHtml(l8, 'B篇语篇'), leftBody, `${l8.qtypeId} · 语篇页`,
+          ebTagHtml(l8, '5题深层'), rightBody, `${l8.qtypeId} · 题目页`
+        );
+        tocEntries.push({ key: 'reading', no, l8, pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`, topic: '会喝雨水的校园长椅' });
+      }
+
+      // 4. Sentence Restoration 7-choose-5 (Left: Passage with 5 gaps, Right: A-G pool + 5 slots)
+      if (cfg.sections.restore) {
+        const b = DRILLS.restore, l8 = b.l8, no = idxMap.restore;
+        const leftBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+            <div class="eb-sec-meta">${wbEsc(l8.qtypeId)} · ${wbEsc(l8.scoreSpec)}</div>
+          </div>
+          <p class="eb-sec-desc">根据短文内容，从右页的 A–G 七个选项中选出能填入空白处的最佳选项，使短文意思通顺、结构完整（有两项为多余选项）。</p>
+          <div class="eb-passage eb-en">${formatEbPassage(b.passage, true)}</div>
+          <div class="eb-note-box">
+            <strong>🏷️ L8 题型定位：</strong>${wbEsc(l8.shortName)}（原表：${wbEsc(l8.excelName)} · ${wbEsc(l8.examRole)}）<br/>
+            <strong>🔗 篇章衔接三抓手：</strong>① 序数词链（First / Second / Third / Finally）② 逻辑转折因果（Therefore / Instead）③ 核心词复现（20-20-20 / bedtime）。
+          </div>`;
+        const rightBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、备选句子池（7 选 5）与答题格</div>
+            <div class="eb-sec-meta">每空 2 分 · 2 项多余</div>
+          </div>
+          <div>
+            ${b.options.map(o => `<div class="eb-restore-opt eb-en">${wbEsc(o.text)}</div>`).join('')}
+          </div>
+          <div class="eb-restore-grid">
+            ${b.blanks.map(bl => `
+              <div class="eb-restore-cell">
+                <div><strong>第 (${bl.num}) 空</strong></div>
+                <div class="eb-restore-slot">${isTeacher ? wbEsc(bl.ans) : ''}</div>
+              </div>`).join('')}
+          </div>
+          ${(showHints || isTeacher) ? `
+            <div style="margin-top:8px;">
+              ${b.blanks.map(bl => `<div class="eb-inline-exp" style="margin-left:0;margin-top:4px;"><strong>(${bl.num}) ${isTeacher ? bl.ans + ' · ' : ''}${wbEsc(bl.tag)}：</strong>${isTeacher ? wbEsc(bl.exp) : '观察前后句逻辑与复现词'}</div>`).join('')}
+            </div>` : ''}`;
+        const { pL, pR } = pushSpread(
+          'L8 七选五',
+          ebTagHtml(l8, '语篇'), leftBody, `${l8.qtypeId} · 语篇页`,
+          ebTagHtml(l8, '7选5配对'), rightBody, `${l8.qtypeId} · 配对页`
+        );
+        tocEntries.push({ key: 'restore', no, l8, pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`, topic: '健康数字生活五习惯' });
+      }
+
+      // 5. Word Cloze 12-to-10 (Left: Word Bank + Passage, Right: 10 Two-Step Answer Lines)
+      if (cfg.sections.cloze) {
+        const b = DRILLS.cloze, l8 = b.l8, no = idxMap.cloze;
+        const words = extractClozeWords(b.desc);
+        const leftBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+            <div class="eb-sec-meta">${wbEsc(l8.qtypeId)} · ${wbEsc(l8.scoreSpec)}</div>
+          </div>
+          <p class="eb-sec-desc">请从方框内选择适当的词并用其正确形式填空，使文章完整连贯。每空一词，每词仅用一次，有两词多余。</p>
+          <div class="eb-wordbank">
+            <div class="eb-wordbank-title">📦 备选词库（12 选 10 · 先在右页标词性，再写变形！）</div>
+            <div class="eb-wordbank-grid">${words.map(w => `<div class="eb-wordbank-word">${wbEsc(w)}</div>`).join('')}</div>
+          </div>
+          <div class="eb-passage eb-en">${formatEbPassage(b.passage, false)}</div>`;
+        const rightBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、短文填空 · 两步法作答卡（10空）</div>
+            <div class="eb-sec-meta">Step 1 标词性 → Step 2 写变形</div>
+          </div>
+          <div>
+            ${b.blanks.map(bl => `
+              <div class="eb-cloze-row">
+                <strong style="width:24px;">(${bl.num})</strong>
+                <span class="eb-pos-box">${showHints ? wbEsc(bl.hint) : '词性：______'}</span>
+                <span class="eb-write-line">${isTeacher ? wbEsc(clozeAns(bl)) : '&nbsp;'}</span>
+              </div>
+              ${isTeacher ? `<div class="eb-inline-exp" style="margin-bottom:3px;"><strong>解析：</strong>${wbEsc(bl.exp)}</div>` : ''}`).join('')}
+          </div>`;
+        const { pL, pR } = pushSpread(
+          'L8 短文填空',
+          ebTagHtml(l8, '词库与语篇'), leftBody, `${l8.qtypeId} · 语篇页`,
+          ebTagHtml(l8, '两步法答题卡'), rightBody, `${l8.qtypeId} · 答题卡`
+        );
+        tocEntries.push({ key: 'cloze', no, l8, pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`, topic: '科技馆太阳能书包' });
+      }
+
+      // 6 & 7. QA (Left) + Writing Redline Clinic (Right) paired cleanly on 1 spread
+      if (cfg.sections.qa || cfg.sections.writing) {
+        const hasQa = !!cfg.sections.qa;
+        const hasWr = !!cfg.sections.writing;
+        let leftTag, leftBody, leftFoot, rightTag, rightBody, rightFoot;
+
+        if (hasQa) {
+          const b = DRILLS.qa, l8 = b.l8, no = idxMap.qa;
+          leftTag = ebTagHtml(l8, '5题简答');
+          leftFoot = `${l8.qtypeId} · 读写综合 A`;
+          leftBody = `
+            <div class="eb-sec-bar">
+              <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+              <div class="eb-sec-meta">${wbEsc(l8.scoreSpec)}</div>
             </div>
-            <h1 class="wb-title">${wbEsc(s.name)} · 个人知识点重组靶向训练册</h1>
-            <div class="wb-subtitle">将高频失分点打散重组进广东中考标准题型 · 共 ${secOrder.length} 大板块 / ${totalItems} 小题 · 建议限时 ${estMins} 分钟</div>
-            <div class="wb-info-row">
-              <span><strong>姓名：</strong>${wbEsc(s.name)}</span>
-              <span><strong>学段档案：</strong>${wbEsc(s.meta || '外研社初中英语')}</span>
-              <span><strong>日期：</strong>202__ 年 ___ 月 ___ 日</span>
-              <span><strong>实际用时：</strong>______ 分钟</span>
+            <p class="eb-sec-desc">阅读短文并规范作答（严查：① 介词/连词开头 ② 时态一致 ③ 代词指代精准）。</p>
+            <div class="eb-passage eb-en">${formatEbPassage(b.passage, false)}</div>
+            <div>
+              ${b.questions.map(q => `
+                <div class="eb-qa-item">
+                  <div class="eb-qa-q eb-en">${wbEsc(q.q)}${showHints ? `<span class="eb-micro-tag">${wbEsc(q.placeholder)}</span>` : ''}</div>
+                  ${isTeacher
+                    ? `<div class="eb-inline-exp"><strong>参考：</strong><span class="eb-en">${wbEsc(q.std)}</span> ｜ ${wbEsc(q.exp)}</div>`
+                    : `<div class="eb-qa-rule"></div>`}
+                </div>`).join('')}
+            </div>`;
+        } else {
+          leftTag = `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>L8</span></span><span>课堂笔记与错因复盘</span></span>`;
+          leftFoot = '错因复盘笔记页';
+          leftBody = `
+            <div class="eb-sec-bar"><div class="eb-sec-title">📝 本册错因复盘与课堂笔记</div><div class="eb-sec-meta">1对1 现场批注区</div></div>
+            <div class="eb-essay-lines">${Array.from({ length: 16 }).map(() => '<div class="eb-essay-line"></div>').join('')}</div>`;
+        }
+
+        if (hasWr) {
+          const b = DRILLS.writing, l8 = b.l8, no = idxMap.writing;
+          rightTag = ebTagHtml(l8, '8道病句排雷');
+          rightFoot = `${l8.qtypeId} · 写作排雷`;
+          rightBody = `
+            <div class="eb-sec-bar">
+              <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+              <div class="eb-sec-meta">${wbEsc(l8.scoreSpec)}</div>
             </div>
-            <table class="wb-score-table">
+            <p class="eb-sec-desc">选出唯一零语法/拼写/语序硬伤的 15 分满分改写版，将字母填入括号内。</p>
+            <div>
+              ${b.questions.map(q => {
+                const ansL = optLetters[q.ans] || '';
+                return `
+                  <div class="eb-writing-card">
+                    <div class="eb-q-stem eb-en" style="font-size:10.3px;">(${isTeacher ? `<span class="eb-opt-ok">${ansL}</span>` : '&nbsp;&nbsp;'}) ${wbEsc(q.q)}${showHints ? `<span class="eb-micro-tag">${wbEsc(q.tag)}</span>` : ''}</div>
+                    <div class="eb-q-opts-stack eb-en" style="font-size:9.8px;">${q.opts.map((o, oi) => `<div class="${isTeacher && oi === q.ans ? 'eb-opt-ok' : ''}">${wbEsc(o)}</div>`).join('')}</div>
+                    ${isTeacher ? `<div class="eb-inline-exp" style="font-size:9px;"><strong>解析：</strong>${wbEsc(q.exp)}</div>` : ''}
+                  </div>`;
+              }).join('')}
+            </div>`;
+        } else {
+          rightTag = `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>L8</span></span><span>回答问题防扣分复盘区</span></span>`;
+          rightFoot = '复盘笔记页';
+          rightBody = `
+            <div class="eb-sec-bar"><div class="eb-sec-title">📝 回答问题三查复盘笔记</div><div class="eb-sec-meta">介词 / 时态 / 代词</div></div>
+            <div class="eb-essay-lines">${Array.from({ length: 16 }).map(() => '<div class="eb-essay-line"></div>').join('')}</div>`;
+        }
+
+        const label = hasQa && hasWr ? 'L8 回答+排雷' : (hasQa ? 'L8 回答问题' : 'L8 红线排雷');
+        const { pL, pR } = pushSpread(label, leftTag, leftBody, leftFoot, rightTag, rightBody, rightFoot);
+        if (hasQa) tocEntries.push({ key: 'qa', no: idxMap.qa, l8: DRILLS.qa.l8, pages: `P${String(pL).padStart(2,'0')}`, topic: '社区声音图书馆' });
+        if (hasWr) tocEntries.push({ key: 'writing', no: idxMap.writing, l8: DRILLS.writing.l8, pages: `P${String(pR).padStart(2,'0')}`, topic: '8道高频病句排雷' });
+      }
+
+      // 8. Mind-map Essay (Left: Prompt + Mind Map + Checklist, Right: Standard Writing Lines or Model Essay)
+      if (cfg.sections.essay) {
+        const b = DRILLS.essay, l8 = b.l8, no = idxMap.essay;
+        const leftBody = `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、${wbEsc(b.title)}</div>
+            <div class="eb-sec-meta">${wbEsc(l8.qtypeId)} · ${wbEsc(l8.scoreSpec)}</div>
+          </div>
+          <p class="eb-sec-desc" style="color:#0f172a;font-weight:500;">${wbEsc(b.prompt)}</p>
+          <div class="eb-mindmap">
+            <div class="eb-mm-center">🧭 ${wbEsc(b.mindmapCenter)}</div>
+            <div class="eb-mm-branches">
+              ${b.branches.map(br => `
+                <div class="eb-mm-node">
+                  <strong>${wbEsc(br.title)}</strong>
+                  ${br.items.map(it => `<div>• ${wbEsc(it)}</div>`).join('')}
+                </div>`).join('')}
+            </div>
+          </div>
+          <div class="eb-checklist">
+            <div style="font-weight:800;color:#1e293b;margin-bottom:4px;">🛡️ 交卷前 2 分钟《作文十大红线自查表》（逐项打勾）</div>
+            ${b.checklist.map(c => `<div>☐ ${wbEsc(c)}</div>`).join('')}
+          </div>`;
+        const rightBody = isTeacher ? `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、15 分满分升格范文与批注</div>
+            <div class="eb-sec-meta">教师讲评对照版</div>
+          </div>
+          <div class="eb-passage eb-en" style="white-space:pre-line;line-height:1.8;">${wbEsc(b.modelEssay)}</div>
+          <div class="eb-inline-exp" style="margin-left:0;font-size:10.5px;padding:7px 10px;">
+            <strong>🌟 满分升格拆解：</strong><br/>${wbEsc(b.modelHighlights)}
+          </div>` : `
+          <div class="eb-sec-bar">
+            <div class="eb-sec-title">${no}、考场标准作答纸（约 80 词）</div>
+            <div class="eb-sec-meta">三段式 · 衡水体规范书写</div>
+          </div>
+          <div class="eb-en" style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:2px;">${wbEsc(b.salutation)}</div>
+          <div class="eb-en" style="font-size:12px;color:#334155;margin-bottom:4px;text-indent:1.8em;">${wbEsc(b.opening)}</div>
+          <div class="eb-essay-lines">
+            ${Array.from({ length: 13 }).map(() => '<div class="eb-essay-line"></div>').join('')}
+          </div>
+          <div class="eb-en" style="font-size:11.5px;font-weight:600;text-align:right;margin-top:8px;white-space:pre-line;color:#0f172a;">${wbEsc(b.signoff)}</div>`;
+        const { pL, pR } = pushSpread(
+          'L8 导图写作',
+          ebTagHtml(l8, '思维导图'), leftBody, `${l8.qtypeId} · 审题与自查`,
+          ebTagHtml(l8, isTeacher ? '满分范文' : '80词作答纸'), rightBody, `${l8.qtypeId} · 写作页`
+        );
+        tocEntries.push({ key: 'essay', no, l8, pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`, topic: '校园小发明展邀请邮件' });
+      }
+
+      // Build Answer Key Spreads (when student_with_key) — strict order 1→8 with guaranteed zero-clip height
+      const answerSpreads = [];
+      let answerStartPage = nextPage;
+      if (showKeySection) {
+        const keyPages = [];
+
+        // Key Page 1: Grammar (10)
+        if (cfg.sections.grammar) {
+          const b = DRILLS.grammar, l8 = b.l8;
+          keyPages.push({
+            tag: ebTagHtml(l8, '答案精析'),
+            body: `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.grammar}、语法选择 · 答案与考纲精析</div>${ebTagHtml(l8, '答案')}</div>
+              <div class="eb-key-strip"><strong>速查：</strong>1–5 ${b.questions.slice(0,5).map(q=>optLetters[q.ans]).join(' ')} ｜ 6–10 ${b.questions.slice(5).map(q=>optLetters[q.ans]).join(' ')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:28px;">题</th><th style="width:28px;">答</th><th style="width:115px;">外研社考纲考点</th><th>逐题精析</th></tr></thead><tbody>
+                ${b.questions.map((q,i) => `<tr><td><strong>${i+1}</strong></td><td><strong>${optLetters[q.ans]}</strong></td><td>${wbEsc(q.tag)}</td><td>${wbEsc(q.exp)}</td></tr>`).join('')}
+              </tbody></table>
+              <div class="eb-note-box" style="margin-top:8px;">
+                <strong>💡 L8 语法选择避坑口诀：</strong>见 <em>one of the</em> 必找复数；见 <em>since / in recent years</em> 必配现在完成时；修饰实义动词用副词；<em>had better</em> 后接原形；<em>spend</em> 后接 doing。
+              </div>`,
+            foot: '独立答案册 · 语法选择'
+          });
+        }
+
+        // Key Page 2: Semcloze (10) + Reading (5) — fits cleanly (~520px < 630px)
+        if (cfg.sections.semcloze || cfg.sections.reading) {
+          let html = '';
+          if (cfg.sections.semcloze) {
+            const b = DRILLS.semcloze, l8 = b.l8;
+            html += `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.semcloze}、完形填空 · 答案与精析</div>${ebTagHtml(l8, '答案')}</div>
+              <div class="eb-key-strip"><strong>速查：</strong>1–5 ${b.questions.slice(0,5).map(q=>optLetters[q.ans]).join(' ')} ｜ 6–10 ${b.questions.slice(5).map(q=>optLetters[q.ans]).join(' ')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:26px;">题</th><th style="width:26px;">答</th><th style="width:105px;">考点</th><th>精析</th></tr></thead><tbody>
+                ${b.questions.map((q,i) => `<tr><td><strong>${i+1}</strong></td><td><strong>${optLetters[q.ans]}</strong></td><td>${wbEsc(q.tag)}</td><td>${wbEsc(q.exp)}</td></tr>`).join('')}
+              </tbody></table>`;
+          }
+          if (cfg.sections.reading) {
+            const b = DRILLS.reading, l8 = b.l8;
+            html += `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.reading}、阅读理解 · 答案与精析</div>${ebTagHtml(l8, '答案')}</div>
+              <div class="eb-key-strip"><strong>速查：</strong>${b.questions.map((q,i)=>`${i+1}.${optLetters[q.ans]}`).join('  ')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:26px;">题</th><th style="width:26px;">答</th><th style="width:105px;">题型能力</th><th>精析</th></tr></thead><tbody>
+                ${b.questions.map((q,i) => `<tr><td><strong>${i+1}</strong></td><td><strong>${optLetters[q.ans]}</strong></td><td>${wbEsc(q.tag)}</td><td>${wbEsc(q.exp)}</td></tr>`).join('')}
+              </tbody></table>`;
+          }
+          keyPages.push({
+            tag: `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>KEY</span></span><span>独立答案册 · 完形 & 阅读</span></span>`,
+            body: html,
+            foot: '独立答案册 · 完形 & 阅读'
+          });
+        }
+
+        // Key Page 3: Restore (5) + Cloze (10) — fits cleanly (~490px < 630px)
+        if (cfg.sections.restore || cfg.sections.cloze) {
+          let html = '';
+          if (cfg.sections.restore) {
+            const b = DRILLS.restore, l8 = b.l8;
+            html += `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.restore}、七选五还原句子 · 答案</div>${ebTagHtml(l8, '答案')}</div>
+              <div class="eb-key-strip"><strong>速查：</strong>${b.blanks.map(bl=>`(${bl.num}) ${bl.ans}`).join('  ')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:30px;">空</th><th style="width:26px;">答</th><th style="width:110px;">衔接信号</th><th>精析</th></tr></thead><tbody>
+                ${b.blanks.map(bl => `<tr><td><strong>(${bl.num})</strong></td><td><strong>${bl.ans}</strong></td><td>${wbEsc(bl.tag)}</td><td>${wbEsc(bl.exp)}</td></tr>`).join('')}
+              </tbody></table>`;
+          }
+          if (cfg.sections.cloze) {
+            const b = DRILLS.cloze, l8 = b.l8;
+            html += `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.cloze}、短文填空（12选10）· 答案</div>${ebTagHtml(l8, '答案')}</div>
+              <div class="eb-key-strip">${b.blanks.map(bl=>`(${bl.num})${clozeAns(bl)}`).join(' ')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:30px;">空</th><th style="width:74px;">答案</th><th>两步法解析</th></tr></thead><tbody>
+                ${b.blanks.map(bl => `<tr><td><strong>(${bl.num})</strong></td><td class="eb-en"><strong>${wbEsc(clozeAns(bl))}</strong></td><td>${wbEsc(bl.hint)} — ${wbEsc(bl.exp)}</td></tr>`).join('')}
+              </tbody></table>`;
+          }
+          keyPages.push({
+            tag: `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>KEY</span></span><span>独立答案册 · 七选五 & 填空</span></span>`,
+            body: html,
+            foot: '独立答案册 · 七选五 & 短文填空'
+          });
+        }
+
+        // Key Page 4: QA (5) + Writing (8) — fits cleanly (~450px < 630px)
+        if (cfg.sections.qa || cfg.sections.writing) {
+          let html = '';
+          if (cfg.sections.qa) {
+            const b = DRILLS.qa, l8 = b.l8;
+            html += `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.qa}、回答问题 · 满分标准答案</div>${ebTagHtml(l8, '答案')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:26px;">题</th><th style="width:170px;">满分参考答案</th><th>防扣分 SOP</th></tr></thead><tbody>
+                ${b.questions.map((q,i) => `<tr><td><strong>${i+1}</strong></td><td class="eb-en"><strong>${wbEsc(q.std)}</strong></td><td>${wbEsc(q.exp)}</td></tr>`).join('')}
+              </tbody></table>`;
+          }
+          if (cfg.sections.writing) {
+            const b = DRILLS.writing, l8 = b.l8;
+            html += `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.writing}、作文红线排雷 · 答案与精析</div>${ebTagHtml(l8, '答案')}</div>
+              <div class="eb-key-strip"><strong>速查：</strong>${b.questions.map((q,i)=>`${i+1}.${optLetters[q.ans]}`).join('  ')}</div>
+              <table class="eb-key-tbl"><thead><tr><th style="width:38px;">题</th><th style="width:26px;">答</th><th style="width:100px;">考纲红线</th><th>解析</th></tr></thead><tbody>
+                ${b.questions.map((q,i) => `<tr><td><strong>病句${i+1}</strong></td><td><strong>${optLetters[q.ans]}</strong></td><td>${wbEsc(q.tag)}</td><td>${wbEsc(q.exp)}</td></tr>`).join('')}
+              </tbody></table>`;
+          }
+          keyPages.push({
+            tag: `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>KEY</span></span><span>独立答案册 · 回答 & 排雷</span></span>`,
+            body: html,
+            foot: '独立答案册 · 回答 & 红线排雷'
+          });
+        }
+
+        // Key Page 5: Essay 15-point Model
+        if (cfg.sections.essay) {
+          const b = DRILLS.essay, l8 = b.l8;
+          keyPages.push({
+            tag: ebTagHtml(l8, '15分满分范文'),
+            body: `
+              <div class="eb-sec-bar"><div class="eb-sec-title">${idxMap.essay}、思维导图书面表达 · 15分满分范文</div>${ebTagHtml(l8, '范文')}</div>
+              <div class="eb-passage eb-en" style="white-space:pre-line;line-height:1.78;">${wbEsc(b.modelEssay)}</div>
+              <div class="eb-inline-exp" style="margin-left:0;font-size:10px;padding:7px 9px;">
+                <strong>🌟 高分亮点与避雷拆解：</strong><br/>${wbEsc(b.modelHighlights)}
+              </div>
+              <div class="eb-note-box" style="margin-top:8px;">
+                <strong>教师面批建议：</strong>先对照《十大红线自查表》圈出所有谓语动词与高频易混词，再将其中 2 句升级为 <em>Not only...but also...</em> 或 <em>which</em> 非限定性定语从句。
+              </div>`,
+            foot: '15分满分范文与亮点拆解'
+          });
+        }
+
+        // Pair keyPages into dual-page spreads
+        for (let i = 0; i < keyPages.length; i += 2) {
+          const pL = nextPage, pR = nextPage + 1;
+          nextPage += 2;
+          const kpL = keyPages[i];
+          const kpR = keyPages[i + 1] || {
+            tag: `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>END</span></span><span>阶段验收与复测追踪卡</span></span>`,
+            body: `
+              <div class="eb-sec-bar"><div class="eb-sec-title">📋 本册 L8 错题清零与 D3/D7/D21 复测追踪卡</div><div class="eb-sec-meta">1对1 结课验收</div></div>
+              <div class="eb-note-box" style="margin-bottom:8px;">请将本册做错的题号、所属 L8 题型 Tag 与错因记入下表，同步更新网页端「3. 个人错题与病灶库」。</div>
+              <table class="eb-key-tbl" style="margin-bottom:10px;">
+                <thead><tr><th style="width:76px;">L8 题型</th><th style="width:48px;">错题号</th><th>核心错因 / 需重练考点</th><th style="width:42px;">D3</th><th style="width:42px;">D7</th><th style="width:42px;">D21</th></tr></thead>
+                <tbody>
+                  ${Array.from({ length: 10 }).map(() => `<tr><td style="height:24px;"></td><td></td><td></td><td>☐</td><td>☐</td><td>☐</td></tr>`).join('')}
+                </tbody>
+              </table>
+              <div class="eb-note-box"><strong>教师评语与下周目标：</strong><div class="eb-essay-line"></div><div class="eb-essay-line"></div></div>`,
+            foot: '阶段验收与复测追踪卡'
+          };
+          answerSpreads.push({
+            label: `答案册 ${Math.floor(i / 2) + 1}`,
+            pages: `P${String(pL).padStart(2,'0')}–P${String(pR).padStart(2,'0')}`,
+            html: `<section class="eb-spread">${ebPageFrame('left', pL, s.name, kpL.tag, kpL.body, kpL.foot)}${ebPageFrame('right', pR, s.name, kpR.tag, kpR.body, kpR.foot)}</section>`
+          });
+        }
+      }
+
+      // Build Spread 1: Cover (P01) + L8 Directory & Score Map (P02)
+      const totalScore = selectedKeys.reduce((sum, k) => sum + DRILLS[k].l8.maxScore, 0);
+      const coverLeft = `
+        <div class="eb-cover-box">
+          <div>
+            <div class="eb-cover-kicker">
+              <span class="eb-qtag eb-theme-blue"><span class="eb-qtag-l8"><span>L8</span></span><span>外研社八年级 · 广东中考靶向专练</span></span>
+              <span>${todayStr}</span>
+            </div>
+            <h1 class="eb-cover-title">${wbEsc(s.name)}<br/>L8 考纲题型重组靶向电子册</h1>
+            <div class="eb-cover-sub">100% 匹配公立 K-9 题型库 L8 笔试标准题型 · 全部全新原创重组语篇 · 双页左文右题对开排版</div>
+            <div class="eb-cover-tags">
+              ${selectedKeys.map(k => ebTagHtml(DRILLS[k].l8)).join('')}
+            </div>
+          </div>
+          <div>
+            <div class="eb-info-grid">
+              <div><strong>学生姓名：</strong>${wbEsc(s.name)}</div>
+              <div><strong>学段档案：</strong>${wbEsc(s.meta || '外研社 L8')}</div>
+              <div><strong>冲刺目标：</strong>${wbEsc(s.currentScore || 98)} → ${wbEsc(s.targetScore || 120)} 分</div>
+              <div><strong>电子册版：</strong>${editionTag}</div>
+              <div><strong>完成日期：</strong>202__ 年 ___ 月 ___ 日</div>
+              <div><strong>实际用时：</strong>______ 分钟</div>
+            </div>
+            <table class="eb-score-tbl">
               <thead>
                 <tr>
-                  <th style="width:58px;">板块</th>
-                  ${secOrder.map((sec, idx) => `<th>${cnNums[idx]}、${sec.shortTitle}</th>`).join('')}
-                  <th style="width:68px;">总分</th>
+                  <th>L8 板块</th>
+                  ${selectedKeys.map(k => `<th>${wbEsc(DRILLS[k].l8.tabLabel.replace(/^[A-H]\.\s*/, '').replace(/\(.+\)/, ''))}</th>`).join('')}
+                  <th>总分</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>满分</strong></td>
-                  ${secOrder.map(sec => `<td>${sec.maxScore} 分</td>`).join('')}
-                  <td><strong>${totalScore} 分</strong></td>
+                  ${selectedKeys.map(k => `<td>${DRILLS[k].l8.maxScore}</td>`).join('')}
+                  <td><strong>${totalScore}</strong></td>
                 </tr>
                 <tr>
-                  <td><strong>得分</strong></td>
-                  ${secOrder.map(() => `<td style="height:22px;"></td>`).join('')}
+                  <td><strong>实得</strong></td>
+                  ${selectedKeys.map(() => `<td style="height:18px;"></td>`).join('')}
                   <td></td>
                 </tr>
               </tbody>
             </table>
-          </header>
-
-          ${sectionsHtml}
-          ${answerAppendixHtml}
-
-          <footer class="wb-footer">
-            <span>英语中考教学总控台 · 外研社分级考纲靶向重组训练册</span>
-            <span>${wbEsc(s.name)} 个人专属练习册（目标 ${wbEsc(s.targetScore || 120)} 分）</span>
-          </footer>
+          </div>
         </div>`;
+
+      const tocRight = `
+        <div class="eb-sec-bar">
+          <div class="eb-sec-title">📚 本册 L8 考纲题型目录与页码索引</div>
+          <div class="eb-sec-meta">共 ${selectedKeys.length} 大 L8 题型 · 总分 ${totalScore} 分</div>
+        </div>
+        <div>
+          ${tocEntries.map(it => `
+            <div class="eb-toc-row">
+              <div class="eb-toc-left">
+                <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+                  ${ebTagHtml(it.l8)}
+                  <span class="eb-toc-title">${it.no}、${wbEsc(it.topic)}</span>
+                </div>
+                <div class="eb-toc-meta">题型库编号：${wbEsc(it.l8.qtypeId)} ｜ ${wbEsc(it.l8.excelName)} ｜ ${wbEsc(it.l8.scoreSpec)}</div>
+              </div>
+              <span class="eb-toc-pg">${it.pages}</span>
+            </div>`).join('')}
+          ${showKeySection && answerSpreads.length ? `
+            <div class="eb-toc-row" style="background:#f8fafc;border-style:dashed;">
+              <div class="eb-toc-left">
+                <div style="display:flex;align-items:center;gap:5px;">
+                  <span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>KEY</span></span><span>独立参考答案与考纲精析册</span></span>
+                </div>
+                <div class="eb-toc-meta">含全题速查条、外研社考纲溯源解析及 15 分满分范文</div>
+              </div>
+              <span class="eb-toc-pg">P${String(answerStartPage).padStart(2,'0')}–P${String(nextPage - 1).padStart(2,'0')}</span>
+            </div>` : ''}
+        </div>
+        <div class="eb-note-box" style="margin-top:6px;">
+          <strong>⚡ 考前 3 条必守铁律：</strong>
+          ① 英文句「唯一谓语」（无缺 be、不与实义动词并存，助/情/使役后用原形）；
+          ② 短文填空强制「先标词性 → 再查变形」；
+          ③ 回答问题三查「介词开头 + 时态一致 + 代词指代」。
+        </div>`;
+
+      const coverSpread = {
+        label: '封面 & 目录',
+        pages: 'P01–P02',
+        html: `<section class="eb-spread">${ebPageFrame('left', 1, s.name, `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>L8</span></span><span>封面 · 个人电子册</span></span>`, coverLeft, 'L8 重组靶向电子册')}${ebPageFrame('right', 2, s.name, `<span class="eb-qtag eb-theme-slate"><span class="eb-qtag-l8"><span>TOC</span></span><span>L8 题型映射目录</span></span>`, tocRight, '题型库 1:1 对齐索引')}</section>`
+      };
+
+      return [coverSpread, ...contentSpreads, ...answerSpreads];
     }
 
     function syncDrillWorkbookPreview() {
       const s = getStudent();
       if (!s) return;
-      const html = buildDrillWorkbookHtml(s, workbookState);
+      const spreads = buildEbookSpreads(s, workbookState);
+      if (workbookState.spreadIdx >= spreads.length) workbookState.spreadIdx = Math.max(0, spreads.length - 1);
+
       const host = document.getElementById('wbPreviewHost');
       const printRoot = document.getElementById('workbookPrintRoot');
-      if (host) host.innerHTML = html;
-      if (printRoot) printRoot.innerHTML = html;
+      const allHtml = `<div class="eb-stack">${spreads.map(sp => sp.html).join('')}</div>`;
+      if (printRoot) printRoot.innerHTML = allHtml;
+
+      if (host) {
+        if (workbookState.viewMode === 'flip') {
+          const cur = spreads[workbookState.spreadIdx] || spreads[0];
+          host.innerHTML = `<div class="eb-stack">${cur.html}</div>`;
+        } else {
+          host.innerHTML = allHtml;
+        }
+      }
+
+      const counter = document.getElementById('wbSpreadCounter');
+      if (counter) {
+        const cur = spreads[workbookState.spreadIdx] || spreads[0];
+        counter.textContent = workbookState.viewMode === 'flip'
+          ? `第 ${workbookState.spreadIdx + 1} / ${spreads.length} 跨页 · ${cur.pages || ''}`
+          : `全册共 ${spreads.length} 个双页跨页（${spreads.length * 2} 页）`;
+      }
+
+      const navBar = document.getElementById('wbSpreadNavBar');
+      if (navBar) navBar.classList.toggle('hidden', workbookState.viewMode !== 'flip');
+      const btnPrev = document.getElementById('btnWbPrevSpread');
+      const btnNext = document.getElementById('btnWbNextSpread');
+      if (btnPrev) btnPrev.disabled = workbookState.spreadIdx <= 0;
+      if (btnNext) btnNext.disabled = workbookState.spreadIdx >= spreads.length - 1;
+
+      const pills = document.getElementById('wbSpreadPills');
+      if (pills) {
+        pills.innerHTML = spreads.map((sp, i) => `
+          <button data-spidx="${i}" class="px-2.5 py-1 rounded-md border text-[11px] font-semibold shrink-0 cursor-pointer transition ${i === workbookState.spreadIdx ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)] bg-[var(--content)] text-[var(--foreground)]'}">
+            ${wbEsc(sp.label)}${sp.pages ? ` <span class="opacity-75 font-mono">${sp.pages}</span>` : ''}
+          </button>`).join('');
+        pills.querySelectorAll('[data-spidx]').forEach(btn => {
+          btn.onclick = () => { workbookState.spreadIdx = Number(btn.dataset.spidx); syncDrillWorkbookPreview(); };
+        });
+      }
+
       const hasAny = Object.values(workbookState.sections).some(Boolean);
       const btnPdf = document.getElementById('btnWbExportPdf');
       const btnPrt = document.getElementById('btnWbPrint');
@@ -2327,13 +3238,27 @@
       if (btnPrt) btnPrt.classList.toggle('opacity-40', !hasAny);
     }
 
+    function stepWorkbookSpread(delta) {
+      const s = getStudent();
+      if (!s) return;
+      const spreads = buildEbookSpreads(s, workbookState);
+      const next = workbookState.spreadIdx + delta;
+      if (next < 0 || next >= spreads.length) return;
+      workbookState.spreadIdx = next;
+      syncDrillWorkbookPreview();
+    }
+
     function openDrillWorkbookModal(s) {
       const student = s || getStudent();
       if (!student) return;
       workbookState.isOpen = true;
-      document.getElementById('wbModalTitle').textContent = `${student.name} · 个人重组靶向训练册（A4 排版预览与导出）`;
+      workbookState.spreadIdx = 0;
+      document.getElementById('wbModalTitle').textContent = `${student.name} · L8 考纲题型重组双页电子册`;
       document.querySelectorAll('.wb-ed-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.wbedition === workbookState.edition);
+      });
+      document.querySelectorAll('.wb-view-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.wbview === workbookState.viewMode);
       });
       document.getElementById('wbOptHints').checked = workbookState.showHints;
       document.querySelectorAll('[data-wbsec]').forEach(cb => {
@@ -2356,15 +3281,16 @@
       const student = s || getStudent();
       if (!student) return;
       if (!Object.values(workbookState.sections).some(Boolean)) return;
+      const spreads = buildEbookSpreads(student, workbookState);
       const printRoot = document.getElementById('workbookPrintRoot');
-      printRoot.innerHTML = buildDrillWorkbookHtml(student, workbookState);
+      printRoot.innerHTML = `<div class="eb-stack">${spreads.map(sp => sp.html).join('')}</div>`;
       document.body.classList.add('workbook-print-active');
 
       const edSuffix = workbookState.edition === 'teacher'
-        ? '教师讲义版'
-        : (workbookState.edition === 'student_with_key' ? '学生卷含答案册' : '学生练习卷');
+        ? '教师批注讲义册'
+        : (workbookState.edition === 'student_with_key' ? '双页电子册含答案' : '双页学生电子册');
       const prevTitle = document.title;
-      document.title = `${student.name}_英语中考重组靶向训练册_${edSuffix}`;
+      document.title = `${student.name}_L8考纲重组_${edSuffix}`;
 
       if (isPdfIntent) {
         const tip = document.getElementById('wbPdfTip');
@@ -2383,7 +3309,6 @@
       };
       window.addEventListener('afterprint', cleanup);
 
-      // Give layout a single animation frame before triggering native print / Save-as-PDF
       requestAnimationFrame(() => {
         window.print();
         setTimeout(() => {
@@ -2392,13 +3317,22 @@
       });
     }
 
-    // Bind Workbook Modal Controls
+    // Bind E-Booklet Modal Controls
     document.getElementById('btnCloseWbModal').onclick = closeDrillWorkbookModal;
     document.getElementById('workbookModal').onclick = (e) => {
       if (e.target.id === 'workbookModal') closeDrillWorkbookModal();
     };
     document.getElementById('btnWbPrint').onclick = () => triggerWorkbookPrint(getStudent(), false);
     document.getElementById('btnWbExportPdf').onclick = () => triggerWorkbookPrint(getStudent(), true);
+    document.getElementById('btnWbPrevSpread').onclick = () => stepWorkbookSpread(-1);
+    document.getElementById('btnWbNextSpread').onclick = () => stepWorkbookSpread(1);
+    document.querySelectorAll('.wb-view-btn').forEach(btn => {
+      btn.onclick = () => {
+        workbookState.viewMode = btn.dataset.wbview;
+        document.querySelectorAll('.wb-view-btn').forEach(b => b.classList.toggle('active', b === btn));
+        syncDrillWorkbookPreview();
+      };
+    });
     document.querySelectorAll('.wb-ed-btn').forEach(btn => {
       btn.onclick = () => {
         workbookState.edition = btn.dataset.wbedition;
@@ -2413,6 +3347,7 @@
     document.querySelectorAll('[data-wbsec]').forEach(cb => {
       cb.onchange = () => {
         workbookState.sections[cb.dataset.wbsec] = cb.checked;
+        workbookState.spreadIdx = 0;
         syncDrillWorkbookPreview();
       };
     });
@@ -2763,6 +3698,8 @@
     window.addEventListener('keydown', (e) => {
       if (workbookState.isOpen) {
         if (e.key === 'Escape') closeDrillWorkbookModal();
+        else if (workbookState.viewMode === 'flip' && e.key === 'ArrowRight') stepWorkbookSpread(1);
+        else if (workbookState.viewMode === 'flip' && e.key === 'ArrowLeft') stepWorkbookSpread(-1);
         return;
       }
       const qlb = document.getElementById('qtypeLightbox');
