@@ -72,6 +72,381 @@
     .flip-prev { animation: pageFlipPrev 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
     .paper-thumb-box:hover img { transform: scale(1.05); }
     .paper-thumb-box img { transition: transform 0.2s ease; }
+
+    /* ==================== DRILL WORKBOOK (A4 PREVIEW & PRINT/PDF) ==================== */
+    #workbookPrintRoot { display: none; }
+    .wb-sheet {
+      background: #ffffff;
+      color: #111827;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-size: 13px;
+      line-height: 1.65;
+      width: 100%;
+      max-width: 794px;
+      margin: 0 auto;
+      padding: 32px 36px;
+      box-sizing: border-box;
+      border-radius: 6px;
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
+    }
+    .wb-en {
+      font-family: Georgia, "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
+    }
+    .wb-header {
+      border-bottom: 2.5px double #1e293b;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .wb-top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+    .wb-badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 10.5px;
+      color: #0f172a;
+    }
+    .wb-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #0f172a;
+      margin: 4px 0 3px;
+    }
+    .wb-subtitle {
+      text-align: center;
+      font-size: 11.5px;
+      color: #475569;
+      margin-bottom: 10px;
+    }
+    .wb-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 6px 14px;
+      font-size: 12px;
+      color: #1e293b;
+      padding: 6px 10px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .wb-score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      text-align: center;
+    }
+    .wb-score-table th, .wb-score-table td {
+      border: 1px solid #94a3b8;
+      padding: 3.5px 6px;
+    }
+    .wb-score-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .wb-section {
+      margin-bottom: 14px;
+    }
+    .wb-sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      border-left: 4px solid #1e293b;
+      background: #f8fafc;
+      padding: 5px 10px;
+      margin-bottom: 10px;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .wb-sec-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .wb-sec-meta {
+      font-size: 11px;
+      color: #475569;
+      white-space: nowrap;
+    }
+    .wb-sec-desc {
+      font-size: 11.5px;
+      color: #334155;
+      margin: 0 0 8px;
+      padding: 0 2px;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .wb-passage {
+      border: 1px solid #cbd5e1;
+      background: #fcfcfd;
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #0f172a;
+    }
+    .wb-passage p {
+      margin: 0 0 7px;
+      text-indent: 2em;
+    }
+    .wb-passage p:last-child { margin-bottom: 0; }
+    .wb-blank {
+      display: inline-block;
+      min-width: 46px;
+      text-align: center;
+      text-indent: 0;
+      border-bottom: 1.2px solid #0f172a;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1.15;
+      margin: 0 2px;
+      padding: 0 4px;
+    }
+    .wb-wordbank {
+      border: 1.2px solid #475569;
+      border-radius: 4px;
+      padding: 7px 10px;
+      margin-bottom: 10px;
+      background: #ffffff;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .wb-wordbank-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 5px;
+    }
+    .wb-wordbank-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
+      text-align: center;
+    }
+    .wb-wordbank-word {
+      border: 1px dashed #cbd5e1;
+      border-radius: 3px;
+      padding: 3px 4px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: 12px;
+      color: #0f172a;
+      background: #f8fafc;
+    }
+    .wb-q-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px 18px;
+    }
+    .wb-q-item {
+      padding: 4px 6px;
+      border-bottom: 1px dashed #e2e8f0;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .wb-q-stem {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 2.5px;
+    }
+    .wb-q-opts-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      padding-left: 20px;
+      font-size: 12.5px;
+      color: #1e293b;
+    }
+    .wb-q-opts-stack {
+      padding-left: 22px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .wb-opt-correct {
+      font-weight: 700;
+      color: #15803d;
+      text-decoration: underline;
+    }
+    .wb-tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 0 5px;
+      border: 1px solid #cbd5e1;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #475569;
+      background: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    }
+    .wb-cloze-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 20px;
+    }
+    .wb-cloze-line {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 3px 0;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .wb-cloze-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 12.5px;
+    }
+    .wb-write-line {
+      flex: 1;
+      border-bottom: 1.2px solid #475569;
+      min-height: 20px;
+      padding: 0 6px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      color: #15803d;
+    }
+    .wb-hint {
+      font-size: 10.5px;
+      color: #64748b;
+      padding-left: 24px;
+    }
+    .wb-writing-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .wb-qa-item {
+      margin-bottom: 6px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .wb-qa-q {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .wb-qa-rule {
+      height: 22px;
+      border-bottom: 1px solid #94a3b8;
+      margin-left: 14px;
+    }
+    .wb-inline-exp {
+      margin-top: 5px;
+      margin-left: 16px;
+      padding: 4px 8px;
+      background: #f0fdf4;
+      border-left: 3px solid #16a34a;
+      font-size: 11px;
+      color: #14532d;
+      line-height: 1.5;
+    }
+    .wb-page-break {
+      break-before: page;
+      page-break-before: always;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 2px dashed #cbd5e1;
+    }
+    .wb-key-strip {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .wb-key-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin-bottom: 14px;
+    }
+    .wb-key-table th, .wb-key-table td {
+      border: 1px solid #cbd5e1;
+      padding: 4px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .wb-key-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .wb-key-table tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .wb-footer {
+      margin-top: 18px;
+      padding-top: 8px;
+      border-top: 1px solid #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: #64748b;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 11mm 14mm 12mm 14mm;
+    }
+    @media print {
+      html, body {
+        background: #ffffff !important;
+        color: #111827 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      body.workbook-print-active > *:not(#workbookPrintRoot) {
+        display: none !important;
+      }
+      body.workbook-print-active #workbookPrintRoot {
+        display: block !important;
+      }
+      #workbookPrintRoot .wb-sheet {
+        max-width: none !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+      #workbookPrintRoot .wb-page-break {
+        border-top: none !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+    }
   </style>
 </head>
 <body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0">
@@ -473,6 +848,64 @@
       </div>
     </div>
   </div>
+
+  <!-- ==================== A4 DRILL WORKBOOK PREVIEW & PRINT/PDF MODAL ==================== -->
+  <div id="workbookModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-[var(--background)] border border-[var(--border)] rounded-2xl w-full max-w-[1040px] h-[94vh] flex flex-col overflow-hidden shadow-2xl">
+      <!-- Top Action Header -->
+      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-3 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="px-2 py-0.5 rounded text-xs font-bold bg-[var(--primary)] text-[var(--primary-foreground)] shrink-0">A4 练习册</span>
+          <h3 id="wbModalTitle" class="text-sm font-bold truncate">个人重组靶向训练册 · 打印与 PDF 导出</h3>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs shrink-0">
+          <button id="btnWbExportPdf" class="px-3.5 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">
+            📄 导出 PDF
+          </button>
+          <button id="btnWbPrint" class="px-3.5 py-1.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--content)] text-[var(--foreground)] cursor-pointer hover:opacity-90 transition">
+            🖨️ 直接打印
+          </button>
+          <button id="btnCloseWbModal" class="px-2.5 py-1.5 rounded-lg bg-[var(--error)] text-white font-semibold cursor-pointer">
+            ✕ 关闭
+          </button>
+        </div>
+      </div>
+
+      <!-- Workbook Options Bar -->
+      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-2.5 flex flex-col gap-2 shrink-0 text-xs">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="font-semibold text-[var(--muted-foreground)] mr-1">排版版本：</span>
+            <button data-wbedition="student_with_key" class="wb-ed-btn pill-btn active px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">学生卷 + 末尾答案册</button>
+            <button data-wbedition="student_only" class="wb-ed-btn pill-btn px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">纯学生练习卷</button>
+            <button data-wbedition="teacher" class="wb-ed-btn pill-btn px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer">教师讲义版（逐题解析）</button>
+          </div>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none text-[var(--muted-foreground)]">
+            <input id="wbOptHints" type="checkbox" class="accent-[var(--primary)]" />
+            <span>显示考纲标签 / 短文填空词性提示</span>
+          </label>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[var(--foreground)]">
+          <span class="font-semibold text-[var(--muted-foreground)]">包含模块：</span>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="grammar" checked class="accent-[var(--primary)]" /><span>一、语法选择(10)</span></label>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="cloze" checked class="accent-[var(--primary)]" /><span>二、短文填空(10)</span></label>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="writing" checked class="accent-[var(--primary)]" /><span>三、作文排雷(8)</span></label>
+          <label class="flex items-center gap-1.5 cursor-pointer select-none"><input type="checkbox" data-wbsec="qa" checked class="accent-[var(--primary)]" /><span>四、回答问题(5)</span></label>
+        </div>
+        <div id="wbPdfTip" class="text-[11px] text-[var(--muted-foreground)] bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5">
+          💡 <strong>导出 PDF 提示：</strong>点击「导出 PDF」后，在系统打印弹窗的<strong>目标打印机</strong>中选择「<strong>另存为 PDF</strong>」（纸张大小 A4，勾选背景图形效果更佳），即可保存高清矢量 PDF 练习册。
+        </div>
+      </div>
+
+      <!-- Scrollable A4 Paper Preview Area -->
+      <div class="flex-1 overflow-y-auto bg-[var(--content)] p-3 sm:p-6">
+        <div id="wbPreviewHost"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Print-Only Mount Point (hidden on screen, sole visible element when printing workbook) -->
+  <div id="workbookPrintRoot" aria-hidden="true"></div>
 
   <script>
     const PAPER_IMAGES = {"p_midterm_real": {"thumb": "./vault/papers/p_midterm_real_thumb.enc", "pages": ["./vault/papers/p_midterm_real_p1.enc", "./vault/papers/p_midterm_real_p2.enc", "./vault/papers/p_midterm_real_p3.enc", "./vault/papers/p_midterm_real_p4.enc", "./vault/papers/p_midterm_real_p5.enc", "./vault/papers/p_midterm_real_p6.enc"]}, "p_midterm_mock": {"thumb": "./vault/papers/p_midterm_mock_thumb.enc", "pages": ["./vault/papers/p_midterm_mock_p1.enc", "./vault/papers/p_midterm_mock_p2.enc", "./vault/papers/p_midterm_mock_p3.enc", "./vault/papers/p_midterm_mock_p4.enc", "./vault/papers/p_midterm_mock_p5.enc", "./vault/papers/p_midterm_mock_p6.enc"]}, "p_u1_pass": {"thumb": "./vault/papers/p_u1_pass_thumb.enc", "pages": ["./vault/papers/p_u1_pass_p1.enc", "./vault/papers/p_u1_pass_p2.enc", "./vault/papers/p_u1_pass_p3.enc", "./vault/papers/p_u1_pass_p4.enc"]}, "p_u1_comp": {"thumb": "./vault/papers/p_u1_comp_thumb.enc", "pages": ["./vault/papers/p_u1_comp_p1.enc", "./vault/papers/p_u1_comp_p2.enc", "./vault/papers/p_u1_comp_p3.enc", "./vault/papers/p_u1_comp_p4.enc"]}, "p_u2_pass": {"thumb": "./vault/papers/p_u2_pass_thumb.enc", "pages": ["./vault/papers/p_u2_pass_p1.enc", "./vault/papers/p_u2_pass_p2.enc", "./vault/papers/p_u2_pass_p3.enc", "./vault/papers/p_u2_pass_p4.enc"]}, "p_u2_comp": {"thumb": "./vault/papers/p_u2_comp_thumb.enc", "pages": ["./vault/papers/p_u2_comp_p1.enc", "./vault/papers/p_u2_comp_p2.enc", "./vault/papers/p_u2_comp_p3.enc", "./vault/papers/p_u2_comp_p4.enc"]}, "p_u3_comp": {"thumb": "./vault/papers/p_u3_comp_thumb.enc", "pages": ["./vault/papers/p_u3_comp_p1.enc", "./vault/papers/p_u3_comp_p2.enc", "./vault/papers/p_u3_comp_p3.enc", "./vault/papers/p_u3_comp_p4.enc"]}, "p_u4_pass": {"thumb": "./vault/papers/p_u4_pass_thumb.enc", "pages": ["./vault/papers/p_u4_pass_p1.enc", "./vault/papers/p_u4_pass_p2.enc", "./vault/papers/p_u4_pass_p3.enc", "./vault/papers/p_u4_pass_p4.enc"]}, "p_u4_comp": {"thumb": "./vault/papers/p_u4_comp_thumb.enc", "pages": ["./vault/papers/p_u4_comp_p1.enc", "./vault/papers/p_u4_comp_p2.enc", "./vault/papers/p_u4_comp_p3.enc", "./vault/papers/p_u4_comp_p4.enc"]}};
@@ -1519,9 +1952,11 @@
               <h3 class="text-sm font-bold">${s.name} · 知识点重组靶向训练台（外研社考纲题型映射）</h3>
               <p class="text-xs text-[var(--muted-foreground)]">${bank.desc}</p>
             </div>
-            <div class="flex items-center gap-2 text-xs">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
               <span class="bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5 font-mono">得分：<strong class="text-[var(--primary)]">${score}</strong> / ${total}</span>
               <button id="btnResetD" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">重做</button>
+              <button id="btnOpenWorkbook" class="px-3 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">📘 整合练习册（预览 / 导出 PDF）</button>
+              <button id="btnQuickPrintWorkbook" class="px-3 py-1.5 rounded-lg font-semibold border border-[var(--primary)] text-[var(--primary)] bg-[var(--content)] cursor-pointer hover:opacity-90 transition">🖨️ 一键打印 / PDF</button>
             </div>
           </div>
           <div class="flex flex-wrap gap-2">
@@ -1536,12 +1971,449 @@
 
       wrap.querySelectorAll('[data-dmode]').forEach(b => { b.onclick = () => { currentDrillMode = b.dataset.dmode; renderStudentDrill(s); }; });
       document.getElementById('btnResetD').onclick = () => { Object.keys(drillAnswers).forEach(k => { if (k.startsWith(currentDrillMode + '_')) delete drillAnswers[k]; }); renderStudentDrill(s); };
+      document.getElementById('btnOpenWorkbook').onclick = () => openDrillWorkbookModal(s);
+      document.getElementById('btnQuickPrintWorkbook').onclick = () => triggerWorkbookPrint(s, false);
       wrap.querySelectorAll('[data-dq]').forEach(b => { b.onclick = () => { drillAnswers[currentDrillMode + '_' + b.dataset.dq] = Number(b.dataset.do); renderStudentDrill(s); }; });
       wrap.querySelectorAll('[data-dcl]').forEach(inp => { inp.oninput = () => { drillAnswers['cloze_' + inp.dataset.dcl] = inp.value; }; });
       wrap.querySelectorAll('[data-dqa]').forEach(inp => { inp.oninput = () => { drillAnswers['qa_' + inp.dataset.dqa] = inp.value; }; });
       const bcl = document.getElementById('btnChkCloze'); if (bcl) bcl.onclick = () => { drillAnswers['cloze_chk'] = true; renderStudentDrill(s); };
       const bqa = document.getElementById('btnChkQa'); if (bqa) bqa.onclick = () => { drillAnswers['qa_chk'] = true; renderStudentDrill(s); };
     }
+
+    // ==================== 7B. CONSOLIDATED DRILL WORKBOOK (A4 PREVIEW & PRINT/PDF) ====================
+    const workbookState = {
+      isOpen: false,
+      edition: 'student_with_key', // 'student_with_key' | 'student_only' | 'teacher'
+      showHints: false,
+      sections: { grammar: true, cloze: true, writing: true, qa: true }
+    };
+
+    function wbEsc(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatWbPassage(rawHtml) {
+      const paragraphs = String(rawHtml || '').split(/<br\s*\/?>\s*<br\s*\/?>/i);
+      return paragraphs.map(p => {
+        const withBlanks = p.replace(/<b>\s*\((\d+)\)\s*<\/b>/gi, '<span class="wb-blank">($1)</span>');
+        return `<p>${withBlanks}</p>`;
+      }).join('');
+    }
+
+    function extractClozeWords(descHtml) {
+      const m = String(descHtml || '').match(/<code>([\s\S]*?)<\/code>/i);
+      if (!m) return [];
+      return m[1].split('/').map(w => w.trim()).filter(Boolean);
+    }
+
+    function buildDrillWorkbookHtml(s, cfg) {
+      const secOrder = [
+        { key: 'grammar', shortTitle: '语法选择重组', fullTitle: '语法选择重组（全新主题：AI 校园绿植管家）', count: DRILLS.grammar.questions.length, unit: '小题', maxScore: 10 },
+        { key: 'cloze',   shortTitle: '短文填空两步法', fullTitle: '短文填空“两步法”重组训练（12选10需变形）', count: DRILLS.cloze.blanks.length, unit: '空', maxScore: 10 },
+        { key: 'writing', shortTitle: '作文红线排雷', fullTitle: '作文“十大红线”实战排雷诊所（病句改写）', count: DRILLS.writing.questions.length, unit: '小题', maxScore: 8 },
+        { key: 'qa',      shortTitle: '回答问题防扣分', fullTitle: '回答问题“防扣分 SOP”重组演练（满分10分标准）', count: DRILLS.qa.questions.length, unit: '小题', maxScore: 10 }
+      ].filter(item => cfg.sections[item.key]);
+
+      if (!secOrder.length) {
+        return `<div class="wb-sheet" style="text-align:center;padding:48px 24px;color:#64748b;">请至少勾选上方 1 个练习模块以生成练习册。</div>`;
+      }
+
+      const cnNums = ['一', '二', '三', '四'];
+      const optLetters = ['A', 'B', 'C', 'D'];
+      const isTeacher = cfg.edition === 'teacher';
+      const showKeySection = cfg.edition === 'student_with_key';
+      const showHints = cfg.showHints || isTeacher;
+      const totalItems = secOrder.reduce((sum, x) => sum + x.count, 0);
+      const totalScore = secOrder.reduce((sum, x) => sum + x.maxScore, 0);
+      const estMins = Math.max(10, Math.round(totalItems * 1.1));
+      const editionTag = isTeacher ? '教师讲义版（含解析）' : (showKeySection ? '学生练习卷 + 独立答案册' : '学生练习卷（空白作答）');
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      let sectionsHtml = '';
+      let answerKeyBlocks = '';
+
+      secOrder.forEach((sec, secIdx) => {
+        const cnNo = cnNums[secIdx] || String(secIdx + 1);
+
+        if (sec.key === 'grammar') {
+          const bank = DRILLS.grammar;
+          sectionsHtml += `
+            <section class="wb-section">
+              <div class="wb-sec-head">
+                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
+                <div class="wb-sec-meta">共 ${bank.questions.length} 小题 · 满分 ${sec.maxScore} 分</div>
+              </div>
+              <p class="wb-sec-desc">阅读下面短文，按照句子结构的语法性和上下文连贯的要求，从各题所给的 A、B、C 三个选项中选出最佳答案，将字母填入题前括号内。</p>
+              <div class="wb-passage wb-en">${formatWbPassage(bank.passage)}</div>
+              <div class="wb-q-grid-2">
+                ${bank.questions.map(q => {
+                  const ansLetter = optLetters[q.ans] || '';
+                  return `
+                    <div class="wb-q-item">
+                      <div class="wb-q-stem wb-en">
+                        (${isTeacher ? `<span class="wb-opt-correct">&nbsp;${ansLetter}&nbsp;</span>` : '&nbsp;&nbsp;&nbsp;&nbsp;'}) ${wbEsc(q.q)}
+                        ${showHints ? `<span class="wb-tag">${wbEsc(q.tag)}</span>` : ''}
+                      </div>
+                      <div class="wb-q-opts-inline wb-en">
+                        ${q.opts.map((o, oi) => `<span class="${isTeacher && oi === q.ans ? 'wb-opt-correct' : ''}">${wbEsc(o)}</span>`).join('')}
+                      </div>
+                      ${isTeacher ? `<div class="wb-inline-exp"><strong>解析：</strong>${wbEsc(q.exp)}</div>` : ''}
+                    </div>`;
+                }).join('')}
+              </div>
+            </section>`;
+
+          if (showKeySection) {
+            const quick1 = bank.questions.slice(0, 5).map(q => optLetters[q.ans]).join(' ');
+            const quick2 = bank.questions.slice(5).map(q => optLetters[q.ans]).join(' ');
+            answerKeyBlocks += `
+              <div class="wb-section">
+                <div class="wb-sec-head">
+                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与精析</div>
+                  <div class="wb-sec-meta">${bank.questions.length} 小题</div>
+                </div>
+                <div class="wb-key-strip"><strong>速查答案：</strong>1–5：${quick1}　｜　6–10：${quick2}</div>
+                <table class="wb-key-table">
+                  <thead><tr><th style="width:48px;">题号</th><th style="width:52px;">答案</th><th style="width:145px;">外研社考纲考点</th><th>逐题精析</th></tr></thead>
+                  <tbody>
+                    ${bank.questions.map((q, i) => `
+                      <tr>
+                        <td><strong>${i + 1}</strong></td>
+                        <td><strong>${optLetters[q.ans]}</strong></td>
+                        <td>${wbEsc(q.tag)}</td>
+                        <td>${wbEsc(q.exp)}</td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </div>`;
+          }
+        }
+
+        if (sec.key === 'cloze') {
+          const bank = DRILLS.cloze;
+          const words = extractClozeWords(bank.desc);
+          const clozeAns = (b) => b.ans.find(a => /^[A-Z]/.test(a)) || b.ans[0];
+          sectionsHtml += `
+            <section class="wb-section">
+              <div class="wb-sec-head">
+                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
+                <div class="wb-sec-meta">共 ${bank.blanks.length} 空 · 满分 ${sec.maxScore} 分</div>
+              </div>
+              <p class="wb-sec-desc">请从方框内选择适当的词并用其正确形式填空，使文章完整连贯。注意每空一词，每词仅用一次，有两词为多余项。</p>
+              ${words.length ? `
+                <div class="wb-wordbank">
+                  <div class="wb-wordbank-title">备选词库（12 选 10 · 需根据句法与时态适当变形）</div>
+                  <div class="wb-wordbank-grid">
+                    ${words.map(w => `<div class="wb-wordbank-word">${wbEsc(w)}</div>`).join('')}
+                  </div>
+                </div>` : `<p class="wb-sec-desc">${bank.desc}</p>`}
+              <div class="wb-passage wb-en">${formatWbPassage(bank.passage)}</div>
+              <div class="wb-cloze-grid">
+                ${bank.blanks.map(b => `
+                  <div class="wb-cloze-line">
+                    <div class="wb-cloze-row">
+                      <strong>${b.num}.</strong>
+                      <span class="wb-write-line">${isTeacher ? wbEsc(clozeAns(b)) : '&nbsp;'}</span>
+                    </div>
+                    ${showHints ? `<div class="wb-hint">词性提示：${wbEsc(b.hint)}</div>` : ''}
+                    ${isTeacher ? `<div class="wb-inline-exp"><strong>解析：</strong>${wbEsc(b.exp)}</div>` : ''}
+                  </div>`).join('')}
+              </div>
+            </section>`;
+
+          if (showKeySection) {
+            answerKeyBlocks += `
+              <div class="wb-section">
+                <div class="wb-sec-head">
+                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与精析</div>
+                  <div class="wb-sec-meta">${bank.blanks.length} 空</div>
+                </div>
+                <div class="wb-key-strip"><strong>速查答案：</strong>${bank.blanks.map(b => `(${b.num}) ${clozeAns(b)}`).join('　')}</div>
+                <table class="wb-key-table">
+                  <thead><tr><th style="width:48px;">空号</th><th style="width:110px;">参考答案</th><th style="width:160px;">两步法词性判定</th><th>变形解析</th></tr></thead>
+                  <tbody>
+                    ${bank.blanks.map(b => `
+                      <tr>
+                        <td><strong>(${b.num})</strong></td>
+                        <td class="wb-en"><strong>${wbEsc(clozeAns(b))}</strong></td>
+                        <td>${wbEsc(b.hint)}</td>
+                        <td>${wbEsc(b.exp)}</td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </div>`;
+          }
+        }
+
+        if (sec.key === 'writing') {
+          const bank = DRILLS.writing;
+          sectionsHtml += `
+            <section class="wb-section">
+              <div class="wb-sec-head">
+                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
+                <div class="wb-sec-meta">共 ${bank.questions.length} 小题 · 满分 ${sec.maxScore} 分</div>
+              </div>
+              <p class="wb-sec-desc">${wbEsc(bank.desc)} 请将正确选项字母填入每道病句前的括号内。</p>
+              <div>
+                ${bank.questions.map(q => {
+                  const ansLetter = optLetters[q.ans] || '';
+                  return `
+                    <div class="wb-writing-item">
+                      <div class="wb-q-stem wb-en">
+                        (${isTeacher ? `<span class="wb-opt-correct">&nbsp;${ansLetter}&nbsp;</span>` : '&nbsp;&nbsp;&nbsp;&nbsp;'}) ${wbEsc(q.q)}
+                        ${showHints ? `<span class="wb-tag">${wbEsc(q.tag)}</span>` : ''}
+                      </div>
+                      <div class="wb-q-opts-stack wb-en">
+                        ${q.opts.map((o, oi) => `<div class="${isTeacher && oi === q.ans ? 'wb-opt-correct' : ''}">${wbEsc(o)}</div>`).join('')}
+                      </div>
+                      ${isTeacher ? `<div class="wb-inline-exp"><strong>排雷解析：</strong>${wbEsc(q.exp)}</div>` : ''}
+                    </div>`;
+                }).join('')}
+              </div>
+            </section>`;
+
+          if (showKeySection) {
+            const quickW = bank.questions.map((q, i) => `${i + 1}.${optLetters[q.ans]}`).join('　');
+            answerKeyBlocks += `
+              <div class="wb-section">
+                <div class="wb-sec-head">
+                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与精析</div>
+                  <div class="wb-sec-meta">${bank.questions.length} 小题</div>
+                </div>
+                <div class="wb-key-strip"><strong>速查答案：</strong>${quickW}</div>
+                <table class="wb-key-table">
+                  <thead><tr><th style="width:52px;">题号</th><th style="width:52px;">答案</th><th style="width:145px;">考纲红线考点</th><th>满分改写解析</th></tr></thead>
+                  <tbody>
+                    ${bank.questions.map((q, i) => `
+                      <tr>
+                        <td><strong>病句${i + 1}</strong></td>
+                        <td><strong>${optLetters[q.ans]}</strong></td>
+                        <td>${wbEsc(q.tag)}</td>
+                        <td>${wbEsc(q.exp)}</td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </div>`;
+          }
+        }
+
+        if (sec.key === 'qa') {
+          const bank = DRILLS.qa;
+          sectionsHtml += `
+            <section class="wb-section">
+              <div class="wb-sec-head">
+                <div class="wb-sec-title">${cnNo}、${sec.fullTitle}</div>
+                <div class="wb-sec-meta">共 ${bank.questions.length} 小题 · 每题 2 分 · 满分 ${sec.maxScore} 分</div>
+              </div>
+              <p class="wb-sec-desc">请阅读下面短文，根据所提供的信息，回答 5 个问题。要求所写答案语法正确、语义完整切题。（${wbEsc(bank.desc)}）</p>
+              <div class="wb-passage wb-en">${formatWbPassage(bank.passage)}</div>
+              <div>
+                ${bank.questions.map(q => `
+                  <div class="wb-qa-item">
+                    <div class="wb-qa-q wb-en">
+                      ${wbEsc(q.q)}
+                      ${showHints ? `<span class="wb-tag">${wbEsc(q.placeholder)}</span>` : ''}
+                    </div>
+                    ${isTeacher
+                      ? `<div class="wb-inline-exp"><strong>参考答案：</strong><span class="wb-en">${wbEsc(q.std)}</span><br/><strong>防扣分要点：</strong>${wbEsc(q.exp)}</div>`
+                      : `<div class="wb-qa-rule"></div>`}
+                  </div>`).join('')}
+              </div>
+            </section>`;
+
+          if (showKeySection) {
+            answerKeyBlocks += `
+              <div class="wb-section">
+                <div class="wb-sec-head">
+                  <div class="wb-sec-title">${cnNo}、${sec.shortTitle} · 参考答案与防扣分精析</div>
+                  <div class="wb-sec-meta">${bank.questions.length} 小题</div>
+                </div>
+                <table class="wb-key-table">
+                  <thead><tr><th style="width:48px;">题号</th><th style="width:260px;">参考满分答案</th><th>防扣分 SOP 精析</th></tr></thead>
+                  <tbody>
+                    ${bank.questions.map((q, i) => `
+                      <tr>
+                        <td><strong>${i + 1}</strong></td>
+                        <td class="wb-en"><strong>${wbEsc(q.std)}</strong></td>
+                        <td>${wbEsc(q.exp)}</td>
+                      </tr>`).join('')}
+                  </tbody>
+                </table>
+              </div>`;
+          }
+        }
+      });
+
+      const answerAppendixHtml = showKeySection ? `
+        <div class="wb-page-break">
+          <div class="wb-header" style="margin-bottom:14px;">
+            <div class="wb-top-meta">
+              <span class="wb-badge">独立答案解析册</span>
+              <span>本页自动分页 · 可单独撕下供教师批改或学生自查</span>
+            </div>
+            <div class="wb-title" style="font-size:18px;">${wbEsc(s.name)} · 参考答案与考纲逐题精析</div>
+          </div>
+          ${answerKeyBlocks}
+        </div>` : '';
+
+      return `
+        <div class="wb-sheet">
+          <header class="wb-header">
+            <div class="wb-top-meta">
+              <span class="wb-badge">外研社分级考纲 · 广东中考英语重组专练</span>
+              <span>${editionTag} · 生成日期 ${todayStr}</span>
+            </div>
+            <h1 class="wb-title">${wbEsc(s.name)} · 个人知识点重组靶向训练册</h1>
+            <div class="wb-subtitle">将高频失分点打散重组进广东中考标准题型 · 共 ${secOrder.length} 大板块 / ${totalItems} 小题 · 建议限时 ${estMins} 分钟</div>
+            <div class="wb-info-row">
+              <span><strong>姓名：</strong>${wbEsc(s.name)}</span>
+              <span><strong>学段档案：</strong>${wbEsc(s.meta || '外研社初中英语')}</span>
+              <span><strong>日期：</strong>202__ 年 ___ 月 ___ 日</span>
+              <span><strong>实际用时：</strong>______ 分钟</span>
+            </div>
+            <table class="wb-score-table">
+              <thead>
+                <tr>
+                  <th style="width:58px;">板块</th>
+                  ${secOrder.map((sec, idx) => `<th>${cnNums[idx]}、${sec.shortTitle}</th>`).join('')}
+                  <th style="width:68px;">总分</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>满分</strong></td>
+                  ${secOrder.map(sec => `<td>${sec.maxScore} 分</td>`).join('')}
+                  <td><strong>${totalScore} 分</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>得分</strong></td>
+                  ${secOrder.map(() => `<td style="height:22px;"></td>`).join('')}
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </header>
+
+          ${sectionsHtml}
+          ${answerAppendixHtml}
+
+          <footer class="wb-footer">
+            <span>英语中考教学总控台 · 外研社分级考纲靶向重组训练册</span>
+            <span>${wbEsc(s.name)} 个人专属练习册（目标 ${wbEsc(s.targetScore || 120)} 分）</span>
+          </footer>
+        </div>`;
+    }
+
+    function syncDrillWorkbookPreview() {
+      const s = getStudent();
+      if (!s) return;
+      const html = buildDrillWorkbookHtml(s, workbookState);
+      const host = document.getElementById('wbPreviewHost');
+      const printRoot = document.getElementById('workbookPrintRoot');
+      if (host) host.innerHTML = html;
+      if (printRoot) printRoot.innerHTML = html;
+      const hasAny = Object.values(workbookState.sections).some(Boolean);
+      const btnPdf = document.getElementById('btnWbExportPdf');
+      const btnPrt = document.getElementById('btnWbPrint');
+      if (btnPdf) btnPdf.disabled = !hasAny;
+      if (btnPrt) btnPrt.disabled = !hasAny;
+      if (btnPdf) btnPdf.classList.toggle('opacity-40', !hasAny);
+      if (btnPrt) btnPrt.classList.toggle('opacity-40', !hasAny);
+    }
+
+    function openDrillWorkbookModal(s) {
+      const student = s || getStudent();
+      if (!student) return;
+      workbookState.isOpen = true;
+      document.getElementById('wbModalTitle').textContent = `${student.name} · 个人重组靶向训练册（A4 排版预览与导出）`;
+      document.querySelectorAll('.wb-ed-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.wbedition === workbookState.edition);
+      });
+      document.getElementById('wbOptHints').checked = workbookState.showHints;
+      document.querySelectorAll('[data-wbsec]').forEach(cb => {
+        cb.checked = !!workbookState.sections[cb.dataset.wbsec];
+      });
+      syncDrillWorkbookPreview();
+      document.getElementById('workbookModal').classList.remove('hidden');
+      document.body.classList.add('workbook-print-active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrillWorkbookModal() {
+      workbookState.isOpen = false;
+      document.getElementById('workbookModal').classList.add('hidden');
+      document.body.classList.remove('workbook-print-active');
+      document.body.style.overflow = '';
+    }
+
+    function triggerWorkbookPrint(s, isPdfIntent) {
+      const student = s || getStudent();
+      if (!student) return;
+      if (!Object.values(workbookState.sections).some(Boolean)) return;
+      const printRoot = document.getElementById('workbookPrintRoot');
+      printRoot.innerHTML = buildDrillWorkbookHtml(student, workbookState);
+      document.body.classList.add('workbook-print-active');
+
+      const edSuffix = workbookState.edition === 'teacher'
+        ? '教师讲义版'
+        : (workbookState.edition === 'student_with_key' ? '学生卷含答案册' : '学生练习卷');
+      const prevTitle = document.title;
+      document.title = `${student.name}_英语中考重组靶向训练册_${edSuffix}`;
+
+      if (isPdfIntent) {
+        const tip = document.getElementById('wbPdfTip');
+        if (tip) {
+          tip.style.borderColor = 'var(--primary)';
+          setTimeout(() => { tip.style.borderColor = ''; }, 3000);
+        }
+      }
+
+      const cleanup = () => {
+        document.title = prevTitle;
+        if (!workbookState.isOpen) {
+          document.body.classList.remove('workbook-print-active');
+        }
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+
+      // Give layout a single animation frame before triggering native print / Save-as-PDF
+      requestAnimationFrame(() => {
+        window.print();
+        setTimeout(() => {
+          if (document.title !== prevTitle) cleanup();
+        }, 1500);
+      });
+    }
+
+    // Bind Workbook Modal Controls
+    document.getElementById('btnCloseWbModal').onclick = closeDrillWorkbookModal;
+    document.getElementById('workbookModal').onclick = (e) => {
+      if (e.target.id === 'workbookModal') closeDrillWorkbookModal();
+    };
+    document.getElementById('btnWbPrint').onclick = () => triggerWorkbookPrint(getStudent(), false);
+    document.getElementById('btnWbExportPdf').onclick = () => triggerWorkbookPrint(getStudent(), true);
+    document.querySelectorAll('.wb-ed-btn').forEach(btn => {
+      btn.onclick = () => {
+        workbookState.edition = btn.dataset.wbedition;
+        document.querySelectorAll('.wb-ed-btn').forEach(b => b.classList.toggle('active', b === btn));
+        syncDrillWorkbookPreview();
+      };
+    });
+    document.getElementById('wbOptHints').onchange = (e) => {
+      workbookState.showHints = e.target.checked;
+      syncDrillWorkbookPreview();
+    };
+    document.querySelectorAll('[data-wbsec]').forEach(cb => {
+      cb.onchange = () => {
+        workbookState.sections[cb.dataset.wbsec] = cb.checked;
+        syncDrillWorkbookPreview();
+      };
+    });
 
     // STUDENT TAB 5: PERSONAL 90-MIN ROADMAP
     function renderStudentRoadmap(s) {
@@ -1887,6 +2759,10 @@
     };
     document.getElementById('paperModal').onclick = (e) => { if (e.target.id === 'paperModal') closePaperModal(); };
     window.addEventListener('keydown', (e) => {
+      if (workbookState.isOpen) {
+        if (e.key === 'Escape') closeDrillWorkbookModal();
+        return;
+      }
       const qlb = document.getElementById('qtypeLightbox');
       if (qlb && !qlb.classList.contains('hidden')) {
         if (e.key === 'Escape') qlb.classList.add('hidden');
