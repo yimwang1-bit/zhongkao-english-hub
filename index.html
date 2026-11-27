@@ -696,6 +696,104 @@
         padding-left: 9mm !important;
       }
     }
+
+    /* ==================== FLTRP TEXTBOOK SHELF & REALISTIC BOOK-PAGE READER ==================== */
+    .fltrp-book-desk {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05), transparent 60%),
+        var(--content);
+    }
+    [data-theme="dark"] .fltrp-book-desk {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.09), transparent 60%),
+        #090f1d;
+    }
+    .fltrp-spread-frame {
+      position: relative;
+      display: inline-flex;
+      align-items: stretch;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: 6px;
+      box-shadow:
+        0 18px 42px -12px rgba(15, 23, 42, 0.28),
+        0 4px 12px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    [data-theme="dark"] .fltrp-spread-frame {
+      box-shadow:
+        0 22px 50px -12px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(148, 163, 184, 0.18);
+    }
+    .fltrp-spread-dual::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 30px;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        90deg,
+        rgba(15, 23, 42, 0) 0%,
+        rgba(15, 23, 42, 0.05) 35%,
+        rgba(15, 23, 42, 0.17) 50%,
+        rgba(15, 23, 42, 0.05) 65%,
+        rgba(15, 23, 42, 0) 100%
+      );
+      pointer-events: none;
+      z-index: 4;
+    }
+    .fltrp-page-slot {
+      position: relative;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      user-select: none;
+    }
+    .fltrp-page-slot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .fltrp-page-slot.is-target::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 2.5px rgba(37, 99, 235, 0.55);
+      pointer-events: none;
+      z-index: 5;
+      animation: targetFade 1.4s ease-out forwards;
+    }
+    @keyframes targetFade {
+      0% { opacity: 1; }
+      70% { opacity: 0.9; }
+      100% { opacity: 0; }
+    }
+    .fltrp-book-cover-card:hover .fltrp-cover-img {
+      transform: translateY(-2px) scale(1.02);
+    }
+    .fltrp-cover-img {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #bookReaderShell:fullscreen {
+      border-radius: 0 !important;
+      border: none !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      background: var(--card);
+    }
+    .fltrp-thin-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .fltrp-thin-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.45);
+      border-radius: 999px;
+    }
+    .fltrp-thin-scroll::-webkit-scrollbar-track { background: transparent; }
   </style>
 </head>
 <body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0">
@@ -743,7 +841,7 @@
       <!-- Top-level Master Navigation -->
       <nav class="flex flex-wrap items-center gap-2 shrink-0">
         <button data-global="syllabus" class="nav-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
-          📚 外研社考纲总库
+          📚 外研社书目与考纲
         </button>
         <button data-global="examstd" class="nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
           🧩 题型库与考试标准
@@ -759,8 +857,132 @@
 
   <main class="max-w-7xl mx-auto px-4 py-5 space-y-5">
 
-    <!-- ==================== GLOBAL VIEW 1: 外研社考纲标准总库 (MASTER SYLLABUS BOARD) ==================== -->
-    <section id="view-syllabus" class="global-view space-y-5 fade-in">
+    <!-- ==================== GLOBAL VIEW 1: 外研社书目与考纲总库 ==================== -->
+    <section id="view-syllabus" class="global-view space-y-4 fade-in">
+      <!-- Clean Sub-Navigation Bar (mirrors 题型库与考试标准) -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div id="fltrpSubNav" class="inline-flex items-center gap-1 p-1 rounded-xl bg-[var(--card)] border border-[var(--border)]">
+          <button data-fsub="books" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition">
+            📖 外研社书目
+          </button>
+          <button data-fsub="syllabus" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition text-[var(--muted-foreground)]">
+            📋 分级考纲总库
+          </button>
+        </div>
+        <div id="fltrpHeaderMeta" class="text-xs text-[var(--muted-foreground)]"></div>
+      </div>
+
+      <!-- SUB-VIEW 1A: 外研社书目导航 & 电子书页阅读器 -->
+      <div id="fsub-books" class="fsub-panel space-y-4">
+        <!-- 1A-1: 书目导航书架 -->
+        <div id="bookShelfView" class="space-y-4">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)]">外研社书目导航</span>
+                <span class="text-xs text-[var(--muted-foreground)]">2024新版 义务教育教科书 · 初中英语全套（七上 – 九下）</span>
+              </div>
+              <h2 class="text-lg font-bold">外研社初中英语电子书架</h2>
+              <p class="text-xs text-[var(--muted-foreground)]">
+                严格按照纸质课本目录与奇偶跨页顺序还原书页，支持双页仿真对开、目录直达、印刷页码跳转与考纲双向联动。
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0 text-xs">
+              <span id="bookShelfSummaryBadge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] font-semibold">加载书目中...</span>
+              <a href="https://drive.google.com/drive/folders/11_JfHTDmlmvG3FknN7qdULZnaTjphTe1" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--content)] text-[var(--link)] hover:underline">Drive 8-A 原图 ↗</a>
+            </div>
+          </div>
+
+          <div id="bookShelfGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- 1A-2: 沉浸式电子书页阅读器 -->
+        <div id="bookReaderShell" class="hidden bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden flex flex-col h-[calc(100vh-148px)] min-h-[600px]">
+          <!-- Reader Top Control Bar -->
+          <div class="shrink-0 border-b border-[var(--border)] bg-[var(--card)] px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2 min-w-0">
+              <button id="btnBookBackShelf" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] font-semibold hover:border-[var(--primary)] cursor-pointer transition shrink-0">← 书目</button>
+              <button id="btnBookToggleToc" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] font-semibold hover:border-[var(--primary)] cursor-pointer transition shrink-0" title="展开/收起书本目录">📑 目录</button>
+              <div class="min-w-0 hidden sm:block">
+                <div class="flex items-center gap-1.5">
+                  <span id="bookReaderTitle" class="font-bold truncate">外研社 8-A</span>
+                  <span id="bookReaderChapterBadge" class="px-2 py-0.5 rounded-full text-[11px] bg-[var(--content)] border border-[var(--border)] text-[var(--primary)] font-semibold truncate max-w-[240px]"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Page Jump & Counter -->
+            <div class="flex items-center gap-1.5">
+              <button id="btnBookPrev" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] font-bold cursor-pointer transition disabled:opacity-35" title="上一页 (←)">‹ 上页</button>
+              <form id="bookPageJumpForm" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)]">
+                <span class="text-[11px] text-[var(--muted-foreground)]">跳至</span>
+                <input id="bookPageJumpInput" type="text" placeholder="p.2" class="w-12 text-center text-xs font-mono font-semibold rounded px-1 py-0.5 !border-0 !bg-transparent focus:!outline-none" title="输入印刷页码（如 34）或 封面 / 目录 / 封底" />
+              </form>
+              <span id="bookPageCounter" class="text-[11px] font-mono text-[var(--muted-foreground)] px-1.5 hidden md:inline tabular-nums"></span>
+              <button id="btnBookNext" class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] font-bold cursor-pointer transition disabled:opacity-35" title="下一页 (→)">下页 ›</button>
+            </div>
+
+            <!-- Layout, Zoom, Strip & Fullscreen Controls -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <div class="inline-flex items-center p-0.5 rounded-lg border border-[var(--border)] bg-[var(--content)]">
+                <button id="btnBookModeDual" class="pill-btn active px-2 py-1 rounded-md text-[11px] font-semibold cursor-pointer transition" title="双页仿真对开">双页</button>
+                <button id="btnBookModeSingle" class="pill-btn px-2 py-1 rounded-md text-[11px] font-semibold cursor-pointer transition" title="单页精读">单页</button>
+              </div>
+              <div class="hidden sm:inline-flex items-center gap-0.5 p-0.5 rounded-lg border border-[var(--border)] bg-[var(--content)]">
+                <button id="btnBookZoomOut" class="px-1.5 py-1 rounded hover:bg-[var(--card)] cursor-pointer font-mono" title="缩小 (-)">−</button>
+                <button id="btnBookZoomReset" class="px-1.5 py-1 rounded hover:bg-[var(--card)] cursor-pointer font-mono text-[11px] tabular-nums min-w-[42px]" title="恢复适配 (0)">适配</button>
+                <button id="btnBookZoomIn" class="px-1.5 py-1 rounded hover:bg-[var(--card)] cursor-pointer font-mono" title="放大 (+)">+</button>
+              </div>
+              <button id="btnBookToggleThumbs" class="px-2 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] cursor-pointer transition" title="展开/收起底部页码缩略图">🎞️</button>
+              <button id="btnBookFullscreen" class="px-2 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] cursor-pointer transition" title="全屏阅读">⛶</button>
+            </div>
+          </div>
+
+          <!-- Reader Main Body: Left TOC Sidebar + Center Page Canvas -->
+          <div class="flex-1 min-h-0 flex overflow-hidden relative">
+            <!-- Left Collapsible TOC Sidebar -->
+            <aside id="bookTocSidebar" class="w-64 sm:w-72 shrink-0 h-full border-r border-[var(--border)] bg-[var(--card)] flex flex-col overflow-hidden z-20 transition-all">
+              <div class="p-2.5 border-b border-[var(--border)] space-y-2 shrink-0">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-bold">书本目录 · Contents</span>
+                  <span id="bookTocProgress" class="text-[11px] font-mono text-[var(--muted-foreground)] tabular-nums"></span>
+                </div>
+                <input id="bookTocSearch" type="text" placeholder="搜索单元、课文、语法、附录..." class="w-full rounded-lg px-2.5 py-1.5 text-xs" />
+              </div>
+              <div id="bookTocTree" class="flex-1 overflow-y-auto fltrp-thin-scroll p-2 space-y-3 text-xs"></div>
+            </aside>
+
+            <!-- Center Reading Stage -->
+            <div class="flex-1 min-w-0 h-full flex flex-col overflow-hidden relative fltrp-book-desk">
+              <!-- Edge Floating Flip Arrows -->
+              <button id="btnStagePrev" class="hidden md:flex items-center justify-center w-9 h-14 rounded-r-xl bg-[var(--card)]/85 hover:bg-[var(--card)] border border-l-0 border-[var(--border)] shadow-md text-lg font-bold text-[var(--foreground)] absolute left-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer transition disabled:opacity-20" title="上一页 (←)">‹</button>
+              <button id="btnStageNext" class="hidden md:flex items-center justify-center w-9 h-14 rounded-l-xl bg-[var(--card)]/85 hover:bg-[var(--card)] border border-r-0 border-[var(--border)] shadow-md text-lg font-bold text-[var(--foreground)] absolute right-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer transition disabled:opacity-20" title="下一页 (→)">›</button>
+
+              <!-- Scrollable / Centered Book Canvas -->
+              <div id="bookStageViewport" class="flex-1 min-h-0 overflow-auto fltrp-thin-scroll flex items-center justify-center p-3 sm:p-5">
+                <div id="bookSpreadMount" class="flex flex-col items-center justify-center gap-2"></div>
+              </div>
+
+              <!-- Subtle Reading Progress Bar -->
+              <div class="shrink-0 px-4 py-1.5 border-t border-[var(--border)] bg-[var(--card)]/90 flex items-center justify-between gap-3 text-[11px] text-[var(--muted-foreground)]">
+                <span id="bookStatusLeft" class="truncate"></span>
+                <div class="flex items-center gap-2 shrink-0">
+                  <span class="hidden sm:inline">键盘 ← / → 翻页 · 点击书页放大</span>
+                  <span id="bookStatusRight" class="font-mono font-semibold text-[var(--foreground)] tabular-nums"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Collapsible Thumbnail Filmstrip -->
+          <div id="bookThumbStripWrap" class="hidden shrink-0 border-t border-[var(--border)] bg-[var(--card)] px-3 py-2">
+            <div id="bookThumbStrip" class="flex items-center gap-2 overflow-x-auto fltrp-thin-scroll pb-1"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 1B: 外研社考纲标准总库 (MASTER SYLLABUS BOARD) -->
+      <div id="fsub-syllabus" class="fsub-panel hidden space-y-5">
       <!-- Master Board Hero & Stats -->
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -818,6 +1040,7 @@
 
       <!-- Master Syllabus Cards Grid -->
       <div id="syllabusGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
+      </div>
     </section>
 
     <!-- ==================== GLOBAL VIEW 2: 题型库与考试标准 (方案A) ==================== -->
@@ -1479,10 +1702,637 @@
       }
       document.getElementById('view-' + viewName).classList.remove('hidden');
 
-      if (viewName === 'syllabus') renderMasterSyllabus();
+      if (viewName === 'syllabus') renderFltrpView();
       else if (viewName === 'examstd') renderExamStdView();
       else if (viewName === 'students') renderStudentRoster();
       else if (viewName === 'student-workspace') renderStudentWorkspace();
+    }
+
+    // ==================== 4A. FLTRP TEXTBOOK CATALOG & REALISTIC BOOK-PAGE READER ====================
+    const KEY_BOOK_PROGRESS = 'zhongkao_hub_book_progress_v1';
+    let activeFltrpSub = 'books'; // 'books' | 'syllabus'
+    let fltrpBookCatalog = null;
+    const bookPreloadCache = new Set();
+    let bookState = {
+      activeBookId: null,
+      spreads: [],
+      spreadIndex: 0,
+      singlePage: 1,
+      viewMode: window.innerWidth < 768 ? 'single' : 'dual', // 'dual' | 'single'
+      zoom: 100, // 100 = fit height; >100 = zoomed percentage
+      showToc: window.innerWidth >= 900,
+      showThumbs: false,
+      tocSearch: '',
+      expandedUnits: {},
+      targetFilePage: null,
+      lastDirection: null,
+      thumbsBuiltFor: null
+    };
+
+    async function ensureFltrpBookCatalog() {
+      if (fltrpBookCatalog) return fltrpBookCatalog;
+      try {
+        const resp = await fetch('./data/books/fltrp-books.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        fltrpBookCatalog = await resp.json();
+      } catch (err) {
+        console.error('Failed to load fltrp-books.json:', err);
+        fltrpBookCatalog = { publisher: '外研社', series: '', books: [] };
+      }
+      return fltrpBookCatalog;
+    }
+
+    function getBookProgressMap() {
+      try { return JSON.parse(localStorage.getItem(KEY_BOOK_PROGRESS) || '{}') || {}; }
+      catch { return {}; }
+    }
+
+    function saveBookProgress(bookId, filePage) {
+      const map = getBookProgressMap();
+      map[bookId] = { filePage, updatedAt: Date.now() };
+      localStorage.setItem(KEY_BOOK_PROGRESS, JSON.stringify(map));
+    }
+
+    function formatBookFileNum(n) {
+      return String(n).padStart(3, '0');
+    }
+
+    function getBookPageUrl(book, filePage, isThumb = false) {
+      const pat = isThumb ? book.thumbUrlPattern : book.pageUrlPattern;
+      return pat.replace('{NNN}', formatBookFileNum(filePage));
+    }
+
+    function getBookPageLabel(book, filePage, compact = false) {
+      if (!book || !filePage) return '';
+      if (book.specialLabels && book.specialLabels[String(filePage)]) {
+        return book.specialLabels[String(filePage)];
+      }
+      if (typeof book.printedPageOffset === 'number' &&
+          filePage >= (book.printedPageMinFile || 1) &&
+          filePage <= (book.printedPageMaxFile || book.totalPages)) {
+        const p = filePage - book.printedPageOffset;
+        return compact ? `p.${p}` : `p.${p}`;
+      }
+      return `第 ${filePage} 页`;
+    }
+
+    function buildBookSpreads(book) {
+      const spreads = [];
+      const frontSingles = new Set(book.frontSinglePages || [1]);
+      const backSingles = new Set(book.backSinglePages || [book.totalPages]);
+      let p = 1;
+      while (p <= book.totalPages) {
+        if (frontSingles.has(p) || backSingles.has(p)) {
+          spreads.push([p]);
+          p += 1;
+        } else if (p + 1 <= book.totalPages && !backSingles.has(p + 1)) {
+          spreads.push([p, p + 1]);
+          p += 2;
+        } else {
+          spreads.push([p]);
+          p += 1;
+        }
+      }
+      return spreads;
+    }
+
+    function findBookTocContext(book, filePage) {
+      if (!book || !book.toc) return { item: null, child: null, group: null };
+      for (const grp of book.toc) {
+        for (const item of grp.items) {
+          const end = item.endFile || item.startFile;
+          if (filePage >= item.startFile && filePage <= end) {
+            let activeChild = null;
+            if (item.children && item.children.length) {
+              for (let i = 0; i < item.children.length; i++) {
+                const c = item.children[i];
+                const nextStart = i + 1 < item.children.length ? item.children[i + 1].startFile : end + 1;
+                if (filePage >= c.startFile && filePage < nextStart) {
+                  activeChild = c;
+                  break;
+                }
+              }
+            }
+            return { group: grp, item, child: activeChild };
+          }
+        }
+      }
+      return { group: null, item: null, child: null };
+    }
+
+    function findBookUnitBySyllabusId(sylId) {
+      if (!fltrpBookCatalog || !fltrpBookCatalog.books) return null;
+      for (const b of fltrpBookCatalog.books) {
+        if (b.status !== 'available' || !b.toc) continue;
+        for (const grp of b.toc) {
+          for (const item of grp.items) {
+            if (item.syllabusId === sylId) return { book: b, item };
+          }
+        }
+      }
+      return null;
+    }
+
+    async function renderFltrpView() {
+      document.querySelectorAll('#fltrpSubNav .tab-btn').forEach(btn => {
+        const isActive = btn.dataset.fsub === activeFltrpSub;
+        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('text-[var(--muted-foreground)]', !isActive);
+      });
+      document.querySelectorAll('.fsub-panel').forEach(p => p.classList.add('hidden'));
+      const panel = document.getElementById('fsub-' + activeFltrpSub);
+      if (panel) panel.classList.remove('hidden');
+
+      await ensureFltrpBookCatalog();
+      const avail = (fltrpBookCatalog.books || []).filter(b => b.status === 'available').length;
+      const total = (fltrpBookCatalog.books || []).length;
+      const metaEl = document.getElementById('fltrpHeaderMeta');
+      if (metaEl) {
+        metaEl.textContent = activeFltrpSub === 'books'
+          ? `外研社初中全套 ${total} 册 · 已上架 ${avail} 册电子课本`
+          : `外研社初二/初三考纲共 ${masterSyllabus.length} 条标准`;
+      }
+
+      if (activeFltrpSub === 'books') {
+        if (bookState.activeBookId) {
+          document.getElementById('bookShelfView').classList.add('hidden');
+          document.getElementById('bookReaderShell').classList.remove('hidden');
+          renderBookReader();
+        } else {
+          document.getElementById('bookReaderShell').classList.add('hidden');
+          document.getElementById('bookShelfView').classList.remove('hidden');
+          renderBookShelf();
+        }
+      } else {
+        renderMasterSyllabus();
+      }
+    }
+
+    function renderBookShelf() {
+      const books = (fltrpBookCatalog && fltrpBookCatalog.books) || [];
+      const availCount = books.filter(b => b.status === 'available').length;
+      const badgeEl = document.getElementById('bookShelfSummaryBadge');
+      if (badgeEl) badgeEl.textContent = `已上架 ${availCount} / ${books.length} 册`;
+
+      const progMap = getBookProgressMap();
+      const grid = document.getElementById('bookShelfGrid');
+      grid.innerHTML = books.map(book => {
+        const isAvail = book.status === 'available';
+        const saved = progMap[book.id];
+        const savedLabel = saved && isAvail ? getBookPageLabel(book, saved.filePage, true) : '';
+        const unitsGroup = (book.toc || []).find(g => g.group === 'units');
+        const unitChips = unitsGroup ? unitsGroup.items : [];
+
+        if (isAvail) {
+          return `
+            <div class="fltrp-book-cover-card bg-[var(--card)] border-2 border-[var(--primary)]/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+              <div class="p-4 flex gap-4 items-start">
+                <button data-open-book="${book.id}" data-start-page="${saved ? saved.filePage : 1}" class="w-24 sm:w-28 shrink-0 aspect-[1093/1536] rounded-xl overflow-hidden border border-[var(--border)] shadow-md bg-white cursor-pointer">
+                  <img src="${book.coverImage}" alt="${escapeHtml(book.grade)}" class="fltrp-cover-img w-full h-full object-cover" />
+                </button>
+                <div class="min-w-0 flex-1 space-y-2">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold text-white" style="background:${book.accent || 'var(--primary)'}">${book.code}</span>
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">已上架 · ${book.totalPages}页</span>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-bold leading-snug">外研社 · ${escapeHtml(book.grade)}</h3>
+                    <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">${escapeHtml(book.stage || '')}</div>
+                  </div>
+                  <p class="text-xs text-[var(--muted-foreground)] leading-relaxed line-clamp-3">${escapeHtml(book.summary || '')}</p>
+                </div>
+              </div>
+
+              ${unitChips.length ? `
+                <div class="px-4 pb-3 space-y-1.5">
+                  <div class="text-[11px] font-semibold text-[var(--muted-foreground)]">快速直达单元 / 目录：</div>
+                  <div class="flex flex-wrap gap-1.5">
+                    <button data-open-book="${book.id}" data-start-page="5" class="px-2 py-1 rounded-md text-[11px] font-medium border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] hover:text-[var(--primary)] cursor-pointer transition">目录</button>
+                    ${unitChips.map(u => `
+                      <button data-open-book="${book.id}" data-start-page="${u.startFile}" title="${escapeHtml(u.title)} (${u.pageLabel})" class="px-2 py-1 rounded-md text-[11px] font-semibold border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] hover:text-[var(--primary)] cursor-pointer transition">${escapeHtml(u.code)}</button>
+                    `).join('')}
+                    <button data-open-book="${book.id}" data-start-page="103" class="px-2 py-1 rounded-md text-[11px] font-medium border border-[var(--border)] bg-[var(--content)] hover:border-[var(--primary)] hover:text-[var(--primary)] cursor-pointer transition">附录</button>
+                  </div>
+                </div>` : ''}
+
+              <div class="px-4 py-3 border-t border-[var(--border)] bg-[var(--content)]/60 flex items-center justify-between gap-2 text-xs">
+                <button data-open-book="${book.id}" data-start-page="1" class="text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-pointer">从封面开始</button>
+                <button data-open-book="${book.id}" data-start-page="${saved ? saved.filePage : 1}" class="px-3.5 py-1.5 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 cursor-pointer transition">
+                  ${savedLabel ? `继续阅读 (${savedLabel}) →` : '📖 打开电子课本 →'}
+                </button>
+              </div>
+            </div>`;
+        }
+
+        return `
+          <div class="bg-[var(--card)] border border-dashed border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between opacity-75">
+            <div class="flex gap-4 items-start">
+              <div class="w-24 sm:w-28 shrink-0 aspect-[1093/1536] rounded-xl border border-[var(--border)] flex flex-col justify-between p-2.5 text-white shadow-inner" style="background: linear-gradient(155deg, ${book.accent}cc 0%, ${book.accent}88 100%)">
+                <div class="text-[10px] font-mono opacity-90">FLTRP 2024</div>
+                <div class="text-center space-y-0.5">
+                  <div class="text-base font-black tracking-tight">英 语</div>
+                  <div class="text-[11px] font-semibold opacity-95">${escapeHtml(book.grade)}</div>
+                </div>
+                <div class="text-[10px] font-mono text-center bg-black/20 rounded py-0.5">${book.code}</div>
+              </div>
+              <div class="min-w-0 flex-1 space-y-2">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="px-2 py-0.5 rounded-full text-[11px] font-mono font-bold bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)]">${book.code}</span>
+                  <span class="px-2 py-0.5 rounded-full text-[11px] bg-[var(--content)] text-[var(--muted-foreground)]">待上架</span>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold">外研社 · ${escapeHtml(book.grade)}</h3>
+                  <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">${escapeHtml(book.stage || '')}</div>
+                </div>
+                <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">${escapeHtml(book.summary || '')}</p>
+              </div>
+            </div>
+            <div class="mt-4 pt-2.5 border-t border-[var(--border)] flex items-center justify-between text-[11px] text-[var(--muted-foreground)]">
+              <span>上传 Drive 裁切图即可接入</span>
+              <span class="font-mono">规划书目</span>
+            </div>
+          </div>`;
+      }).join('');
+
+      grid.querySelectorAll('[data-open-book]').forEach(btn => {
+        btn.onclick = () => openBookReader(btn.dataset.openBook, Number(btn.dataset.startPage || 1));
+      });
+    }
+
+    function getActiveBook() {
+      if (!fltrpBookCatalog || !bookState.activeBookId) return null;
+      return (fltrpBookCatalog.books || []).find(b => b.id === bookState.activeBookId) || null;
+    }
+
+    async function openBookReader(bookId, startFilePage = null) {
+      await ensureFltrpBookCatalog();
+      const book = (fltrpBookCatalog.books || []).find(b => b.id === bookId && b.status === 'available');
+      if (!book) return;
+
+      activeGlobalView = 'syllabus';
+      activeFltrpSub = 'books';
+      bookState.activeBookId = book.id;
+      bookState.spreads = buildBookSpreads(book);
+      bookState.zoom = 100;
+      bookState.tocSearch = '';
+      const searchEl = document.getElementById('bookTocSearch');
+      if (searchEl) searchEl.value = '';
+
+      const saved = getBookProgressMap()[book.id];
+      const targetPage = Math.max(1, Math.min(book.totalPages, Number(startFilePage || (saved && saved.filePage) || 1)));
+      bookState.singlePage = targetPage;
+      bookState.spreadIndex = Math.max(0, bookState.spreads.findIndex(sp => sp.includes(targetPage)));
+      bookState.targetFilePage = targetPage;
+      bookState.lastDirection = null;
+
+      // Ensure active unit is expanded in TOC
+      const ctx = findBookTocContext(book, targetPage);
+      if (ctx.item && ctx.item.children) {
+        bookState.expandedUnits[ctx.item.id] = true;
+      }
+
+      document.querySelectorAll('.global-view').forEach(v => v.classList.add('hidden'));
+      document.getElementById('view-syllabus').classList.remove('hidden');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.global === 'syllabus'));
+
+      renderFltrpView();
+    }
+
+    function jumpToBookFilePage(filePage, highlight = true) {
+      const book = getActiveBook();
+      if (!book) return;
+      const p = Math.max(1, Math.min(book.totalPages, Number(filePage) || 1));
+      const prevAnchor = bookState.viewMode === 'dual'
+        ? (bookState.spreads[bookState.spreadIndex]?.[0] || 1)
+        : bookState.singlePage;
+
+      bookState.lastDirection = p > prevAnchor ? 'next' : (p < prevAnchor ? 'prev' : null);
+      bookState.singlePage = p;
+      const idx = bookState.spreads.findIndex(sp => sp.includes(p));
+      if (idx >= 0) bookState.spreadIndex = idx;
+      bookState.targetFilePage = highlight ? p : null;
+
+      const ctx = findBookTocContext(book, p);
+      if (ctx.item && ctx.item.children) {
+        bookState.expandedUnits[ctx.item.id] = true;
+      }
+      renderBookReader();
+    }
+
+    function stepBookPage(delta) {
+      const book = getActiveBook();
+      if (!book) return;
+      if (bookState.viewMode === 'dual') {
+        const nextIdx = bookState.spreadIndex + delta;
+        if (nextIdx < 0 || nextIdx >= bookState.spreads.length) return;
+        bookState.spreadIndex = nextIdx;
+        bookState.singlePage = bookState.spreads[nextIdx][0];
+      } else {
+        const nextPage = bookState.singlePage + delta;
+        if (nextPage < 1 || nextPage > book.totalPages) return;
+        bookState.singlePage = nextPage;
+        const idx = bookState.spreads.findIndex(sp => sp.includes(nextPage));
+        if (idx >= 0) bookState.spreadIndex = idx;
+      }
+      bookState.targetFilePage = null;
+      bookState.lastDirection = delta > 0 ? 'next' : 'prev';
+
+      const ctx = findBookTocContext(book, bookState.singlePage);
+      if (ctx.item && ctx.item.children) {
+        bookState.expandedUnits[ctx.item.id] = true;
+      }
+      renderBookReader();
+    }
+
+    function preloadBookNeighbors(book, currentPages) {
+      const minP = Math.min(...currentPages);
+      const maxP = Math.max(...currentPages);
+      const candidates = [maxP + 1, maxP + 2, maxP + 3, maxP + 4, minP - 1, minP - 2];
+      candidates.forEach(p => {
+        if (p < 1 || p > book.totalPages) return;
+        const url = getBookPageUrl(book, p, false);
+        if (bookPreloadCache.has(url)) return;
+        bookPreloadCache.add(url);
+        const im = new Image();
+        im.src = url;
+      });
+    }
+
+    function renderBookToc(book, activePages) {
+      const tocEl = document.getElementById('bookTocTree');
+      if (!tocEl) return;
+      const q = (bookState.tocSearch || '').trim().toLowerCase();
+      const activePrimary = activePages[0];
+      const activeSet = new Set(activePages);
+
+      const html = (book.toc || []).map(grp => {
+        const itemsHtml = grp.items.map(item => {
+          const end = item.endFile || item.startFile;
+          const isCurrent = activePages.some(p => p >= item.startFile && p <= end);
+          const children = item.children || [];
+          const matchParent = !q || `${item.code || ''} ${item.title || ''} ${item.subtitle || ''} ${item.pageLabel || ''}`.toLowerCase().includes(q);
+          const matchingChildren = children.filter(c =>
+            !q || `${c.title || ''} ${c.pageLabel || ''}`.toLowerCase().includes(q)
+          );
+          if (!matchParent && !matchingChildren.length) return '';
+
+          const isExpanded = !!q || !!bookState.expandedUnits[item.id] || isCurrent;
+          const displayChildren = q && !matchParent ? matchingChildren : children;
+
+          return `
+            <div class="rounded-lg border ${isCurrent ? 'border-[var(--primary)]/50 bg-[var(--content)]/80' : 'border-transparent'} transition">
+              <div class="flex items-center gap-1 px-2 py-1.5">
+                ${children.length ? `
+                  <button data-toc-toggle="${item.id}" class="w-4 h-4 flex items-center justify-center rounded text-[10px] text-[var(--muted-foreground)] hover:bg-[var(--content)] cursor-pointer shrink-0" title="展开/收起小节">${isExpanded ? '▾' : '▸'}</button>
+                ` : `<span class="w-4 shrink-0 text-center text-[10px] text-[var(--muted-foreground)]">•</span>`}
+                <button data-toc-jump="${item.startFile}" class="flex-1 min-w-0 text-left cursor-pointer group">
+                  <div class="flex items-baseline justify-between gap-1.5">
+                    <span class="truncate ${isCurrent ? 'font-bold text-[var(--primary)]' : 'font-semibold text-[var(--foreground)] group-hover:text-[var(--primary)]'}">
+                      ${item.code ? `<span class="font-mono mr-1">${escapeHtml(item.code)}</span>` : ''}${escapeHtml(item.title)}
+                    </span>
+                    <span class="text-[10px] font-mono text-[var(--muted-foreground)] shrink-0 tabular-nums">${escapeHtml(item.pageLabel || '')}</span>
+                  </div>
+                  ${item.subtitle ? `<div class="text-[10px] text-[var(--muted-foreground)] truncate mt-0.5">${escapeHtml(item.subtitle)}</div>` : ''}
+                </button>
+                ${item.syllabusId ? `
+                  <button data-toc-syl="${item.syllabusId}" class="px-1.5 py-0.5 rounded text-[10px] border border-[var(--border)] bg-[var(--card)] text-[var(--link)] hover:border-[var(--primary)] cursor-pointer shrink-0" title="查看对应考纲标准">考纲</button>
+                ` : ''}
+              </div>
+              ${children.length && isExpanded ? `
+                <div class="pl-6 pr-2 pb-1.5 space-y-0.5">
+                  ${displayChildren.map((c, idx) => {
+                    const nextStart = idx + 1 < children.length ? children[idx + 1].startFile : end + 1;
+                    const cActive = activePages.some(p => p >= c.startFile && p < nextStart);
+                    return `
+                      <button data-toc-jump="${c.startFile}" class="w-full text-left px-2 py-1 rounded-md flex items-center justify-between gap-1.5 cursor-pointer transition ${
+                        cActive
+                          ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold'
+                          : 'text-[var(--muted-foreground)] hover:bg-[var(--card)] hover:text-[var(--foreground)]'
+                      }">
+                        <span class="truncate text-[11px]">${escapeHtml(c.title)}</span>
+                        <span class="text-[10px] font-mono shrink-0 opacity-80 tabular-nums">${escapeHtml(c.pageLabel || '')}</span>
+                      </button>`;
+                  }).join('')}
+                </div>` : ''}
+            </div>`;
+        }).filter(Boolean).join('');
+
+        if (!itemsHtml) return '';
+        return `
+          <div class="space-y-1">
+            <div class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--muted-foreground)] bg-[var(--content)]/60 rounded-md">${escapeHtml(grp.groupLabel)}</div>
+            <div class="space-y-0.5">${itemsHtml}</div>
+          </div>`;
+      }).filter(Boolean).join('');
+
+      tocEl.innerHTML = html || `<div class="py-8 text-center text-[var(--muted-foreground)]">未找到匹配章节</div>`;
+      tocEl.querySelectorAll('[data-toc-jump]').forEach(btn => {
+        btn.onclick = () => {
+          jumpToBookFilePage(Number(btn.dataset.tocJump), true);
+          if (window.innerWidth < 768) {
+            bookState.showToc = false;
+            document.getElementById('bookTocSidebar').classList.add('hidden');
+          }
+        };
+      });
+      tocEl.querySelectorAll('[data-toc-toggle]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.tocToggle;
+          bookState.expandedUnits[id] = !bookState.expandedUnits[id];
+          renderBookToc(book, activePages);
+        };
+      });
+      tocEl.querySelectorAll('[data-toc-syl]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const syl = masterSyllabus.find(s => s.id === btn.dataset.tocSyl);
+          activeFltrpSub = 'syllabus';
+          activeSylGrade = 'g8a';
+          const searchInput = document.getElementById('syllabusSearch');
+          if (searchInput) searchInput.value = syl ? syl.code : '';
+          renderFltrpView();
+        };
+      });
+
+      const pct = Math.round((activePrimary / book.totalPages) * 100);
+      const progEl = document.getElementById('bookTocProgress');
+      if (progEl) progEl.textContent = `${activePrimary}/${book.totalPages} (${pct}%)`;
+    }
+
+    function renderBookThumbStrip(book, activePages) {
+      const wrap = document.getElementById('bookThumbStripWrap');
+      const strip = document.getElementById('bookThumbStrip');
+      if (!wrap || !strip) return;
+      wrap.classList.toggle('hidden', !bookState.showThumbs);
+      if (!bookState.showThumbs) return;
+
+      if (bookState.thumbsBuiltFor !== book.id) {
+        const parts = [];
+        for (let p = 1; p <= book.totalPages; p++) {
+          const lbl = getBookPageLabel(book, p, true);
+          parts.push(`
+            <button data-bthumb="${p}" style="width:56px;" title="第 ${p} 页 (${escapeHtml(lbl)})" class="shrink-0 rounded-lg border border-[var(--border)] bg-[var(--content)] p-1 text-center cursor-pointer transition hover:border-[var(--primary)]">
+              <div style="width:46px;height:65px;" class="mx-auto rounded overflow-hidden bg-white">
+                <img src="${getBookPageUrl(book, p, true)}" alt="${escapeHtml(lbl)}" loading="lazy" class="w-full h-full object-cover" />
+              </div>
+              <div class="text-[10px] font-mono truncate mt-0.5 text-[var(--muted-foreground)]">${escapeHtml(lbl)}</div>
+            </button>`);
+        }
+        strip.innerHTML = parts.join('');
+        strip.querySelectorAll('[data-bthumb]').forEach(btn => {
+          btn.onclick = () => jumpToBookFilePage(Number(btn.dataset.bthumb), true);
+        });
+        bookState.thumbsBuiltFor = book.id;
+      }
+
+      const activeSet = new Set(activePages);
+      let firstActiveEl = null;
+      strip.querySelectorAll('[data-bthumb]').forEach(btn => {
+        const p = Number(btn.dataset.bthumb);
+        const on = activeSet.has(p);
+        btn.classList.toggle('border-[var(--primary)]', on);
+        btn.classList.toggle('ring-2', on);
+        btn.classList.toggle('ring-[var(--primary)]/40', on);
+        btn.classList.toggle('bg-[var(--primary)]/10', on);
+        if (on && !firstActiveEl) firstActiveEl = btn;
+      });
+      if (firstActiveEl) {
+        firstActiveEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    function renderBookReader() {
+      const book = getActiveBook();
+      if (!book) return;
+
+      const pagesToShow = bookState.viewMode === 'dual'
+        ? (bookState.spreads[bookState.spreadIndex] || [1])
+        : [bookState.singlePage];
+      const primaryPage = pagesToShow[0];
+      saveBookProgress(book.id, primaryPage);
+
+      // Update sidebar visibility
+      const sidebar = document.getElementById('bookTocSidebar');
+      if (sidebar) sidebar.classList.toggle('hidden', !bookState.showToc);
+      const tocBtn = document.getElementById('btnBookToggleToc');
+      if (tocBtn) tocBtn.classList.toggle('active', bookState.showToc);
+      const thumbsBtn = document.getElementById('btnBookToggleThumbs');
+      if (thumbsBtn) thumbsBtn.classList.toggle('active', bookState.showThumbs);
+
+      // Mode pills
+      document.getElementById('btnBookModeDual').classList.toggle('active', bookState.viewMode === 'dual');
+      document.getElementById('btnBookModeSingle').classList.toggle('active', bookState.viewMode === 'single');
+      document.getElementById('btnBookZoomReset').textContent = bookState.zoom === 100 ? '适配' : `${bookState.zoom}%`;
+
+      // Header & chapter breadcrumb
+      document.getElementById('bookReaderTitle').textContent = `外研社 ${book.code} · ${book.grade}`;
+      const ctx = findBookTocContext(book, primaryPage);
+      const chapText = ctx.item
+        ? (ctx.item.code ? `${ctx.item.code} ${ctx.item.title}` : ctx.item.title) + (ctx.child ? ` · ${ctx.child.title}` : '')
+        : getBookPageLabel(book, primaryPage);
+      document.getElementById('bookReaderChapterBadge').textContent = chapText;
+
+      const labelRange = pagesToShow.length === 2
+        ? `${getBookPageLabel(book, pagesToShow[0], true)} – ${getBookPageLabel(book, pagesToShow[1], true)}`
+        : getBookPageLabel(book, pagesToShow[0], true);
+      const fileRange = pagesToShow.length === 2
+        ? `第 ${pagesToShow[0]}–${pagesToShow[1]} / ${book.totalPages} 页`
+        : `第 ${pagesToShow[0]} / ${book.totalPages} 页`;
+
+      document.getElementById('bookPageCounter').textContent = `${labelRange} · ${fileRange}`;
+      const jumpInput = document.getElementById('bookPageJumpInput');
+      if (document.activeElement !== jumpInput) {
+        jumpInput.value = getBookPageLabel(book, primaryPage, true);
+      }
+      document.getElementById('bookStatusLeft').textContent = chapText;
+      document.getElementById('bookStatusRight').textContent = `${labelRange} (${fileRange})`;
+
+      // Prev / Next disabled states
+      const atStart = bookState.viewMode === 'dual' ? bookState.spreadIndex <= 0 : bookState.singlePage <= 1;
+      const atEnd = bookState.viewMode === 'dual' ? bookState.spreadIndex >= bookState.spreads.length - 1 : bookState.singlePage >= book.totalPages;
+      ['btnBookPrev', 'btnStagePrev'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = atStart; });
+      ['btnBookNext', 'btnStageNext'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = atEnd; });
+
+      // Render TOC & Thumbnail Strip first so viewport dimensions reflect actual available height
+      renderBookToc(book, pagesToShow);
+      renderBookThumbStrip(book, pagesToShow);
+
+      // Calculate crisp fit height inside viewport
+      const viewport = document.getElementById('bookStageViewport');
+      const availH = Math.max(280, (viewport ? viewport.clientHeight : 640) - 52);
+      const availW = Math.max(260, (viewport ? viewport.clientWidth : 900) - 64);
+      const ratio = 1093 / 1536;
+      const isDualRendered = pagesToShow.length === 2;
+      const maxSlotHByW = (isDualRendered ? (availW / 2) : availW) / ratio;
+      const baseH = Math.floor(Math.min(availH, maxSlotHByW));
+      const finalH = Math.round(baseH * (bookState.zoom / 100));
+      const finalW = Math.round(finalH * ratio);
+
+      // Adjust alignment when zoomed larger than viewport so scrolling works from top-left cleanly
+      if (viewport) {
+        const overflow = bookState.zoom > 105;
+        viewport.classList.toggle('items-start', overflow);
+        viewport.classList.toggle('items-center', !overflow);
+        viewport.classList.toggle('justify-start', overflow && (finalW * (isDualRendered ? 2 : 1) > availW));
+        viewport.classList.toggle('justify-center', !(overflow && (finalW * (isDualRendered ? 2 : 1) > availW)));
+      }
+
+      const flipCls = bookState.lastDirection === 'next' ? 'flip-next' : (bookState.lastDirection === 'prev' ? 'flip-prev' : '');
+      const mount = document.getElementById('bookSpreadMount');
+      mount.innerHTML = `
+        <div class="fltrp-spread-frame ${isDualRendered ? 'fltrp-spread-dual' : ''} ${flipCls}">
+          ${pagesToShow.map((fp, i) => {
+            const isTarget = bookState.targetFilePage === fp && isDualRendered;
+            const sideTitle = getBookPageLabel(book, fp);
+            return `
+              <div class="fltrp-page-slot ${isTarget ? 'is-target' : ''}" style="width:${finalW}px;height:${finalH}px;" title="${escapeHtml(sideTitle)} · 点击放大/还原">
+                <img data-book-page-img="${fp}" src="${getBookPageUrl(book, fp, false)}" alt="${escapeHtml(book.grade)} ${escapeHtml(sideTitle)}" class="cursor-zoom-in" />
+              </div>`;
+          }).join('')}
+        </div>
+        <div class="flex items-center justify-center gap-6 text-[11px] font-mono text-[var(--muted-foreground)] select-none">
+          ${pagesToShow.map((fp, idx) => `
+            <span>${isDualRendered ? (idx === 0 ? '左页 · ' : '右页 · ') : ''}<strong class="text-[var(--foreground)]">${escapeHtml(getBookPageLabel(book, fp))}</strong> <span class="opacity-60">(#${fp})</span></span>
+          `).join('')}
+        </div>`;
+
+      mount.querySelectorAll('[data-book-page-img]').forEach(img => {
+        img.onclick = () => {
+          bookState.zoom = bookState.zoom > 105 ? 100 : 155;
+          bookState.lastDirection = null;
+          renderBookReader();
+        };
+      });
+
+      preloadBookNeighbors(book, pagesToShow);
+    }
+
+    function handleBookPageJump(raw) {
+      const book = getActiveBook();
+      if (!book) return;
+      const val = String(raw || '').trim().toLowerCase();
+      if (!val) return;
+      if (val.includes('封底') || val === 'back') { jumpToBookFilePage(book.totalPages, true); return; }
+      if (val.includes('封面') || val === 'cover') { jumpToBookFilePage(1, true); return; }
+      if (val.includes('目录') || val.includes('scope') || val === 'toc') { jumpToBookFilePage(5, true); return; }
+      if (val.includes('附录') || val.includes('append')) { jumpToBookFilePage(103, true); return; }
+      if (val.includes('后记')) { jumpToBookFilePage(162, true); return; }
+
+      // Support "#42" for raw file page, or "p.34" / "34" for printed book page
+      if (val.startsWith('#')) {
+        const fp = parseInt(val.slice(1), 10);
+        if (!isNaN(fp)) { jumpToBookFilePage(fp, true); return; }
+      }
+      const numMatch = val.match(/\d+/);
+      if (numMatch) {
+        const printed = parseInt(numMatch[0], 10);
+        if (!isNaN(printed)) {
+          const offset = typeof book.printedPageOffset === 'number' ? book.printedPageOffset : 0;
+          const fp = printed + offset;
+          jumpToBookFilePage(Math.max(1, Math.min(book.totalPages, fp)), true);
+        }
+      }
     }
 
     // ==================== 4B. QUESTION TYPE LIBRARY (公立1-9题型目录与样页) ====================
@@ -1824,6 +2674,7 @@
       const grid = document.getElementById('syllabusGrid');
       grid.innerHTML = list.map(item => {
         const gm = GRADE_META[item.grade] || GRADE_META.g9;
+        const bookLink = findBookUnitBySyllabusId(item.id);
         return `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-2.5 text-xs flex flex-col justify-between">
             <div class="space-y-2">
@@ -1844,7 +2695,10 @@
             </div>
             <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border)]">
               <span class="text-[var(--muted-foreground)]">中考映射：<strong class="text-[var(--foreground)]">${item.examMap}</strong></span>
-              <button data-toggle-verify="${item.id}" class="text-[var(--link)] hover:underline cursor-pointer">切换校准状态</button>
+              <div class="flex items-center gap-3">
+                ${bookLink ? `<button data-syl-open-book="${bookLink.book.id}" data-syl-start-page="${bookLink.item.startFile}" class="px-2 py-0.5 rounded-md border border-[var(--primary)]/40 bg-[var(--content)] text-[var(--primary)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] cursor-pointer transition">📖 翻看原书 (${escapeHtml(bookLink.item.pageLabel)})</button>` : ''}
+                <button data-toggle-verify="${item.id}" class="text-[var(--link)] hover:underline cursor-pointer">切换校准状态</button>
+              </div>
             </div>
           </div>`;
       }).join('') || `<div class="md:col-span-2 text-center py-8 text-xs text-[var(--muted-foreground)]">未匹配到考纲条目</div>`;
@@ -1856,6 +2710,9 @@
           saveSyllabus();
           renderMasterSyllabus();
         };
+      });
+      grid.querySelectorAll('[data-syl-open-book]').forEach(btn => {
+        btn.onclick = () => openBookReader(btn.dataset.sylOpenBook, Number(btn.dataset.sylStartPage || 1));
       });
     }
 
@@ -3613,6 +4470,95 @@
     document.querySelectorAll('#studentSubNav .tab-btn').forEach(btn => {
       btn.onclick = () => { activeStudentTab = btn.dataset.stab; renderStudentWorkspace(); };
     });
+    document.querySelectorAll('#fltrpSubNav .tab-btn').forEach(btn => {
+      btn.onclick = () => {
+        activeFltrpSub = btn.dataset.fsub;
+        if (activeFltrpSub === 'books') {
+          // Clicking "外研社书目" while already reading returns cleanly to shelf if clicked again
+          if (btn.classList.contains('active') && bookState.activeBookId) {
+            bookState.activeBookId = null;
+          }
+        }
+        renderFltrpView();
+      };
+    });
+    document.getElementById('btnBookBackShelf').onclick = () => {
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      bookState.activeBookId = null;
+      renderFltrpView();
+    };
+    document.getElementById('btnBookToggleToc').onclick = () => {
+      bookState.showToc = !bookState.showToc;
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookPrev').onclick = () => stepBookPage(-1);
+    document.getElementById('btnBookNext').onclick = () => stepBookPage(1);
+    document.getElementById('btnStagePrev').onclick = () => stepBookPage(-1);
+    document.getElementById('btnStageNext').onclick = () => stepBookPage(1);
+    document.getElementById('btnBookModeDual').onclick = () => {
+      if (bookState.viewMode === 'dual') return;
+      bookState.viewMode = 'dual';
+      const idx = bookState.spreads.findIndex(sp => sp.includes(bookState.singlePage));
+      if (idx >= 0) bookState.spreadIndex = idx;
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookModeSingle').onclick = () => {
+      if (bookState.viewMode === 'single') return;
+      bookState.viewMode = 'single';
+      const sp = bookState.spreads[bookState.spreadIndex];
+      if (sp && sp.length && !sp.includes(bookState.singlePage)) bookState.singlePage = sp[0];
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookZoomIn').onclick = () => {
+      bookState.zoom = Math.min(220, bookState.zoom + 25);
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookZoomOut').onclick = () => {
+      bookState.zoom = Math.max(75, bookState.zoom - 25);
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookZoomReset').onclick = () => {
+      bookState.zoom = 100;
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookToggleThumbs').onclick = () => {
+      bookState.showThumbs = !bookState.showThumbs;
+      bookState.lastDirection = null;
+      renderBookReader();
+    };
+    document.getElementById('btnBookFullscreen').onclick = () => {
+      const shell = document.getElementById('bookReaderShell');
+      if (!shell) return;
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      else if (shell.requestFullscreen) shell.requestFullscreen().catch(() => {});
+    };
+    document.addEventListener('fullscreenchange', () => {
+      if (activeGlobalView === 'syllabus' && activeFltrpSub === 'books' && bookState.activeBookId) {
+        bookState.lastDirection = null;
+        setTimeout(renderBookReader, 60);
+      }
+    });
+    document.getElementById('bookTocSearch').oninput = (e) => {
+      bookState.tocSearch = e.target.value;
+      const book = getActiveBook();
+      if (!book) return;
+      const pagesToShow = bookState.viewMode === 'dual' ? (bookState.spreads[bookState.spreadIndex] || [1]) : [bookState.singlePage];
+      renderBookToc(book, pagesToShow);
+    };
+    document.getElementById('bookPageJumpForm').onsubmit = (e) => {
+      e.preventDefault();
+      const inp = document.getElementById('bookPageJumpInput');
+      handleBookPageJump(inp.value);
+      inp.blur();
+    };
+    document.getElementById('bookPageJumpInput').onfocus = (e) => e.target.select();
+
     document.querySelectorAll('#examStdSubNav .tab-btn').forEach(btn => {
       btn.onclick = () => { activeExamStdSub = btn.dataset.esub; renderExamStdView(); };
     });
@@ -3715,6 +4661,14 @@
         else if (e.key === '-') { modalState.zoom = Math.max(75, modalState.zoom - 25); updateModalZoom(); }
         return;
       }
+      if (activeGlobalView === 'syllabus' && activeFltrpSub === 'books' && bookState.activeBookId && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); stepBookPage(1); }
+        else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); stepBookPage(-1); }
+        else if (e.key === '+' || e.key === '=') { bookState.zoom = Math.min(220, bookState.zoom + 25); bookState.lastDirection = null; renderBookReader(); }
+        else if (e.key === '-') { bookState.zoom = Math.max(75, bookState.zoom - 25); bookState.lastDirection = null; renderBookReader(); }
+        else if (e.key === '0') { bookState.zoom = 100; bookState.lastDirection = null; renderBookReader(); }
+        return;
+      }
       if (activeGlobalView === 'examstd' && activeExamStdSub === 'qtypes' && qtypeCatalog && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
           const group = qtypeCatalog.types
@@ -3730,7 +4684,14 @@
       }
     });
 
-    window.addEventListener('resize', () => { if (activeGlobalView === 'student-workspace' && activeStudentTab === 'overview') drawStudentCharts(getStudent()); });
+    let bookResizeTimer = null;
+    window.addEventListener('resize', () => {
+      if (activeGlobalView === 'student-workspace' && activeStudentTab === 'overview') drawStudentCharts(getStudent());
+      if (activeGlobalView === 'syllabus' && activeFltrpSub === 'books' && bookState.activeBookId) {
+        clearTimeout(bookResizeTimer);
+        bookResizeTimer = setTimeout(() => { bookState.lastDirection = null; renderBookReader(); }, 100);
+      }
+    });
     window.addEventListener('themechange', () => { if (activeGlobalView === 'student-workspace' && activeStudentTab === 'overview') drawStudentCharts(getStudent()); });
 
     // Init

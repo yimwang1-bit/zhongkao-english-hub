@@ -1,0 +1,244 @@
+{
+  "publisher": "外语教学与研究出版社（FLTRP）",
+  "series": "2024新版 义务教育教科书 · 初中英语",
+  "updatedAt": "2026-11-27",
+  "books": [
+    {
+      "id": "fltrp-7a",
+      "code": "7-A",
+      "grade": "七年级 上册",
+      "shortLabel": "七上 · 7A",
+      "stage": "三级（小初衔接 Starter + 6 Units）",
+      "status": "planned",
+      "accent": "#0d9488",
+      "totalPages": 0,
+      "summary": "含 Starter 衔接单元与 6 个核心主题单元，待上传书页后自动上架。"
+    },
+    {
+      "id": "fltrp-7b",
+      "code": "7-B",
+      "grade": "七年级 下册",
+      "shortLabel": "七下 · 7B",
+      "stage": "三级（6 Units）",
+      "status": "planned",
+      "accent": "#0284c7",
+      "totalPages": 0,
+      "summary": "外研社七年级下册新版教材，待上传书页后自动上架。"
+    },
+    {
+      "id": "fltrp-8a",
+      "code": "8-A",
+      "grade": "八年级 上册",
+      "shortLabel": "八上 · 8A",
+      "stage": "三级+（6 Units + 9 Appendices）",
+      "status": "available",
+      "accent": "#d94826",
+      "edition": "2024 国家教材委员会审核通过",
+      "totalPages": 163,
+      "printedPageOffset": 5,
+      "printedPageMinFile": 7,
+      "printedPageMaxFile": 161,
+      "frontSinglePages": [1, 2],
+      "backSinglePages": [163],
+      "coverImage": "./assets/books/fltrp-8a/thumbs/p001.webp",
+      "pageUrlPattern": "./assets/books/fltrp-8a/pages/p{NNN}.webp",
+      "thumbUrlPattern": "./assets/books/fltrp-8a/thumbs/p{NNN}.webp",
+      "driveFolderUrl": "https://drive.google.com/drive/folders/11_JfHTDmlmvG3FknN7qdULZnaTjphTe1",
+      "summary": "已按原书目录完整还原全册 163 页：封面/前言/总目录、Unit 1–6 正课、9 大 Appendices 附录与后记封底，支持双页仿真对开与考纲联动。",
+      "specialLabels": {
+        "1": "封面",
+        "2": "扉页",
+        "3": "扉页背面",
+        "4": "前言",
+        "5": "目录（左）",
+        "6": "目录（右）",
+        "103": "Appendices 扉页",
+        "162": "后记",
+        "163": "封底"
+      },
+      "toc": [
+        {
+          "group": "front",
+          "groupLabel": "前页与总目录",
+          "items": [
+            { "id": "8a-cover", "title": "封面 · 英语 八年级 上册", "startFile": 1, "endFile": 1, "pageLabel": "封面" },
+            { "id": "8a-title", "title": "扉页与编者信息", "startFile": 2, "endFile": 3, "pageLabel": "扉页" },
+            { "id": "8a-preface", "title": "前言", "startFile": 4, "endFile": 4, "pageLabel": "前言" },
+            { "id": "8a-scope", "title": "Scope and sequence（全书总目录）", "startFile": 5, "endFile": 6, "pageLabel": "目录跨页" }
+          ]
+        },
+        {
+          "group": "units",
+          "groupLabel": "正课单元（Unit 1 – Unit 6）",
+          "items": [
+            {
+              "id": "8a-u1",
+              "code": "Unit 1",
+              "title": "This is me",
+              "subtitle": "自我认知 · 现在完成时 (1)",
+              "syllabusId": "syl_8a_u1",
+              "startFile": 7,
+              "endFile": 22,
+              "pageLabel": "p.2–17",
+              "children": [
+                { "id": "8a-u1-so", "title": "Starting out", "startFile": 7, "pageLabel": "p.2–3" },
+                { "id": "8a-u1-ur", "title": "Understanding ideas · A red, red rose", "startFile": 9, "pageLabel": "p.4–6" },
+                { "id": "8a-u1-ug", "title": "Grammar · Present perfect tense (1)", "startFile": 12, "pageLabel": "p.7–8" },
+                { "id": "8a-u1-dl", "title": "Developing ideas · Listening & speaking", "startFile": 14, "pageLabel": "p.9–11" },
+                { "id": "8a-u1-dr", "title": "Reading for writing · Impossible → I'm possible", "startFile": 17, "pageLabel": "p.12–15" },
+                { "id": "8a-u1-pr", "title": "Presenting ideas & Reflection", "startFile": 21, "pageLabel": "p.16–17" }
+              ]
+            },
+            {
+              "id": "8a-u2",
+              "code": "Unit 2",
+              "title": "Getting along",
+              "subtitle": "人际和谐 · 现在完成时 (2)",
+              "syllabusId": "syl_8a_u2",
+              "startFile": 23,
+              "endFile": 38,
+              "pageLabel": "p.18–33",
+              "children": [
+                { "id": "8a-u2-so", "title": "Starting out", "startFile": 23, "pageLabel": "p.18–19" },
+                { "id": "8a-u2-ur", "title": "Understanding ideas · The selfish giant", "startFile": 25, "pageLabel": "p.20–22" },
+                { "id": "8a-u2-ug", "title": "Grammar · Present perfect tense (2)", "startFile": 28, "pageLabel": "p.23–24" },
+                { "id": "8a-u2-dl", "title": "Developing ideas · Expressing yourself", "startFile": 30, "pageLabel": "p.25–27" },
+                { "id": "8a-u2-dr", "title": "Reading for writing · Six chi away, but closer together", "startFile": 33, "pageLabel": "p.28–31" },
+                { "id": "8a-u2-pr", "title": "Presenting ideas & Reflection", "startFile": 37, "pageLabel": "p.32–33" }
+              ]
+            },
+            {
+              "id": "8a-u3",
+              "code": "Unit 3",
+              "title": "Make it happen!",
+              "subtitle": "发明创造 · 不定式与 -ing 作宾语",
+              "syllabusId": "syl_8a_u3",
+              "startFile": 39,
+              "endFile": 54,
+              "pageLabel": "p.34–49",
+              "children": [
+                { "id": "8a-u3-so", "title": "Starting out", "startFile": 39, "pageLabel": "p.34–35" },
+                { "id": "8a-u3-ur", "title": "Understanding ideas · A helping hand", "startFile": 41, "pageLabel": "p.36–38" },
+                { "id": "8a-u3-ug", "title": "Grammar · Infinitive and -ing as object", "startFile": 44, "pageLabel": "p.39–40" },
+                { "id": "8a-u3-dl", "title": "Developing ideas · Qualities of an inventor", "startFile": 46, "pageLabel": "p.41–43" },
+                { "id": "8a-u3-dr", "title": "Reading for writing · The power of curiosity", "startFile": 49, "pageLabel": "p.44–47" },
+                { "id": "8a-u3-pr", "title": "Presenting ideas & Reflection", "startFile": 53, "pageLabel": "p.48–49" }
+              ]
+            },
+            {
+              "id": "8a-u4",
+              "code": "Unit 4",
+              "title": "Digital life",
+              "subtitle": "数字生活 · 不定式作宾补",
+              "syllabusId": "syl_8a_u4",
+              "startFile": 55,
+              "endFile": 70,
+              "pageLabel": "p.50–65",
+              "children": [
+                { "id": "8a-u4-so", "title": "Starting out", "startFile": 55, "pageLabel": "p.50–51" },
+                { "id": "8a-u4-ur", "title": "Understanding ideas · Digital shock", "startFile": 57, "pageLabel": "p.52–54" },
+                { "id": "8a-u4-ug", "title": "Grammar · Infinitive as object complement", "startFile": 60, "pageLabel": "p.55–56" },
+                { "id": "8a-u4-dl", "title": "Developing ideas · Digital detox", "startFile": 62, "pageLabel": "p.57–59" },
+                { "id": "8a-u4-dr", "title": "Reading for writing · The fun they had", "startFile": 65, "pageLabel": "p.60–63" },
+                { "id": "8a-u4-pr", "title": "Presenting ideas & Reflection", "startFile": 69, "pageLabel": "p.64–65" }
+              ]
+            },
+            {
+              "id": "8a-u5",
+              "code": "Unit 5",
+              "title": "Play by the rules?",
+              "subtitle": "规则意识 · 不定式作目的状语",
+              "syllabusId": "syl_8a_u5",
+              "startFile": 71,
+              "endFile": 86,
+              "pageLabel": "p.66–81",
+              "children": [
+                { "id": "8a-u5-so", "title": "Starting out", "startFile": 71, "pageLabel": "p.66–67" },
+                { "id": "8a-u5-ur", "title": "Understanding ideas · Rules", "startFile": 73, "pageLabel": "p.68–70" },
+                { "id": "8a-u5-ug", "title": "Grammar · Infinitive of purpose", "startFile": 76, "pageLabel": "p.71–72" },
+                { "id": "8a-u5-dl", "title": "Developing ideas · Should rules be broken?", "startFile": 78, "pageLabel": "p.73–75" },
+                { "id": "8a-u5-dr", "title": "Reading for writing · Are you safe online?", "startFile": 81, "pageLabel": "p.76–79" },
+                { "id": "8a-u5-pr", "title": "Presenting ideas & Reflection", "startFile": 85, "pageLabel": "p.80–81" }
+              ]
+            },
+            {
+              "id": "8a-u6",
+              "code": "Unit 6",
+              "title": "When disaster strikes",
+              "subtitle": "自然灾害 · 过去进行时",
+              "syllabusId": "syl_8a_u6",
+              "startFile": 87,
+              "endFile": 102,
+              "pageLabel": "p.82–97",
+              "children": [
+                { "id": "8a-u6-so", "title": "Starting out", "startFile": 87, "pageLabel": "p.82–83" },
+                { "id": "8a-u6-ur", "title": "Understanding ideas · A lost city", "startFile": 89, "pageLabel": "p.84–86" },
+                { "id": "8a-u6-ug", "title": "Grammar · Past continuous tense", "startFile": 92, "pageLabel": "p.87–88" },
+                { "id": "8a-u6-dl", "title": "Developing ideas · Disaster warning", "startFile": 94, "pageLabel": "p.89–91" },
+                { "id": "8a-u6-dr", "title": "Reading for writing · Iron girl", "startFile": 97, "pageLabel": "p.92–95" },
+                { "id": "8a-u6-pr", "title": "Presenting ideas & Reflection", "startFile": 101, "pageLabel": "p.96–97" }
+              ]
+            }
+          ]
+        },
+        {
+          "group": "appendices",
+          "groupLabel": "Appendices 附录（按原书顺序）",
+          "items": [
+            { "id": "8a-app-cover", "title": "Appendices 附录总目", "startFile": 103, "endFile": 103, "pageLabel": "p.98" },
+            { "id": "8a-app-phonetics", "title": "Phonetics in use（语音练习）", "startFile": 104, "endFile": 105, "pageLabel": "p.99–100" },
+            { "id": "8a-app-comm", "title": "Communication bank（交际表达库）", "startFile": 106, "endFile": 109, "pageLabel": "p.101–104" },
+            { "id": "8a-app-notes", "title": "Language notes（课文语言注释）", "startFile": 110, "endFile": 129, "pageLabel": "p.105–124" },
+            { "id": "8a-app-grammar", "title": "Guide to the language use（语法指南）", "startFile": 130, "endFile": 140, "pageLabel": "p.125–135" },
+            { "id": "8a-app-words", "title": "Words and expressions（单元词汇表）", "startFile": 141, "endFile": 145, "pageLabel": "p.136–140" },
+            { "id": "8a-app-proper", "title": "Proper nouns（专有名词表）", "startFile": 146, "endFile": 147, "pageLabel": "p.141–142" },
+            { "id": "8a-app-vocab", "title": "Vocabulary（A–Z 总词汇表）", "startFile": 148, "endFile": 153, "pageLabel": "p.143–148" },
+            { "id": "8a-app-pron", "title": "Pronunciation guide（国际音标指南）", "startFile": 154, "endFile": 156, "pageLabel": "p.149–151" },
+            { "id": "8a-app-verbs", "title": "Irregular verbs（不规则动词表）", "startFile": 157, "endFile": 161, "pageLabel": "p.152–156" }
+          ]
+        },
+        {
+          "group": "back",
+          "groupLabel": "尾页",
+          "items": [
+            { "id": "8a-postscript", "title": "后记", "startFile": 162, "endFile": 162, "pageLabel": "后记" },
+            { "id": "8a-backcover", "title": "封底", "startFile": 163, "endFile": 163, "pageLabel": "封底" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fltrp-8b",
+      "code": "8-B",
+      "grade": "八年级 下册",
+      "shortLabel": "八下 · 8B",
+      "stage": "三级+ → 中考过渡枢纽",
+      "status": "planned",
+      "accent": "#7c3aed",
+      "totalPages": 0,
+      "summary": "外研社八年级下册新版教材，待上传书页后自动上架。"
+    },
+    {
+      "id": "fltrp-9a",
+      "code": "9-A",
+      "grade": "九年级 上册",
+      "shortLabel": "九上 · 9A",
+      "stage": "四级 · 中考冲刺上册",
+      "status": "planned",
+      "accent": "#d97706",
+      "totalPages": 0,
+      "summary": "外研社九年级上册新版教材，待上传书页后自动上架。"
+    },
+    {
+      "id": "fltrp-9b",
+      "code": "9-B",
+      "grade": "九年级 下册",
+      "shortLabel": "九下 · 9B",
+      "stage": "四级 · 中考总复习",
+      "status": "planned",
+      "accent": "#dc2626",
+      "totalPages": 0,
+      "summary": "外研社九年级下册新版教材，待上传书页后自动上架。"
+    }
+  ]
+}
