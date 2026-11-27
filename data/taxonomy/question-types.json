@@ -1,0 +1,1120 @@
+{
+  "version": "1.0.0",
+  "source": "公立1-9题型.xlsx",
+  "defaultSelectedId": "w_read_grammar_cloze",
+  "modalities": [
+    {
+      "id": "written",
+      "label": "笔试",
+      "skills": [
+        {
+          "id": "vocab",
+          "label": "vocab"
+        },
+        {
+          "id": "grammar",
+          "label": "grammar"
+        },
+        {
+          "id": "phonics",
+          "label": "Phonics"
+        },
+        {
+          "id": "reading",
+          "label": "reading"
+        },
+        {
+          "id": "writing",
+          "label": "writing"
+        }
+      ]
+    },
+    {
+      "id": "listening",
+      "label": "听力",
+      "skills": [
+        {
+          "id": "vocab",
+          "label": "vocab"
+        },
+        {
+          "id": "grammar",
+          "label": "grammar"
+        },
+        {
+          "id": "phonics",
+          "label": "Phonics"
+        }
+      ]
+    }
+  ],
+  "interactionPatterns": {
+    "matching": "消消乐 / 配对",
+    "single_choice": "单选 / Recognition",
+    "true_false": "正误判断 (√/×)",
+    "passage_choice": "语篇内嵌选择",
+    "fill_blank": "答题卡 / 填空",
+    "ordering": "排序 / 连词成句",
+    "sentence_writing": "仿写 / 写句",
+    "essay_writing": "书面表达 / 作文"
+  },
+  "types": [
+    {
+      "id": "w_vocab_recognition",
+      "order": 1,
+      "modality": "written",
+      "skill": "vocab",
+      "excelName": "辨认",
+      "displayName": "看图辨认选词",
+      "grades": [
+        3
+      ],
+      "interactionPattern": "matching",
+      "uiTag": "消消乐",
+      "status": "ready",
+      "summary": "根据图片含义匹配正确单词编号，考查基础词汇图义对应。",
+      "sampleImage": "./assets/question-types/written/w_vocab_recognition.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "看图选单词编号",
+        "examRole": "小学三年级词汇辨认"
+      }
+    },
+    {
+      "id": "w_vocab_case_writing",
+      "order": 2,
+      "modality": "written",
+      "skill": "vocab",
+      "excelName": "writing-字母大小写",
+      "displayName": "字母大小写转换抄写",
+      "grades": [
+        3
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "答题卡",
+      "status": "ready",
+      "summary": "在四线格内完成单词大小写互转，考查规范书写与字母辨识。",
+      "sampleImage": "./assets/question-types/written/w_vocab_case_writing.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "四线格大小写互转",
+        "examRole": "小学三年级规范书写"
+      }
+    },
+    {
+      "id": "w_vocab_picture_writing",
+      "order": 3,
+      "modality": "written",
+      "skill": "vocab",
+      "excelName": "writing-图片",
+      "displayName": "看图选词填空",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "答题卡",
+      "status": "ready",
+      "summary": "结合图片与备选词框补全句子并规范书写在四线格内。",
+      "sampleImage": "./assets/question-types/written/w_vocab_picture_writing.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "词库选词填入四线格",
+        "examRole": "小学 3–4 年级词汇拼写"
+      }
+    },
+    {
+      "id": "w_vocab_cn_writing",
+      "order": 4,
+      "modality": "written",
+      "skill": "vocab",
+      "excelName": "writing-中文",
+      "displayName": "中文提示拼写填空",
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "答题卡",
+      "status": "ready",
+      "summary": "根据中文释义在语境中拼写合适单词补全句子。",
+      "sampleImage": "./assets/question-types/written/w_vocab_cn_writing.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "根据中文补全单词",
+        "examRole": "小学 3–6 年级语境拼词"
+      }
+    },
+    {
+      "id": "w_vocab_semantic_match",
+      "order": 5,
+      "modality": "written",
+      "skill": "vocab",
+      "excelName": "语义",
+      "displayName": "英英释义配对",
+      "grades": [
+        6
+      ],
+      "interactionPattern": "matching",
+      "uiTag": "消消乐",
+      "status": "ready",
+      "summary": "将目标词汇与对应英文解释进行匹配，考查词汇语境理解。",
+      "sampleImage": "./assets/question-types/written/w_vocab_semantic_match.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "A/B 栏英英释义配对",
+        "examRole": "小学六年级语义理解"
+      }
+    },
+    {
+      "id": "w_gram_dialog_cn_to_en",
+      "order": 1,
+      "modality": "written",
+      "skill": "grammar",
+      "excelName": "对话-中文选英文",
+      "displayName": "中文情景选英文表达",
+      "grades": [
+        3
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "Recognition",
+      "status": "ready",
+      "summary": "根据中文交际情景提示，二选一选出得体英文表达。",
+      "sampleImage": "./assets/question-types/written/w_gram_dialog_cn_to_en.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "A / B 二选一",
+        "examRole": "小学三年级情景交际"
+      }
+    },
+    {
+      "id": "w_gram_dialog_qa_match",
+      "order": 2,
+      "modality": "written",
+      "skill": "grammar",
+      "excelName": "对话-英文选英文",
+      "displayName": "英文问句与答句配对",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "matching",
+      "uiTag": "消消乐",
+      "status": "ready",
+      "summary": "为 A 栏问句匹配 B 栏恰当答语，考查基础句型问答逻辑。",
+      "sampleImage": "./assets/question-types/written/w_gram_dialog_qa_match.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "A 栏问句配 B 栏答句",
+        "examRole": "小学 3–4 年级问答配对"
+      }
+    },
+    {
+      "id": "w_gram_dialog_complete",
+      "order": 3,
+      "modality": "written",
+      "skill": "grammar",
+      "excelName": "对话-选择",
+      "displayName": "选句补全对话",
+      "grades": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "interactionPattern": "passage_choice",
+      "uiTag": "语篇内嵌选择",
+      "status": "ready",
+      "summary": "阅读完整对话，从方框备选句中选择恰当句子补全上下文。",
+      "sampleImage": "./assets/question-types/written/w_gram_dialog_complete.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "方框五选五填编号",
+        "examRole": "小学 3–6 年级补全对话"
+      }
+    },
+    {
+      "id": "w_gram_sentence_mcq",
+      "order": 4,
+      "modality": "written",
+      "skill": "grammar",
+      "excelName": "句子-选单词",
+      "displayName": "单项选择（语境三选一）",
+      "grades": [
+        5,
+        6,
+        9
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "单选",
+      "status": "ready",
+      "summary": "单句三选一，考查冠词、介词、代词、时态及交际应答。",
+      "sampleImage": "./assets/question-types/written/w_gram_sentence_mcq.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "10 题 × 1 分 = 10 分",
+        "response": "A / B / C 三选一",
+        "examRole": "小学 5–6 / 初三单项选择"
+      }
+    },
+    {
+      "id": "w_gram_reorder_sentence",
+      "order": 5,
+      "modality": "written",
+      "skill": "grammar",
+      "excelName": "writing-重组句子",
+      "displayName": "连词成句",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "ordering",
+      "uiTag": "排序重组",
+      "status": "ready",
+      "summary": "依据所给词汇与标点提示，按正确英语句法语序连词成句。",
+      "sampleImage": "./assets/question-types/written/w_gram_reorder_sentence.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "按标点连词成句",
+        "examRole": "小学 5–6 年级句法语序"
+      }
+    },
+    {
+      "id": "w_gram_picture_sentence",
+      "order": 6,
+      "modality": "written",
+      "skill": "grammar",
+      "excelName": "writing-写句子",
+      "displayName": "看图仿写句子",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "sentence_writing",
+      "uiTag": "仿写",
+      "status": "ready",
+      "summary": "观察图片与例句结构，仿照写出完整陈述句或问答句。",
+      "sampleImage": "./assets/question-types/written/w_gram_picture_sentence.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1.5 分 = 7.5 分",
+        "response": "看图仿照例句写句",
+        "examRole": "小学 5–6 年级句型输出"
+      }
+    },
+    {
+      "id": "w_phonics_judge_2words",
+      "order": 1,
+      "modality": "written",
+      "skill": "phonics",
+      "excelName": "辨认-2 words",
+      "displayName": "两词划线部分辨音判断",
+      "grades": [
+        5
+      ],
+      "interactionPattern": "true_false",
+      "uiTag": "判断 √/×",
+      "status": "ready",
+      "summary": "判断每组两个单词划线部分读音是否相同（√/×）。",
+      "sampleImage": "./assets/question-types/written/w_phonics_judge_2words.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "判断相同 √ / 不同 ×",
+        "examRole": "小学五年级语音辨析"
+      }
+    },
+    {
+      "id": "w_phonics_odd_3words",
+      "order": 2,
+      "modality": "written",
+      "skill": "phonics",
+      "excelName": "辨认-3 words",
+      "displayName": "三词划线部分选不同音",
+      "grades": [
+        6
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "三选一",
+      "status": "ready",
+      "summary": "从三个单词中选出划线部分发音与另外两个不同的一项。",
+      "sampleImage": "./assets/question-types/written/w_phonics_odd_3words.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "A / B / C 选不同发音",
+        "examRole": "小学六年级语音进阶"
+      }
+    },
+    {
+      "id": "w_read_true_false",
+      "order": 1,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "yes or no",
+      "displayName": "阅读判断正误",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "true_false",
+      "uiTag": "判断 √/×",
+      "status": "ready",
+      "summary": "根据短文内容判断陈述正误，考查细节定位与同义转换。",
+      "sampleImage": "./assets/question-types/written/w_read_true_false.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "判断正误 √ / ×",
+        "examRole": "小学 5–6 年级基础阅读"
+      }
+    },
+    {
+      "id": "w_read_mcq_basic",
+      "order": 2,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "mutiple choice",
+      "displayName": "阅读选择（三选一）",
+      "grades": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "单选",
+      "status": "ready",
+      "summary": "通读叙事或说明短文，完成三选一细节与主旨理解题。",
+      "sampleImage": "./assets/question-types/written/w_read_mcq_basic.webp",
+      "renderedSample": null,
+      "dataNote": "Excel 原表拼写为 mutiple choice，已规范化显示。",
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "A / B / C 三选一",
+        "examRole": "6–9 年级语篇阅读选择"
+      }
+    },
+    {
+      "id": "w_read_gap_fill_basic",
+      "order": 3,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "填空",
+      "displayName": "阅读信息补全填空",
+      "grades": [
+        6
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "答题卡",
+      "status": "ready",
+      "summary": "根据短文内容每空一词补全摘要句子，考查信息提取能力。",
+      "sampleImage": "./assets/question-types/written/w_read_gap_fill_basic.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 空（每空一词）",
+        "response": "短文信息提取填空",
+        "examRole": "六年级任务型阅读衔接"
+      }
+    },
+    {
+      "id": "w_read_grammar_cloze",
+      "order": 4,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "短文-单词语法选择",
+      "displayName": "语法选择（语篇三选一）",
+      "grades": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "passage_choice",
+      "uiTag": "语篇内嵌单选",
+      "status": "ready",
+      "summary": "广东/佛山中考笔试第一大题。在完整短文语境中设置 10 处语法空缺，三选一综合考查代词、冠词、介词、连词、时态语态、非谓语及感叹句/从句。",
+      "formatSpec": {
+        "itemCount": "10 题 × 1 分 = 10 分",
+        "response": "A / B / C 三选一",
+        "examRole": "广东中考笔试第一大题"
+      },
+      "sampleImage": "./assets/question-types/written/w_read_grammar_cloze.webp",
+      "renderedSample": {
+        "heading": "一、语法选择（本大题共 10 小题，每小题 1 分，共 10 分）",
+        "instruction": "请通读下面短文，掌握其大意，根据语法和上下文连贯的要求，从每小题所给的三个选项中选出一个最佳答案，并将答题卡上对应题目所选的选项涂黑。",
+        "paragraphs": [
+          "As a child, I love playing the piano. I ask my parents to buy me a piano, but ___1___ have no money. It is too expensive for our family ___2___ one. I feel sad about that.",
+          "In our school, there ___3___ a piano, but we can use it only in the music class. After class, our music teacher Mr Smith locks (锁) the door to the piano room, ___4___ nobody can use the piano.",
+          "Every day, when I pass by the piano room, I always stop and look at the piano. I can feel my ___5___ dancing at the piano and they look so beautiful. Mr Smith ___6___ me do that often. He asks me to come to his office and gives me a key to the piano room ___7___ Monday. I can get into the room before and after school to play the piano. I jump with happiness when I get ___8___ key.",
+          "Now I go to school half an hour early to play the piano and I'm playing very ___9___. Mr. Smith's kindness means a lot to me. ___10___ kind teacher he is! All I want to say to Mr Smith is “Thanks”."
+        ],
+        "options": [
+          {
+            "num": 1,
+            "choices": [
+              "A. they",
+              "B. them",
+              "C. their"
+            ],
+            "point": "人称代词主格"
+          },
+          {
+            "num": 2,
+            "choices": [
+              "A. buy",
+              "B. buying",
+              "C. to buy"
+            ],
+            "point": "It is adj. for sb. to do"
+          },
+          {
+            "num": 3,
+            "choices": [
+              "A. are",
+              "B. is",
+              "C. will be"
+            ],
+            "point": "there be 主谓一致"
+          },
+          {
+            "num": 4,
+            "choices": [
+              "A. so",
+              "B. but",
+              "C. or"
+            ],
+            "point": "并列因果连词"
+          },
+          {
+            "num": 5,
+            "choices": [
+              "A. hand",
+              "B. hands",
+              "C. hand's"
+            ],
+            "point": "名词单复数（呼应 they）"
+          },
+          {
+            "num": 6,
+            "choices": [
+              "A. see",
+              "B. sees",
+              "C. is seeing"
+            ],
+            "point": "一般现在时三单"
+          },
+          {
+            "num": 7,
+            "choices": [
+              "A. at",
+              "B. in",
+              "C. on"
+            ],
+            "point": "星期前时间介词 on"
+          },
+          {
+            "num": 8,
+            "choices": [
+              "A. the",
+              "B. an",
+              "C. a"
+            ],
+            "point": "特指定冠词 the（前文提及）"
+          },
+          {
+            "num": 9,
+            "choices": [
+              "A. well",
+              "B. good",
+              "C. better"
+            ],
+            "point": "副词修饰动词 playing"
+          },
+          {
+            "num": 10,
+            "choices": [
+              "A. How",
+              "B. What",
+              "C. What a"
+            ],
+            "point": "感叹句 What a + adj. + n."
+          }
+        ]
+      }
+    },
+    {
+      "id": "w_read_semantic_cloze",
+      "order": 5,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "短文-单词语义选择",
+      "displayName": "完形填空（语篇四选一）",
+      "grades": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "passage_choice",
+      "uiTag": "语篇内嵌单选",
+      "status": "ready",
+      "summary": "中考第二大题，10 小题四选一，侧重上下文复现线索、词义辨析与情感逻辑。",
+      "sampleImage": "./assets/question-types/written/w_read_semantic_cloze.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "10 题 × 1 分 = 10 分",
+        "response": "A / B / C / D 四选一",
+        "examRole": "广东中考笔试第二大题"
+      }
+    },
+    {
+      "id": "w_read_comprehension",
+      "order": 6,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "阅读理解",
+      "displayName": "中考阅读理解（含图表/四选一）",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "单选",
+      "status": "ready",
+      "summary": "涵盖应用文图表、科普说明与记叙文，考查细节检索、词义猜测、推理与主旨结构。",
+      "sampleImage": "./assets/question-types/written/w_read_comprehension.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "15 题 × 2 分 = 30 分",
+        "response": "A / B / C / D 四选一",
+        "examRole": "广东中考笔试第三大题"
+      }
+    },
+    {
+      "id": "w_read_sentence_restore",
+      "order": 7,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "短文-句子选择",
+      "displayName": "七选五 / 还原句子",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "passage_choice",
+      "uiTag": "语篇句子配对",
+      "status": "ready",
+      "summary": "从 7 个备选句中选出 5 句还原回短文空缺处（2 项多余），考查篇章衔接与逻辑。",
+      "sampleImage": "./assets/question-types/written/w_read_sentence_restore.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 空（7 选 5）",
+        "response": "语篇还原句子配对",
+        "examRole": "7–9 年级阅读配对/新题型"
+      }
+    },
+    {
+      "id": "w_read_word_cloze_12to10",
+      "order": 8,
+      "modality": "written",
+      "skill": "reading",
+      "excelName": "短文-单词填空",
+      "displayName": "短文填空（12选10选词变形）",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "答题卡 · 词库变形",
+      "status": "ready",
+      "summary": "中考第四大题，从 12 个备选词中选 10 词并用正确形式填空（2 词多余）。",
+      "sampleImage": "./assets/question-types/written/w_read_word_cloze_12to10.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "10 题 × 1.5 分 = 15 分",
+        "response": "12 选 10 词形变化填空",
+        "examRole": "广东中考笔试第四大题"
+      }
+    },
+    {
+      "id": "w_write_guided_passage",
+      "order": 1,
+      "modality": "written",
+      "skill": "writing",
+      "excelName": "read and write",
+      "displayName": "要点提示类书面表达",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "essay_writing",
+      "uiTag": "写作编辑器",
+      "status": "ready",
+      "summary": "按中文分点内容要求与给定开头完成约 80 词短文写作。",
+      "sampleImage": "./assets/question-types/written/w_write_guided_passage.webp",
+      "renderedSample": null,
+      "dataNote": "Excel 原表模块名拼写为 wrting，已规范为 writing。",
+      "formatSpec": {
+        "itemCount": "1 篇 · 约 80 词 = 15 分",
+        "response": "中文要点提示写作",
+        "examRole": "7–9 年级书面表达"
+      }
+    },
+    {
+      "id": "w_write_mindmap_essay",
+      "order": 2,
+      "modality": "written",
+      "skill": "writing",
+      "excelName": "essay",
+      "displayName": "思维导图类书面表达",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "essay_writing",
+      "uiTag": "写作编辑器",
+      "status": "ready",
+      "summary": "广东中考主流作文形态，依据思维导图分支拓展信息完成约 80 词应用文/书信。",
+      "sampleImage": "./assets/question-types/written/w_write_mindmap_essay.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "1 篇 · 约 80 词 = 15 分",
+        "response": "思维导图提示写作",
+        "examRole": "广东中考笔试第五大题"
+      }
+    },
+    {
+      "id": "l_vocab_pic_2",
+      "order": 1,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "辨认-2 图",
+      "displayName": "听词选图（二选一）",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音二选一",
+      "status": "ready",
+      "summary": "听单词录音，从 A / B 两幅图片中选出相符的一项。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_pic_2.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5–10 题 · 每题 2 分",
+        "response": "听音 A / B 二图选一",
+        "examRole": "小学 3–4 年级基础听力"
+      }
+    },
+    {
+      "id": "l_vocab_pic_3",
+      "order": 2,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "辨认-3 图",
+      "displayName": "听词选图（三选一）",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音三选一",
+      "status": "ready",
+      "summary": "听录音，从 A / B / C 三幅图片中选出正确的一项。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_pic_3.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5–10 题 · 每题 1 分",
+        "response": "听音 A / B / C 三图选一",
+        "examRole": "小学 5–6 年级听词选图"
+      }
+    },
+    {
+      "id": "l_vocab_txt_2",
+      "order": 3,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "辨认-2 txt",
+      "displayName": "听音选词（二选一）",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音二选一",
+      "status": "ready",
+      "summary": "听录音辨别所听到的字母或单词（A / B 二选一）。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_txt_2.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听音 A / B 二词选一",
+        "examRole": "小学 3–4 年级听音辨词"
+      }
+    },
+    {
+      "id": "l_vocab_txt_3",
+      "order": 4,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "辨认-3 txt",
+      "displayName": "听音选词（三选一）",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音三选一",
+      "status": "ready",
+      "summary": "听录音从三个词汇选项中选出所听内容。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_txt_3.webp",
+      "renderedSample": null,
+      "dataNote": "待补原图：Excel 中 I15 当前复用了 M18（听问选答三选一）的截图。",
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听音 A / B / C 三选一",
+        "examRole": "小学 5–6 年级听音辨词"
+      }
+    },
+    {
+      "id": "l_vocab_ordering",
+      "order": 5,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "排序",
+      "displayName": "听音给图片标序号",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "ordering",
+      "uiTag": "拖拽排序",
+      "status": "ready",
+      "summary": "按录音播放顺序为多幅图片依次标上数字编号。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_ordering.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听音给图片标 1–5 序号",
+        "examRole": "小学 3–4 年级听音排序"
+      }
+    },
+    {
+      "id": "l_vocab_dictation",
+      "order": 6,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "writing",
+      "displayName": "听音四线格填词",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "听写答题卡",
+      "status": "ready",
+      "summary": "根据录音内容在句子四线格内听写核心词汇。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_dictation.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "四线格听写核心单词",
+        "examRole": "小学 5–6 年级听写拼词"
+      }
+    },
+    {
+      "id": "l_vocab_info_form",
+      "order": 7,
+      "modality": "listening",
+      "skill": "vocab",
+      "excelName": "writing-短文",
+      "displayName": "听填信息（短文信息卡）",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "信息卡填空",
+      "status": "ready",
+      "summary": "听短文两遍，提取关键实词填写信息卡片（5 小题）。",
+      "sampleImage": "./assets/question-types/listening/l_vocab_info_form.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "听短文填表格信息卡",
+        "examRole": "7–9 年级听填信息"
+      }
+    },
+    {
+      "id": "l_gram_sent_pic_2",
+      "order": 1,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "句子-2图",
+      "displayName": "听句子选图（二选一）",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音二选一",
+      "status": "ready",
+      "summary": "听句子录音，选出与句意相符的图片（二选一）。",
+      "sampleImage": "./assets/question-types/listening/l_gram_sent_pic_2.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听句子 A / B 二图选一",
+        "examRole": "小学 3–4 年级听句理解"
+      }
+    },
+    {
+      "id": "l_gram_pic_judge",
+      "order": 2,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "辨认-yes or no",
+      "displayName": "听音判断图意正误",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "true_false",
+      "uiTag": "判断 √/×",
+      "status": "ready",
+      "summary": "判断图片含义与录音句子是否一致（√/×）。",
+      "sampleImage": "./assets/question-types/listening/l_gram_pic_judge.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听音判图意正误 √ / ×",
+        "examRole": "小学 3–4 年级图句判断"
+      }
+    },
+    {
+      "id": "l_gram_sent_choice_2",
+      "order": 3,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "句子-选择2句子",
+      "displayName": "听录音选句子（二选一）",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音二选一",
+      "status": "ready",
+      "summary": "听句子录音，在 A / B 两个易混句型中选出所听句子。",
+      "sampleImage": "./assets/question-types/listening/l_gram_sent_choice_2.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听录音 A / B 二句选一",
+        "examRole": "小学 3–4 年级句型辨听"
+      }
+    },
+    {
+      "id": "l_gram_sent_choice_3",
+      "order": 4,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "句子-选择3句子",
+      "displayName": "听录音选选项/句子（三选一）",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音三选一",
+      "status": "ready",
+      "summary": "听录音辨识时间、号码、词组或完整句子（A / B / C 三选一）。",
+      "sampleImage": "./assets/question-types/listening/l_gram_sent_choice_3.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "听录音 A / B / C 三选一",
+        "examRole": "小学 5–6 年级细节辨听"
+      }
+    },
+    {
+      "id": "l_gram_dialog_qa_2",
+      "order": 5,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "对话-选择2 句子",
+      "displayName": "听问句选最佳答语（二选一）",
+      "grades": [
+        3,
+        4
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音二选一",
+      "status": "ready",
+      "summary": "听录音中的问题，从两项中选出最恰当的交际答语。",
+      "sampleImage": "./assets/question-types/listening/l_gram_dialog_qa_2.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听问题 A / B 选答语",
+        "examRole": "小学 3–4 年级听力问答"
+      }
+    },
+    {
+      "id": "l_gram_dialog_qa_3",
+      "order": 6,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "对话-选择3 句子",
+      "displayName": "听问句选最佳答语（三选一）",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音三选一",
+      "status": "ready",
+      "summary": "听录音中的问题，从 A / B / C 三项中选出最佳答语。",
+      "sampleImage": "./assets/question-types/listening/l_gram_dialog_qa_3.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听问题 A / B / C 选答语",
+        "examRole": "小学 5–6 年级听力问答"
+      }
+    },
+    {
+      "id": "l_gram_dialog_pic_3",
+      "order": 7,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "对话-3图",
+      "displayName": "听对话选图片（三选一）",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音三选一",
+      "status": "ready",
+      "summary": "初中核心听力题型，听简短对话并结合题干从三幅图中选出答案。",
+      "sampleImage": "./assets/question-types/listening/l_gram_dialog_pic_3.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "听对话 A / B / C 三图选一",
+        "examRole": "7–9 年级听对话选图"
+      }
+    },
+    {
+      "id": "l_gram_passage_judge",
+      "order": 8,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "短文-yes or no",
+      "displayName": "听短文判断正误",
+      "grades": [
+        6
+      ],
+      "interactionPattern": "true_false",
+      "uiTag": "判断 √/×",
+      "status": "ready",
+      "summary": "听短文录音，判断 5 道陈述句正误（√/×）。",
+      "sampleImage": "./assets/question-types/listening/l_gram_passage_judge.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1.5 分 = 7.5 分",
+        "response": "听短文判断正误 √ / ×",
+        "examRole": "六年级短文听力理解"
+      }
+    },
+    {
+      "id": "l_gram_monologue",
+      "order": 9,
+      "modality": "listening",
+      "skill": "grammar",
+      "excelName": "听独白",
+      "displayName": "听独白选最佳答案",
+      "grades": [
+        7,
+        8,
+        9
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音三选一",
+      "status": "ready",
+      "summary": "初中标准听独白题型，听两段独白完成 10 小题三选一细节与推理选择。",
+      "sampleImage": "./assets/question-types/listening/l_gram_monologue.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "10 题 × 1 分 = 10 分",
+        "response": "听两段独白三选一",
+        "examRole": "7–9 年级中考听独白"
+      }
+    },
+    {
+      "id": "l_phonics_letter_fill",
+      "order": 1,
+      "modality": "listening",
+      "skill": "phonics",
+      "excelName": "writing",
+      "displayName": "听音补全辅音字母",
+      "grades": [
+        3
+      ],
+      "interactionPattern": "fill_blank",
+      "uiTag": "听音填字母",
+      "status": "ready",
+      "summary": "根据录音读音从给定辅音字母中选择填空补全单词。",
+      "sampleImage": "./assets/question-types/listening/l_phonics_letter_fill.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 1 分 = 5 分",
+        "response": "听音选辅音字母填空",
+        "examRole": "小学三年级自然拼读听力"
+      }
+    },
+    {
+      "id": "l_phonics_minimal_pair",
+      "order": 2,
+      "modality": "listening",
+      "skill": "phonics",
+      "excelName": "2 words",
+      "displayName": "听音辨易混字母/词（二选一）",
+      "grades": [
+        5,
+        6
+      ],
+      "interactionPattern": "single_choice",
+      "uiTag": "听音二选一",
+      "status": "ready",
+      "summary": "听录音分辨最小对立体或易混发音（如 leg / red、dog / duck）。",
+      "sampleImage": "./assets/question-types/listening/l_phonics_minimal_pair.webp",
+      "renderedSample": null,
+      "formatSpec": {
+        "itemCount": "5 题 × 2 分 = 10 分",
+        "response": "听音辨易混字母/词二选一",
+        "examRole": "小学 5–6 年级语音辨听"
+      }
+    }
+  ]
+}

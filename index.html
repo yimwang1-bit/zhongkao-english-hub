@@ -122,7 +122,7 @@
           📚 外研社考纲总库
         </button>
         <button data-global="examstd" class="nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
-          🏛️ 佛山中考120分标准
+          🧩 题型库与考试标准
         </button>
         <button data-global="students" class="nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
           👥 学生档案 (<span id="navStudentCount">1</span>)
@@ -196,8 +196,44 @@
       <div id="syllabusGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
     </section>
 
-    <!-- ==================== GLOBAL VIEW 2: 佛山中考120分标准 ==================== -->
+    <!-- ==================== GLOBAL VIEW 2: 题型库与考试标准 (方案A) ==================== -->
     <section id="view-examstd" class="global-view hidden space-y-5 fade-in">
+      <!-- Clean Sub-Navigation Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div id="examStdSubNav" class="inline-flex items-center gap-1 p-1 rounded-xl bg-[var(--card)] border border-[var(--border)]">
+          <button data-esub="qtypes" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition">
+            公立 1–9 题型库
+          </button>
+          <button data-esub="blueprint" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition text-[var(--muted-foreground)]">
+            佛山中考 120 分标准
+          </button>
+        </div>
+        <div id="qtypeHeaderMeta" class="text-xs text-[var(--muted-foreground)]"></div>
+      </div>
+
+      <!-- SUB-VIEW 2A: 公立 1–9 题型目录与单屏极简浏览画布 -->
+      <div id="esub-qtypes" class="esub-panel bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden flex flex-row md:h-[calc(100vh-148px)] md:min-h-[580px]">
+        <!-- Fixed Left Directory Tree (笔试 / 听力 -> 技能子类) -->
+        <aside id="qtypeDirectoryNav" class="w-40 sm:w-44 shrink-0 h-full overflow-y-auto border-r border-[var(--border)] bg-[var(--card)] p-3 space-y-4"></aside>
+
+        <!-- Right Single-Screen Stage + Fixed Bottom Thumbnail Filmstrip -->
+        <div class="flex-1 min-w-0 h-full flex flex-col overflow-hidden bg-[var(--background)]">
+          <!-- Upper Stage: Left Compact Explanation + Right HD/Original Visual -->
+          <div id="qtypeStageBody" class="flex-1 min-h-0 flex flex-col md:flex-row gap-4 p-4 overflow-hidden"></div>
+
+          <!-- Fixed Bottom Filmstrip: 题型1 .. 题型n -->
+          <div class="shrink-0 border-t border-[var(--border)] bg-[var(--card)] px-4 py-2.5 space-y-2">
+            <div class="flex items-center justify-between gap-2 text-xs text-[var(--muted-foreground)]">
+              <span id="qtypeStripCount" class="font-semibold text-[var(--foreground)]"></span>
+              <span class="hidden sm:inline">点击下方缩略图展开大图 · 支持 ← / → 切换</span>
+            </div>
+            <div id="qtypeThumbnailStrip" class="flex items-stretch gap-2.5 overflow-x-auto pb-0.5"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 2B: 佛山中考 120 分标准 (保留原有全部标准与 Drive 目录说明) -->
+      <div id="esub-blueprint" class="esub-panel hidden space-y-5">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
@@ -237,26 +273,26 @@
               <span class="font-mono font-bold">占总分 75%</span>
             </div>
             <div class="space-y-2">
-              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+              <button data-jump-qtype="w_read_grammar_cloze" class="w-full text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-lg p-2.5 flex justify-between gap-2 cursor-pointer transition">
                 <div><strong>一、语法选择（10×1=10分）</strong><span class="text-[var(--muted-foreground)] block">三选一语篇语法：冠词/介词/代词/时态/语态/非谓语/从句</span></div>
-                <span class="font-mono text-[var(--primary)] shrink-0">10分</span>
-              </div>
-              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <span class="font-mono text-[var(--primary)] shrink-0">10分 →</span>
+              </button>
+              <button data-jump-qtype="w_read_semantic_cloze" class="w-full text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-lg p-2.5 flex justify-between gap-2 cursor-pointer transition">
                 <div><strong>二、完形填空（10×1=10分）</strong><span class="text-[var(--muted-foreground)] block">四选一叙事/感悟语篇：重上下文复现线索、动词短语与情感逻辑</span></div>
-                <span class="font-mono text-[var(--primary)] shrink-0">10分</span>
-              </div>
-              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <span class="font-mono text-[var(--primary)] shrink-0">10分 →</span>
+              </button>
+              <button data-jump-qtype="w_read_comprehension" class="w-full text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-lg p-2.5 flex justify-between gap-2 cursor-pointer transition">
                 <div><strong>三、阅读理解（15×2=30分）</strong><span class="text-[var(--muted-foreground)] block">A篇应用文 + B篇说明/记叙（词义/主旨/结构）+ C篇配对（同步训练填表/五选五）</span></div>
-                <span class="font-mono text-[var(--primary)] shrink-0">30分</span>
-              </div>
-              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <span class="font-mono text-[var(--primary)] shrink-0">30分 →</span>
+              </button>
+              <button data-jump-qtype="w_read_word_cloze_12to10" class="w-full text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-lg p-2.5 flex justify-between gap-2 cursor-pointer transition">
                 <div><strong>四、短文填空（10×1.5=15分）</strong><span class="text-[var(--muted-foreground)] block">12选10需词形变化：满分核心是“先标词性 → 再查单复/时态/所有格/派生”</span></div>
-                <span class="font-mono text-[var(--primary)] shrink-0">15分</span>
-              </div>
-              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <span class="font-mono text-[var(--primary)] shrink-0">15分 →</span>
+              </button>
+              <button data-jump-qtype="w_write_mindmap_essay" class="w-full text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-lg p-2.5 flex justify-between gap-2 cursor-pointer transition">
                 <div><strong>五、读写综合（10+15=25分）</strong><span class="text-[var(--muted-foreground)] block">A. 回答问题 5×2（重介词/时态/指代）；B. 书面表达 15分（80词+三段式+零硬伤）</span></div>
-                <span class="font-mono text-[var(--primary)] shrink-0">25分</span>
-              </div>
+                <span class="font-mono text-[var(--primary)] shrink-0">25分 →</span>
+              </button>
             </div>
           </div>
         </div>
@@ -284,6 +320,20 @@
               <li><strong class="text-[var(--foreground)]">个人学情零污染：</strong>每个学生的原卷、成绩轨迹、个人考纲点亮状态、错题库和 90 分钟重组课表完全独立，互不干扰。</li>
               <li><strong class="text-[var(--foreground)]">重组出卷标准化：</strong>出卷时只需「选定学生 → 抓取其红/黄考纲节点 + 错题 → 套用总版面中考题型模板」，立刻生成千人千面的重组卷。</li>
             </ul>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- Lightbox for zooming Question-Type Original Image -->
+      <div id="qtypeLightbox" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+          <div class="flex items-center justify-between px-4 py-2.5 border-b border-slate-200 text-slate-900 text-xs">
+            <span id="qtypeLightboxTitle" class="font-semibold"></span>
+            <button id="btnCloseQtypeLightbox" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 font-semibold cursor-pointer">✕ 关闭</button>
+          </div>
+          <div class="flex-1 overflow-auto p-4 bg-slate-50 flex items-start justify-center">
+            <img id="qtypeLightboxImg" src="" alt="题型真题原图" class="max-w-full h-auto rounded-lg shadow border border-slate-200" />
           </div>
         </div>
       </div>
@@ -568,8 +618,294 @@
       document.getElementById('view-' + viewName).classList.remove('hidden');
 
       if (viewName === 'syllabus') renderMasterSyllabus();
+      else if (viewName === 'examstd') renderExamStdView();
       else if (viewName === 'students') renderStudentRoster();
       else if (viewName === 'student-workspace') renderStudentWorkspace();
+    }
+
+    // ==================== 4B. QUESTION TYPE LIBRARY (公立1-9题型目录与样页) ====================
+    let activeExamStdSub = 'qtypes';
+    let qtypeCatalog = null;
+    let qtypeState = {
+      modality: 'written',
+      skill: 'reading',
+      selectedId: 'w_read_grammar_cloze',
+      viewMode: 'rendered', // 'rendered' | 'original'
+      showPoints: false
+    };
+
+    async function ensureQuestionTypeCatalog() {
+      if (qtypeCatalog) return qtypeCatalog;
+      try {
+        const resp = await fetch('./data/taxonomy/question-types.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        qtypeCatalog = await resp.json();
+      } catch (err) {
+        console.error('Failed to load question-types.json:', err);
+        qtypeCatalog = { modalities: [], interactionPatterns: {}, types: [] };
+      }
+      return qtypeCatalog;
+    }
+
+    function formatGradeRange(grades) {
+      if (!grades || !grades.length) return '待定';
+      const sorted = [...grades].sort((a, b) => a - b);
+      const contiguous = sorted.every((g, i) => i === 0 || g === sorted[i - 1] + 1);
+      if (sorted.length === 1) return sorted[0] + ' 年级';
+      if (contiguous) return sorted[0] + '–' + sorted[sorted.length - 1] + ' 年级';
+      return sorted.join(' / ') + ' 年级';
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    async function renderExamStdView() {
+      document.querySelectorAll('#examStdSubNav .tab-btn').forEach(btn => {
+        const isActive = btn.dataset.esub === activeExamStdSub;
+        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('text-[var(--muted-foreground)]', !isActive);
+      });
+      document.querySelectorAll('.esub-panel').forEach(p => p.classList.add('hidden'));
+      const panel = document.getElementById('esub-' + activeExamStdSub);
+      if (panel) panel.classList.remove('hidden');
+
+      if (activeExamStdSub === 'qtypes') {
+        await ensureQuestionTypeCatalog();
+        renderQuestionTypeLibrary();
+      }
+    }
+
+    function renderQuestionTypeLibrary() {
+      if (!qtypeCatalog || !qtypeCatalog.types.length) {
+        document.getElementById('qtypeStageBody').innerHTML = `<div class="xl:col-span-12 py-16 text-center text-xs text-[var(--muted-foreground)]">正在加载公立 1–9 题型库目录...</div>`;
+        return;
+      }
+
+      const wCount = qtypeCatalog.types.filter(t => t.modality === 'written').length;
+      const lCount = qtypeCatalog.types.filter(t => t.modality === 'listening').length;
+      document.getElementById('qtypeHeaderMeta').textContent =
+        `共 ${qtypeCatalog.types.length} 种公立题型（笔试 ${wCount} · 听力 ${lCount}）`;
+
+      // 1. Render Left Directory Sidebar (matching wireframe: 笔试 / 听力 -> skills)
+      const dirEl = document.getElementById('qtypeDirectoryNav');
+      dirEl.innerHTML = qtypeCatalog.modalities.map(mod => {
+        const modTotal = qtypeCatalog.types.filter(t => t.modality === mod.id).length;
+        return `
+          <div class="space-y-1.5">
+            <div class="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] flex items-center justify-between">
+              <span class="text-xs font-bold tracking-wide text-[var(--foreground)]">${mod.label}</span>
+              <span class="text-[11px] font-mono text-[var(--muted-foreground)]">${modTotal}</span>
+            </div>
+            <div class="pl-1.5 space-y-0.5">
+              ${mod.skills.map(sk => {
+                const items = qtypeCatalog.types.filter(t => t.modality === mod.id && t.skill === sk.id);
+                const active = qtypeState.modality === mod.id && qtypeState.skill === sk.id;
+                return `
+                  <button data-qdir-mod="${mod.id}" data-qdir-skill="${sk.id}"
+                    class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition text-left ${
+                      active
+                        ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold'
+                        : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--content)]'
+                    }">
+                    <span class="truncate">${sk.label}</span>
+                    <span class="font-mono text-[11px] ${active ? 'opacity-90' : 'opacity-65'}">${items.length}</span>
+                  </button>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }).join('');
+
+      dirEl.querySelectorAll('[data-qdir-mod]').forEach(btn => {
+        btn.onclick = () => {
+          const mod = btn.dataset.qdirMod;
+          const sk = btn.dataset.qdirSkill;
+          qtypeState.modality = mod;
+          qtypeState.skill = sk;
+          const group = qtypeCatalog.types.filter(t => t.modality === mod && t.skill === sk).sort((a, b) => a.order - b.order);
+          const preferred = group.find(t => t.renderedSample) || group[0];
+          if (preferred) qtypeState.selectedId = preferred.id;
+          renderQuestionTypeLibrary();
+        };
+      });
+
+      // 2. Current Skill Group & Selected Item
+      const group = qtypeCatalog.types
+        .filter(t => t.modality === qtypeState.modality && t.skill === qtypeState.skill)
+        .sort((a, b) => a.order - b.order);
+      let current = group.find(t => t.id === qtypeState.selectedId) || group[0];
+      if (current) qtypeState.selectedId = current.id;
+
+      const modObj = qtypeCatalog.modalities.find(m => m.id === qtypeState.modality);
+      const skillObj = modObj ? modObj.skills.find(s => s.id === qtypeState.skill) : null;
+      const patternLabel = (qtypeCatalog.interactionPatterns && qtypeCatalog.interactionPatterns[current.interactionPattern]) || current.interactionPattern;
+
+      // 3. Render Upper Showcase Stage (说明收在图片左侧 + 右侧一屏大图)
+      const stageEl = document.getElementById('qtypeStageBody');
+      const isReady = current.status === 'ready' && !!(current.sampleImage || current.renderedSample);
+      const hasRendered = !!(isReady && current.renderedSample);
+      const effectiveMode = (qtypeState.viewMode === 'rendered' && hasRendered) ? 'rendered' : 'original';
+
+      const renderedPaperHtml = hasRendered ? (() => {
+        const rs = current.renderedSample;
+        const formatPara = (p) => escapeHtml(p).replace(/___(\d+)___/g, (_, n) =>
+          `<span class="inline-flex items-baseline justify-center min-w-[34px] border-b border-[var(--foreground)] mx-0.5 px-1 text-center font-sans text-xs font-semibold text-[var(--primary)]">${n}</span>`
+        );
+        return `
+          <div class="bg-[var(--card)] text-[var(--foreground)] rounded-xl border border-[var(--border)] shadow-sm w-full max-w-2xl p-4 sm:p-5 space-y-3 my-auto">
+            <div class="space-y-1 border-b border-[var(--border)] pb-2.5">
+              <div class="text-sm font-bold tracking-tight">${escapeHtml(rs.heading)}</div>
+              <p class="text-xs text-[var(--muted-foreground)] leading-snug">${escapeHtml(rs.instruction)}</p>
+            </div>
+            <div class="space-y-1.5 text-xs sm:text-[13px] leading-[1.75]" style="font-family: Georgia, 'Times New Roman', serif;">
+              ${rs.paragraphs.map(p => `<p class="indent-6">${formatPara(p)}</p>`).join('')}
+            </div>
+            <div class="pt-2.5 border-t border-[var(--border)] grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-xs" style="font-family: Georgia, 'Times New Roman', serif;">
+              ${rs.options.map(opt => `
+                <div class="flex items-baseline justify-between gap-2 py-0.5">
+                  <div class="flex items-baseline gap-2 min-w-0">
+                    <span class="font-sans font-semibold text-[var(--muted-foreground)] w-5 shrink-0 tabular-nums">${opt.num}.</span>
+                    <span class="truncate">${escapeHtml(opt.choices.join('   '))}</span>
+                  </div>
+                  ${qtypeState.showPoints ? `<span class="font-sans text-xs text-[var(--primary)] shrink-0">${escapeHtml(opt.point)}</span>` : ''}
+                </div>`).join('')}
+            </div>
+          </div>`;
+      })() : '';
+
+      stageEl.innerHTML = `
+        <!-- Left Strip inside Stage: 紧凑题型说明（收在图片左侧） -->
+        <div class="w-full md:w-48 lg:w-56 shrink-0 flex flex-col justify-between gap-3 md:h-full md:overflow-y-auto pr-1">
+          <div class="space-y-3">
+            <div class="space-y-1">
+              <div class="flex items-center justify-between gap-2 text-xs text-[var(--muted-foreground)]">
+                <span>${modObj ? modObj.label : ''} · ${skillObj ? skillObj.label : ''}</span>
+                <span class="font-mono">${current.order}/${group.length}</span>
+              </div>
+              <h2 class="text-base font-bold tracking-tight leading-snug text-[var(--foreground)]">${escapeHtml(current.displayName)}</h2>
+              <div class="flex flex-wrap items-center gap-1 pt-0.5 text-xs">
+                <span class="px-1.5 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] font-medium">${formatGradeRange(current.grades)}</span>
+                <span class="px-1.5 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">${escapeHtml(current.uiTag || patternLabel)}</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">${escapeHtml(current.summary)}</p>
+
+            <dl class="space-y-1.5 pt-2 border-t border-[var(--border)] text-xs">
+              <div class="flex justify-between gap-2">
+                <dt class="text-[var(--muted-foreground)] shrink-0">原表</dt>
+                <dd class="font-medium text-right truncate" title="${escapeHtml(current.excelName)}">${escapeHtml(current.excelName)}</dd>
+              </div>
+              <div class="flex justify-between gap-2">
+                <dt class="text-[var(--muted-foreground)] shrink-0">交互</dt>
+                <dd class="font-medium text-right truncate">${escapeHtml(patternLabel)}</dd>
+              </div>
+              ${current.formatSpec ? `
+                <div class="flex justify-between gap-2">
+                  <dt class="text-[var(--muted-foreground)] shrink-0">分值</dt>
+                  <dd class="font-medium text-right">${escapeHtml(current.formatSpec.itemCount)}</dd>
+                </div>
+                <div class="flex justify-between gap-2">
+                  <dt class="text-[var(--muted-foreground)] shrink-0">作答</dt>
+                  <dd class="font-medium text-right">${escapeHtml(current.formatSpec.response)}</dd>
+                </div>
+                <div class="flex justify-between gap-2">
+                  <dt class="text-[var(--muted-foreground)] shrink-0">定位</dt>
+                  <dd class="font-medium text-right text-[var(--primary)]">${escapeHtml(current.formatSpec.examRole)}</dd>
+                </div>` : ''}
+              <div class="flex justify-between gap-2">
+                <dt class="text-[var(--muted-foreground)] shrink-0">编号</dt>
+                <dd class="font-mono text-xs text-right text-[var(--muted-foreground)] truncate" title="${escapeHtml(current.id)}">${escapeHtml(current.id)}</dd>
+              </div>
+            </dl>
+            ${current.dataNote ? `<p class="text-xs text-[var(--warning)] leading-snug">${escapeHtml(current.dataNote)}</p>` : ''}
+          </div>
+
+          ${isReady ? `
+            <div class="space-y-2 pt-3 border-t border-[var(--border)] text-xs shrink-0">
+              ${hasRendered ? `
+                <div class="grid grid-cols-2 gap-1 p-0.5 rounded-lg bg-[var(--card)] border border-[var(--border)]">
+                  <button data-qview="rendered" class="py-1 rounded-md cursor-pointer transition text-center ${effectiveMode === 'rendered' ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold' : 'text-[var(--muted-foreground)]'}">高清渲染</button>
+                  <button data-qview="original" class="py-1 rounded-md cursor-pointer transition text-center ${effectiveMode === 'original' ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold' : 'text-[var(--muted-foreground)]'}">真题原图</button>
+                </div>` : ''}
+              ${effectiveMode === 'rendered' ? `
+                <button id="btnToggleGrammarPoints" class="w-full py-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] cursor-pointer transition ${qtypeState.showPoints ? 'text-[var(--primary)] font-semibold border-[var(--primary)]' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}">
+                  ${qtypeState.showPoints ? '✓ 已显示考点标注' : '显示 10 题考点标注'}
+                </button>` : `
+                <button id="btnZoomQtypeOriginal" class="w-full py-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-pointer transition">
+                  放大查看原图
+                </button>`}
+            </div>` : `
+            <div class="pt-2 border-t border-[var(--border)] text-xs text-[var(--muted-foreground)] shrink-0">
+              状态：样页占位符
+            </div>`}
+        </div>
+
+        <!-- Right Showcase Frame: 题型原图 / 高清渲染图 -->
+        <div class="flex-1 min-w-0 min-h-0 h-full rounded-2xl border border-[var(--border)] bg-[var(--content)] p-3 sm:p-4 overflow-y-auto flex items-center justify-center">
+          ${isReady
+            ? (effectiveMode === 'rendered'
+                ? renderedPaperHtml
+                : `<img id="qtypeOriginalStageImg" src="${current.sampleImage}" alt="${escapeHtml(current.displayName)}" class="max-h-full max-w-full object-contain rounded-lg shadow-sm border border-[var(--border)] bg-white cursor-zoom-in" />`)
+            : `<div class="w-full h-full rounded-xl border border-dashed border-[var(--border)] bg-[var(--card)]/50 p-6 flex flex-col items-center justify-center text-center space-y-3">
+                 <div class="text-sm font-semibold text-[var(--foreground)]">${escapeHtml(current.displayName)} · 占位符</div>
+               </div>`}
+        </div>`;
+
+      stageEl.querySelectorAll('[data-qview]').forEach(btn => {
+        btn.onclick = () => { qtypeState.viewMode = btn.dataset.qview; renderQuestionTypeLibrary(); };
+      });
+      const ptBtn = document.getElementById('btnToggleGrammarPoints');
+      if (ptBtn) ptBtn.onclick = () => { qtypeState.showPoints = !qtypeState.showPoints; renderQuestionTypeLibrary(); };
+      const openZoom = () => {
+        if (!current.sampleImage) return;
+        document.getElementById('qtypeLightboxTitle').textContent = `${current.displayName}（原表：${current.excelName}）`;
+        document.getElementById('qtypeLightboxImg').src = current.sampleImage;
+        document.getElementById('qtypeLightbox').classList.remove('hidden');
+      };
+      const zoomBtn = document.getElementById('btnZoomQtypeOriginal');
+      if (zoomBtn) zoomBtn.onclick = openZoom;
+      const origImg = document.getElementById('qtypeOriginalStageImg');
+      if (origImg) origImg.onclick = openZoom;
+
+      // 4. Render Compact Bottom Thumbnail Filmstrip (常驻底部)
+      document.getElementById('qtypeStripCount').textContent =
+        `${modObj ? modObj.label : ''} · ${skillObj ? skillObj.label : ''}（${group.length} 种）`;
+
+      const stripEl = document.getElementById('qtypeThumbnailStrip');
+      stripEl.innerHTML = group.map(item => {
+        const active = item.id === current.id;
+        return `
+          <button data-qthumb="${item.id}" class="w-28 sm:w-32 shrink-0 rounded-xl border text-left p-1.5 transition cursor-pointer flex flex-col gap-1.5 ${
+            active
+              ? 'border-[var(--primary)] bg-[var(--content)] ring-1 ring-[var(--primary)]'
+              : 'border-[var(--border)] bg-[var(--card)] hover:border-[var(--muted-foreground)]'
+          }">
+            <div class="h-12 w-full rounded-md overflow-hidden border border-[var(--border)] bg-white flex items-center justify-center relative">
+              ${item.sampleImage
+                ? `<img src="${item.sampleImage}" alt="${escapeHtml(item.displayName)}" loading="lazy" class="w-full h-full object-cover object-top" />
+                   ${item.renderedSample ? `<span class="absolute top-0.5 right-0.5 px-1 py-0.5 rounded text-[10px] font-semibold bg-blue-600 text-white leading-none">高清</span>` : ''}`
+                : `<div class="w-12 space-y-1 opacity-45">
+                     <div class="h-1 w-2/3 rounded bg-slate-400"></div>
+                     <div class="h-1 w-full rounded bg-slate-400"></div>
+                   </div>`}
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center justify-between text-[11px] text-[var(--muted-foreground)] font-mono leading-none mb-0.5">
+                <span>题型${item.order}</span>
+                <span>L${item.grades.length > 1 ? item.grades[0] + '-' + item.grades[item.grades.length - 1] : item.grades[0]}</span>
+              </div>
+              <div class="text-xs font-semibold truncate text-[var(--foreground)]">${escapeHtml(item.displayName)}</div>
+            </div>
+          </button>`;
+      }).join('');
+
+      stripEl.querySelectorAll('[data-qthumb]').forEach(btn => {
+        btn.onclick = () => {
+          qtypeState.selectedId = btn.dataset.qthumb;
+          renderQuestionTypeLibrary();
+        };
+      });
     }
 
     // ==================== 5. RENDER MASTER SYLLABUS BOARD ====================
@@ -1468,6 +1804,23 @@
     document.querySelectorAll('#studentSubNav .tab-btn').forEach(btn => {
       btn.onclick = () => { activeStudentTab = btn.dataset.stab; renderStudentWorkspace(); };
     });
+    document.querySelectorAll('#examStdSubNav .tab-btn').forEach(btn => {
+      btn.onclick = () => { activeExamStdSub = btn.dataset.esub; renderExamStdView(); };
+    });
+    document.getElementById('btnCloseQtypeLightbox').onclick = () => document.getElementById('qtypeLightbox').classList.add('hidden');
+    document.getElementById('qtypeLightbox').onclick = (e) => { if (e.target.id === 'qtypeLightbox') e.target.classList.add('hidden'); };
+    document.querySelectorAll('[data-jump-qtype]').forEach(btn => {
+      btn.onclick = async () => {
+        await ensureQuestionTypeCatalog();
+        const target = qtypeCatalog.types.find(t => t.id === btn.dataset.jumpQtype);
+        if (!target) return;
+        qtypeState.modality = target.modality;
+        qtypeState.skill = target.skill;
+        qtypeState.selectedId = target.id;
+        activeExamStdSub = 'qtypes';
+        renderExamStdView();
+      };
+    });
 
     // Master Syllabus Events
     document.getElementById('btnToggleAddSyllabus').onclick = () => document.getElementById('addSyllabusForm').classList.toggle('hidden');
@@ -1534,12 +1887,32 @@
     };
     document.getElementById('paperModal').onclick = (e) => { if (e.target.id === 'paperModal') closePaperModal(); };
     window.addEventListener('keydown', (e) => {
-      if (!modalState.paperId) return;
-      if (e.key === 'Escape') closePaperModal();
-      else if (e.key === 'ArrowRight') flipPaperPage(1);
-      else if (e.key === 'ArrowLeft') flipPaperPage(-1);
-      else if (e.key === '+' || e.key === '=') { modalState.zoom = Math.min(220, modalState.zoom + 25); updateModalZoom(); }
-      else if (e.key === '-') { modalState.zoom = Math.max(75, modalState.zoom - 25); updateModalZoom(); }
+      const qlb = document.getElementById('qtypeLightbox');
+      if (qlb && !qlb.classList.contains('hidden')) {
+        if (e.key === 'Escape') qlb.classList.add('hidden');
+        return;
+      }
+      if (modalState.paperId) {
+        if (e.key === 'Escape') closePaperModal();
+        else if (e.key === 'ArrowRight') flipPaperPage(1);
+        else if (e.key === 'ArrowLeft') flipPaperPage(-1);
+        else if (e.key === '+' || e.key === '=') { modalState.zoom = Math.min(220, modalState.zoom + 25); updateModalZoom(); }
+        else if (e.key === '-') { modalState.zoom = Math.max(75, modalState.zoom - 25); updateModalZoom(); }
+        return;
+      }
+      if (activeGlobalView === 'examstd' && activeExamStdSub === 'qtypes' && qtypeCatalog && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          const group = qtypeCatalog.types
+            .filter(t => t.modality === qtypeState.modality && t.skill === qtypeState.skill)
+            .sort((a, b) => a.order - b.order);
+          const idx = group.findIndex(t => t.id === qtypeState.selectedId);
+          if (idx >= 0) {
+            const nextIdx = (idx + (e.key === 'ArrowRight' ? 1 : -1) + group.length) % group.length;
+            qtypeState.selectedId = group[nextIdx].id;
+            renderQuestionTypeLibrary();
+          }
+        }
+      }
     });
 
     window.addEventListener('resize', () => { if (activeGlobalView === 'student-workspace' && activeStudentTab === 'overview') drawStudentCharts(getStudent()); });

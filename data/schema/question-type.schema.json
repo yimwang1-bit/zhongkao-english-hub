@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yimwang1-bit.github.io/zhongkao-english-hub/data/schema/question-type.schema.json",
+  "title": "Public School English Question Type Schema (Grades 1-9)",
+  "description": "Standardized schema for K-9 public school English exam question types, decoupled from concrete quiz items and UI rendering widgets.",
+  "type": "object",
+  "required": [
+    "id",
+    "order",
+    "modality",
+    "skill",
+    "excelName",
+    "displayName",
+    "grades",
+    "interactionPattern",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(w|l)_[a-z]+_[a-z0-9_]+$",
+      "description": "Globally unique stable identifier (e.g. w_read_grammar_cloze)."
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Display order within the (modality, skill) group."
+    },
+    "modality": {
+      "type": "string",
+      "enum": ["written", "listening"],
+      "description": "Top-level exam section: 笔试 (written) or 听力 (listening)."
+    },
+    "skill": {
+      "type": "string",
+      "enum": ["vocab", "grammar", "phonics", "reading", "writing"],
+      "description": "Skill category within the modality."
+    },
+    "excelName": {
+      "type": "string",
+      "description": "Original label from 公立1-9题型.xlsx."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Cleaned human-friendly display title."
+    },
+    "grades": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1, "maximum": 9 },
+      "minItems": 1,
+      "description": "Applicable grade levels (lvl)."
+    },
+    "interactionPattern": {
+      "type": "string",
+      "enum": [
+        "matching",
+        "single_choice",
+        "true_false",
+        "passage_choice",
+        "fill_blank",
+        "ordering",
+        "sentence_writing",
+        "essay_writing"
+      ],
+      "description": "Abstract UI interaction widget pattern."
+    },
+    "uiTag": {
+      "type": "string",
+      "description": "Original or planned interactive label (e.g. 消消乐, 答题卡, Recognition)."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ready", "placeholder"],
+      "description": "Whether the full showcase sample & rendered view are populated."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Concise 1-2 sentence explanation of what this question type tests."
+    },
+    "formatSpec": {
+      "type": "object",
+      "properties": {
+        "stimulus": { "type": "string" },
+        "response": { "type": "string" },
+        "itemCount": { "type": "string" },
+        "examRole": { "type": "string" }
+      }
+    },
+    "sampleImage": {
+      "type": ["string", "null"],
+      "description": "Relative path to the extracted high-res WebP sample image."
+    },
+    "renderedSample": {
+      "type": ["object", "null"],
+      "description": "Optional structured content for crisp HTML/CSS high-definition paper rendering."
+    },
+    "dataNote": {
+      "type": "string",
+      "description": "Optional QA note from Excel ingestion (e.g., duplicate image flag)."
+    }
+  }
+}
