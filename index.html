@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>英语中考教学总控台 · 外研社分级考纲与学生档案系统</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --content: #f1f5f9;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --foreground: #0f172a;
+      --muted-foreground: #64748b;
+      --primary: #2563eb;
+      --primary-foreground: #ffffff;
+      --link: #2563eb;
+      --success: #16a34a;
+      --warning: #d97706;
+      --error: #dc2626;
+      --chart-1: #2563eb;
+      --chart-2: #0d9488;
+      --chart-4: #9333ea;
+    }
+    [data-theme="dark"] {
+      --background: #0b1120;
+      --content: #111827;
+      --card: #1e293b;
+      --border: #334155;
+      --foreground: #f1f5f9;
+      --muted-foreground: #94a3b8;
+      --primary: #3b82f6;
+      --primary-foreground: #ffffff;
+      --link: #60a5fa;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --chart-1: #60a5fa;
+      --chart-2: #2dd4bf;
+      --chart-4: #c084fc;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .nav-btn.active, .tab-btn.active, .pill-btn.active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+    }
+    .fade-in { animation: fadeIn 0.2s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    input[type="text"], input[type="number"], select, textarea {
+      background: var(--content);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+    @keyframes pageFlipNext {
+      0% { opacity: 0.25; transform: perspective(1200px) rotateY(-12deg) translateX(28px) scale(0.98); }
+      100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0) scale(1); }
+    }
+    @keyframes pageFlipPrev {
+      0% { opacity: 0.25; transform: perspective(1200px) rotateY(12deg) translateX(-28px) scale(0.98); }
+      100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0) scale(1); }
+    }
+    .flip-next { animation: pageFlipNext 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    .flip-prev { animation: pageFlipPrev 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    .paper-thumb-box:hover img { transform: scale(1.05); }
+    .paper-thumb-box img { transition: transform 0.2s ease; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0">
+  <!-- ==================== PERSONAL ACCESS PASSWORD GATE ==================== -->
+  <div id="authGate" class="fixed inset-0 z-[100] bg-[var(--background)] flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-xl space-y-5">
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 rounded-2xl bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-bold text-lg mx-auto">中</div>
+        <h1 class="text-lg font-bold">英语中考教学总控台</h1>
+        <p class="text-xs text-[var(--muted-foreground)]">外研社分级考纲与个人学生档案受隐私保护，请输入个人访问密码</p>
+      </div>
+      <form id="authForm" class="space-y-3.5">
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-[var(--muted-foreground)]">访问密码</label>
+          <input id="authInput" type="password" autocomplete="current-password" placeholder="请输入访问密码..." class="w-full rounded-xl px-3.5 py-2.5 text-sm" required />
+        </div>
+        <label class="flex items-center gap-2 text-xs text-[var(--muted-foreground)] cursor-pointer select-none">
+          <input id="authRemember" type="checkbox" checked class="accent-[var(--primary)]" />
+          <span>记住本设备（30天免重复输入）</span>
+        </label>
+        <div id="authError" class="hidden text-xs text-[var(--error)] font-semibold">密码不正确，请注意大小写后重试。</div>
+        <button type="submit" class="w-full py-2.5 rounded-xl text-sm font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">
+          解锁进入工作台 →
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==================== GLOBAL MASTER NAVIGATION BAR (总版面一级导航) ==================== -->
+  <header class="sticky top-0 z-30 bg-[var(--card)]/95 backdrop-blur border-b border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-bold text-sm shrink-0">中</div>
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-sm sm:text-base font-bold tracking-tight truncate">英语中考教学总控台</h1>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[var(--content)] border border-[var(--border)] text-[var(--primary)]">外研社分级考纲标准</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] border border-[var(--border)] text-[var(--muted-foreground)] hidden sm:inline">佛山顺德 · 120分制</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] truncate">总版面维护统一外研社初二/初三考纲标准 · 各学生档案独立挂载于下级</p>
+        </div>
+      </div>
+
+      <!-- Top-level Master Navigation -->
+      <nav class="flex flex-wrap items-center gap-2 shrink-0">
+        <button data-global="syllabus" class="nav-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
+          📚 外研社考纲总库
+        </button>
+        <button data-global="examstd" class="nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
+          🏛️ 佛山中考120分标准
+        </button>
+        <button data-global="students" class="nav-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">
+          👥 学生档案 (<span id="navStudentCount">1</span>)
+        </button>
+        <button id="btnThemeToggle" class="px-2.5 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--content)] cursor-pointer transition" title="切换亮色/暗色主题">🌙</button>
+        <button id="btnLockSite" class="px-2.5 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--content)] text-[var(--muted-foreground)] cursor-pointer transition" title="锁定退出">🔒</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-5 space-y-5">
+
+    <!-- ==================== GLOBAL VIEW 1: 外研社考纲标准总库 (MASTER SYLLABUS BOARD) ==================== -->
+    <section id="view-syllabus" class="global-view space-y-5 fade-in">
+      <!-- Master Board Hero & Stats -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)]">总版面 · 公共教研标准</span>
+              <span class="text-xs text-[var(--muted-foreground)]">2024新版外研社初中英语 × 2022新课标（三级+ → 四级中考）</span>
+            </div>
+            <h2 class="text-lg font-bold">外研社初二 / 初三 分级中考考纲标准总库</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">
+              所有与考纲一致的语法条目、词汇派生、写作主题与题型映射统一在此沉淀补全；下方任何学生档案都会自动引用本总库生成个人点亮进度与重组练习卷。
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button id="btnToggleAddSyllabus" class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">+ 补全/新增考纲条目</button>
+            <button id="btnExportSyllabus" class="px-3 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">导出考纲 JSON</button>
+            <a href="https://drive.google.com/drive/folders/138rixH37ZJrFMAbnLtEB5Qyunz3Zmeo1" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] text-[var(--link)] hover:underline">Drive 考纲总库 ↗</a>
+          </div>
+        </div>
+
+        <!-- Master Syllabus KPIs -->
+        <div id="syllabusStats" class="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs"></div>
+
+        <!-- Add / Supplement Syllabus Drawer -->
+        <div id="addSyllabusForm" class="hidden border-t border-[var(--border)] pt-4 space-y-3 text-xs">
+          <div class="font-bold text-sm">向总版面补全一条外研社考纲标准（所有学生自动同步）</div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+            <select id="sylGrade" class="rounded-lg px-2.5 py-2">
+              <option value="g8a">初二上（八上 · 三级+）</option>
+              <option value="g8b">初二下（八下 · 三级+）</option>
+              <option value="g9">初三中考级（九上/九下 · 四级）</option>
+            </select>
+            <input id="sylCode" type="text" placeholder="模块/单元编号（如：8A-U5 或 9-G03）" class="rounded-lg px-2.5 py-2" />
+            <input id="sylTitle" type="text" placeholder="主题/考点名称（如：动词不定式作目的状语）" class="rounded-lg px-2.5 py-2" />
+            <input id="sylGrammar" type="text" placeholder="核心语法与规则要点" class="rounded-lg px-2.5 py-2 md:col-span-2" />
+            <input id="sylExamMap" type="text" placeholder="对应中考题型（如：语法选择/短文填空/写作）" class="rounded-lg px-2.5 py-2" />
+            <input id="sylVocab" type="text" placeholder="高频词/派生/易混词标准（选填）" class="rounded-lg px-2.5 py-2 md:col-span-2" />
+            <select id="sylVerified" class="rounded-lg px-2.5 py-2">
+              <option value="official">已核对官方大纲</option>
+              <option value="draft">待官方纸质大纲校准</option>
+            </select>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button id="btnCancelSyl" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">取消</button>
+            <button id="btnSaveSyl" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold cursor-pointer">写入总考纲库</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade Level Filter Bar + Search -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div id="syllabusGradeFilters" class="flex flex-wrap gap-2"></div>
+        <input id="syllabusSearch" type="text" placeholder="搜索考纲语法、单元、词汇、中考题型..." class="rounded-lg px-3 py-1.5 text-xs w-full md:w-64" />
+      </div>
+
+      <!-- Master Syllabus Cards Grid -->
+      <div id="syllabusGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
+    </section>
+
+    <!-- ==================== GLOBAL VIEW 2: 佛山中考120分标准 ==================== -->
+    <section id="view-examstd" class="global-view hidden space-y-5 fade-in">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-base font-bold">佛山顺德中考英语 120 分制题型结构与满分命题标准</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">总版面基准：佛山市英语听说人机对话（30分，约4月底）+ 广东省统一笔试（90分，6月中考）= 120分</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded bg-[var(--content)] border border-[var(--border)] font-mono">满分目标：30 + 90 = 120</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
+          <!-- Listening & Speaking -->
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-[var(--primary)]">Part I · 佛山英语听说考试（人机对话 · 30分）</h3>
+              <span class="font-mono font-bold">占总分 25%</span>
+            </div>
+            <div class="space-y-2">
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-3">
+                <div class="font-bold">1. 模仿朗读（6分）</div>
+                <p class="text-[var(--muted-foreground)] mt-1">考查语音语调、连读弱读、意群停顿与语流完整性。满分红线：不回读卡顿、重音与尾音（-s/-ed）清晰。</p>
+              </div>
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-3">
+                <div class="font-bold">2. 信息获取（12分）</div>
+                <p class="text-[var(--muted-foreground)] mt-1">含听选信息与听后回答问题。满分红线：审清 5W1H 疑问词，回答直给关键信息且语法完整。</p>
+              </div>
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-3">
+                <div class="font-bold">3. 信息转述及询问（12分）</div>
+                <p class="text-[var(--muted-foreground)] mt-1">含听短文做速记转述 + 根据中文提示用英文提问 2 句。满分红线：信息点 0 遗漏、第三人称/时态一致、疑问句语序零错误。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Written Exam -->
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-[var(--chart-2)]">Part II · 广东省中考统一笔试（90分）</h3>
+              <span class="font-mono font-bold">占总分 75%</span>
+            </div>
+            <div class="space-y-2">
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <div><strong>一、语法选择（10×1=10分）</strong><span class="text-[var(--muted-foreground)] block">三选一语篇语法：冠词/介词/代词/时态/语态/非谓语/从句</span></div>
+                <span class="font-mono text-[var(--primary)] shrink-0">10分</span>
+              </div>
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <div><strong>二、完形填空（10×1=10分）</strong><span class="text-[var(--muted-foreground)] block">四选一叙事/感悟语篇：重上下文复现线索、动词短语与情感逻辑</span></div>
+                <span class="font-mono text-[var(--primary)] shrink-0">10分</span>
+              </div>
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <div><strong>三、阅读理解（15×2=30分）</strong><span class="text-[var(--muted-foreground)] block">A篇应用文 + B篇说明/记叙（词义/主旨/结构）+ C篇配对（同步训练填表/五选五）</span></div>
+                <span class="font-mono text-[var(--primary)] shrink-0">30分</span>
+              </div>
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <div><strong>四、短文填空（10×1.5=15分）</strong><span class="text-[var(--muted-foreground)] block">12选10需词形变化：满分核心是“先标词性 → 再查单复/时态/所有格/派生”</span></div>
+                <span class="font-mono text-[var(--primary)] shrink-0">15分</span>
+              </div>
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 flex justify-between gap-2">
+                <div><strong>五、读写综合（10+15=25分）</strong><span class="text-[var(--muted-foreground)] block">A. 回答问题 5×2（重介词/时态/指代）；B. 书面表达 15分（80词+三段式+零硬伤）</span></div>
+                <span class="font-mono text-[var(--primary)] shrink-0">25分</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Google Drive 2-Tier Architecture -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3">
+        <h3 class="text-sm font-bold">Google Drive 双层目录架构（总考纲库 vs 学生独立档案）</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 font-mono space-y-1.5 leading-relaxed">
+            <div class="font-bold text-[var(--primary)]">📁 英语中考/（项目总根目录）</div>
+            <div class="pl-4 font-bold text-[var(--chart-2)]">├── 📁 00_外研社中考考纲总库/（所有学生共享）</div>
+            <div class="pl-10 text-[var(--muted-foreground)]">├── 📁 01_初二外研社大纲（八上·八下）/</div>
+            <div class="pl-10 text-[var(--muted-foreground)]">├── 📁 02_初三外研社中考总纲（九上·九下）/</div>
+            <div class="pl-10 text-[var(--muted-foreground)]">├── 📁 03_佛山顺德中考题型与真题库/</div>
+            <div class="pl-10 text-[var(--muted-foreground)]">└── 🖥️ 英语中考教学总控台_外研社考纲与学生档案.html</div>
+            <div class="pl-4 font-bold text-[var(--warning)]">├── 📁 [学生01]/（独立个人档案）</div>
+            <div class="pl-10 text-[var(--muted-foreground)]">├── 原始试卷与成绩 + 01诊断 + 02重组讲义 + 03错题库</div>
+            <div class="pl-4 text-[var(--muted-foreground)]">└── 📁 [未来更多学生]/（复用同一总考纲底座）</div>
+          </div>
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-2.5">
+            <div class="font-bold text-sm">为什么必须严格分层？</div>
+            <ul class="list-disc pl-4 space-y-1.5 text-[var(--muted-foreground)]">
+              <li><strong class="text-[var(--foreground)]">考纲资产持续复利：</strong>你每补全一条外研社初二/初三大纲、上传一套佛山真题，总版面沉淀一次，未来 10 个、50 个学生都能直接复用。</li>
+              <li><strong class="text-[var(--foreground)]">个人学情零污染：</strong>每个学生的原卷、成绩轨迹、个人考纲点亮状态、错题库和 90 分钟重组课表完全独立，互不干扰。</li>
+              <li><strong class="text-[var(--foreground)]">重组出卷标准化：</strong>出卷时只需「选定学生 → 抓取其红/黄考纲节点 + 错题 → 套用总版面中考题型模板」，立刻生成千人千面的重组卷。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== GLOBAL VIEW 3: 学生档案中心 (STUDENT ROSTER) ==================== -->
+    <section id="view-students" class="global-view hidden space-y-4 fade-in">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-bold">学生档案中心（挂载于外研社总考纲之下）</h2>
+            <p class="text-xs text-[var(--muted-foreground)]">选择任意学生进入专属个人学情工作台；新增学生会自动继承总版面的外研社初二/初三考纲标准</p>
+          </div>
+          <button id="btnToggleNewStudent" class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">+ 新建学生档案</button>
+        </div>
+
+        <!-- Add Student Form -->
+        <div id="newStudentForm" class="hidden border-t border-[var(--border)] pt-4 grid grid-cols-1 md:grid-cols-4 gap-2.5 text-xs">
+          <input id="stuName" type="text" placeholder="学生姓名（如：林子轩）" class="rounded-lg px-2.5 py-2" />
+          <input id="stuMeta" type="text" placeholder="年级/学校/班级（如：初二 805班）" class="rounded-lg px-2.5 py-2" />
+          <input id="stuScore" type="number" min="0" max="120" placeholder="当前摸底分（满分120）" class="rounded-lg px-2.5 py-2" />
+          <input id="stuTarget" type="number" min="0" max="120" value="120" placeholder="目标分（如：120）" class="rounded-lg px-2.5 py-2" />
+          <div class="md:col-span-4 flex justify-end gap-2">
+            <button id="btnCancelStu" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">取消</button>
+            <button id="btnSaveStu" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold cursor-pointer">创建学生工作台</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="studentRosterGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- ==================== STUDENT WORKSPACE SUB-LEVEL (具体学生个人层级) ==================== -->
+    <section id="view-student-workspace" class="global-view hidden space-y-5 fade-in">
+      <!-- Breadcrumb & Student Switcher -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnBackToMaster" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer hover:border-[var(--primary)]">← 返回总版面</button>
+          <span class="text-[var(--muted-foreground)]">/</span>
+          <button id="btnBackToRoster" class="text-[var(--muted-foreground)] hover:underline cursor-pointer">学生档案</button>
+          <span class="text-[var(--muted-foreground)]">/</span>
+          <span id="wsBreadcrumbName" class="font-bold text-sm text-[var(--primary)]">学生姓名</span>
+          <span id="wsBreadcrumbMeta" class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)]"></span>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <label class="text-[var(--muted-foreground)]">切换学生：</label>
+          <select id="wsStudentSelect" class="rounded-lg px-2.5 py-1 text-xs font-semibold"></select>
+        </div>
+      </div>
+
+      <!-- Student Header Summary -->
+      <div id="wsStudentBanner" class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3"></div>
+
+      <!-- Student Sub-Navigation Tabs (只属于该学生个人) -->
+      <nav id="studentSubNav" class="flex flex-wrap gap-2">
+        <button data-stab="overview" class="tab-btn active px-3.5 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--card)] cursor-pointer transition">
+          1. 学情全景与原卷精阅
+        </button>
+        <button data-stab="sylmap" class="tab-btn px-3.5 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--card)] cursor-pointer transition">
+          2. 个人考纲点亮图（联动总库）
+        </button>
+        <button data-stab="mistakes" class="tab-btn px-3.5 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--card)] cursor-pointer transition">
+          3. 个人错题与病灶库
+        </button>
+        <button data-stab="drill" class="tab-btn px-3.5 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--card)] cursor-pointer transition">
+          4. 个人重组靶向训练台
+        </button>
+        <button data-stab="roadmap" class="tab-btn px-3.5 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--card)] cursor-pointer transition">
+          5. 个人90分钟课表与路线
+        </button>
+      </nav>
+
+      <!-- STUDENT TAB 1: OVERVIEW + 9 PAPERS THUMBNAILS -->
+      <div id="stab-overview" class="stab-panel space-y-5 fade-in"></div>
+
+      <!-- STUDENT TAB 2: PERSONAL SYLLABUS MASTERY MAP (LINKED TO MASTER SYLLABUS) -->
+      <div id="stab-sylmap" class="stab-panel hidden space-y-4 fade-in"></div>
+
+      <!-- STUDENT TAB 3: PERSONAL MISTAKE TRACKER -->
+      <div id="stab-mistakes" class="stab-panel hidden space-y-4 fade-in"></div>
+
+      <!-- STUDENT TAB 4: PERSONAL RECOMBINED DRILL STUDIO -->
+      <div id="stab-drill" class="stab-panel hidden space-y-4 fade-in"></div>
+
+      <!-- STUDENT TAB 5: PERSONAL 90-MIN ROADMAP -->
+      <div id="stab-roadmap" class="stab-panel hidden space-y-4 fade-in"></div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FULLSCREEN 4:1 SPLIT-VIEW EXAM LIGHTBOX MODAL ==================== -->
+  <div id="paperModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-[var(--background)] border border-[var(--border)] rounded-2xl w-full max-w-[1440px] h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="bg-[var(--card)] border-b border-[var(--border)] px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="px-2 py-0.5 rounded text-xs font-bold bg-[var(--primary)] text-[var(--primary-foreground)] shrink-0">原卷精阅</span>
+          <h3 id="modalPaperTitle" class="text-sm font-bold truncate"></h3>
+          <span id="modalPageCounter" class="text-xs font-mono px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] shrink-0">第 1 / 6 页</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs shrink-0">
+          <button id="btnZoomOut" class="px-2 py-1 rounded border border-[var(--border)] bg-[var(--content)] cursor-pointer">−</button>
+          <span id="modalZoomLabel" class="font-mono w-11 text-center">100%</span>
+          <button id="btnZoomIn" class="px-2 py-1 rounded border border-[var(--border)] bg-[var(--content)] cursor-pointer">+</button>
+          <button id="btnZoomReset" class="px-2 py-1 rounded border border-[var(--border)] bg-[var(--content)] cursor-pointer">适配</button>
+          <button id="btnToggleAnalysis" class="px-2.5 py-1 rounded border border-[var(--border)] bg-[var(--content)] font-semibold cursor-pointer hidden md:inline-block">收起分析栏</button>
+          <button id="btnCloseModal" class="px-2.5 py-1 rounded bg-[var(--error)] text-white font-semibold cursor-pointer ml-1">✕ 关闭</button>
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
+        <!-- Left 4/5 Flipbook -->
+        <div id="modalLeftPane" class="flex-1 md:w-4/5 flex flex-col min-h-0 min-w-0 bg-[var(--content)] relative">
+          <div id="modalStageScroll" class="flex-1 overflow-auto flex items-start justify-center p-3 sm:p-5 relative">
+            <img id="modalPageImg" src="" alt="试卷扫描页" class="rounded-lg shadow-lg border border-[var(--border)] select-none cursor-zoom-in transition-[width] duration-150" style="width:100%; max-width:960px; height:auto;" />
+          </div>
+          <button id="btnPrevPage" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[var(--card)]/90 border border-[var(--border)] shadow-lg flex items-center justify-center text-lg font-bold cursor-pointer hover:scale-105 transition disabled:opacity-30" title="上一页 (←)">‹</button>
+          <button id="btnNextPage" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[var(--card)]/90 border border-[var(--border)] shadow-lg flex items-center justify-center text-lg font-bold cursor-pointer hover:scale-105 transition disabled:opacity-30" title="下一页 (→)">›</button>
+          <div class="bg-[var(--card)] border-t border-[var(--border)] px-3 py-2 flex items-center justify-between gap-3 shrink-0">
+            <div id="modalFilmstrip" class="flex items-center gap-2 overflow-x-auto py-0.5"></div>
+            <span class="text-xs text-[var(--muted-foreground)] hidden sm:inline shrink-0">键盘 ← / → 翻页 · 点击图片放大</span>
+          </div>
+        </div>
+
+        <!-- Right 1/5 Analysis Sidebar -->
+        <aside id="modalAnalysisPane" class="md:w-1/5 md:min-w-[260px] md:max-w-[340px] max-h-[34vh] md:max-h-none bg-[var(--card)] border-t md:border-t-0 md:border-l border-[var(--border)] flex flex-col min-h-0 shrink-0">
+          <div class="px-3.5 py-2.5 border-b border-[var(--border)] flex items-center justify-between shrink-0">
+            <span class="text-xs font-bold">📋 本卷学情分析说明</span>
+            <span class="text-xs text-[var(--muted-foreground)]">1/5 伴读栏</span>
+          </div>
+          <div id="modalAnalysisBody" class="flex-1 overflow-y-auto p-3.5 space-y-3 text-xs leading-relaxed"></div>
+          <div class="px-3.5 py-2.5 border-t border-[var(--border)] shrink-0">
+            <a id="modalDriveLink" href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] text-[var(--link)] hover:underline">
+              在 Google Drive 打开/打印原 PDF ↗
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PAPER_IMAGES = {"p_midterm_real": {"thumb": "./vault/papers/p_midterm_real_thumb.enc", "pages": ["./vault/papers/p_midterm_real_p1.enc", "./vault/papers/p_midterm_real_p2.enc", "./vault/papers/p_midterm_real_p3.enc", "./vault/papers/p_midterm_real_p4.enc", "./vault/papers/p_midterm_real_p5.enc", "./vault/papers/p_midterm_real_p6.enc"]}, "p_midterm_mock": {"thumb": "./vault/papers/p_midterm_mock_thumb.enc", "pages": ["./vault/papers/p_midterm_mock_p1.enc", "./vault/papers/p_midterm_mock_p2.enc", "./vault/papers/p_midterm_mock_p3.enc", "./vault/papers/p_midterm_mock_p4.enc", "./vault/papers/p_midterm_mock_p5.enc", "./vault/papers/p_midterm_mock_p6.enc"]}, "p_u1_pass": {"thumb": "./vault/papers/p_u1_pass_thumb.enc", "pages": ["./vault/papers/p_u1_pass_p1.enc", "./vault/papers/p_u1_pass_p2.enc", "./vault/papers/p_u1_pass_p3.enc", "./vault/papers/p_u1_pass_p4.enc"]}, "p_u1_comp": {"thumb": "./vault/papers/p_u1_comp_thumb.enc", "pages": ["./vault/papers/p_u1_comp_p1.enc", "./vault/papers/p_u1_comp_p2.enc", "./vault/papers/p_u1_comp_p3.enc", "./vault/papers/p_u1_comp_p4.enc"]}, "p_u2_pass": {"thumb": "./vault/papers/p_u2_pass_thumb.enc", "pages": ["./vault/papers/p_u2_pass_p1.enc", "./vault/papers/p_u2_pass_p2.enc", "./vault/papers/p_u2_pass_p3.enc", "./vault/papers/p_u2_pass_p4.enc"]}, "p_u2_comp": {"thumb": "./vault/papers/p_u2_comp_thumb.enc", "pages": ["./vault/papers/p_u2_comp_p1.enc", "./vault/papers/p_u2_comp_p2.enc", "./vault/papers/p_u2_comp_p3.enc", "./vault/papers/p_u2_comp_p4.enc"]}, "p_u3_comp": {"thumb": "./vault/papers/p_u3_comp_thumb.enc", "pages": ["./vault/papers/p_u3_comp_p1.enc", "./vault/papers/p_u3_comp_p2.enc", "./vault/papers/p_u3_comp_p3.enc", "./vault/papers/p_u3_comp_p4.enc"]}, "p_u4_pass": {"thumb": "./vault/papers/p_u4_pass_thumb.enc", "pages": ["./vault/papers/p_u4_pass_p1.enc", "./vault/papers/p_u4_pass_p2.enc", "./vault/papers/p_u4_pass_p3.enc", "./vault/papers/p_u4_pass_p4.enc"]}, "p_u4_comp": {"thumb": "./vault/papers/p_u4_comp_thumb.enc", "pages": ["./vault/papers/p_u4_comp_p1.enc", "./vault/papers/p_u4_comp_p2.enc", "./vault/papers/p_u4_comp_p3.enc", "./vault/papers/p_u4_comp_p4.enc"]}};
+
+    // ==================== 1. GLOBAL MASTER FLTRP SYLLABUS STANDARD (总版面公共考纲库) ====================
+    const GRADE_META = {
+      g8a: { label: '初二上（八上 · 三级+）', short: '八上', color: 'var(--primary)' },
+      g8b: { label: '初二下（八下 · 三级+）', short: '八下', color: 'var(--chart-2)' },
+      g9:  { label: '初三中考级（九上/九下 · 四级）', short: '初三中考', color: 'var(--warning)' }
+    };
+
+    const DEFAULT_SYLLABUS = [
+      // 初二上（2024新版外研社八上 U1-U6）
+      { id: 'syl_8a_u1', grade: 'g8a', code: '8A-U1', title: 'This is me · 自我认知与现在完成时初阶', grammar: '现在完成时基本结构（have/has + done）与 already/yet/ever/never；一般过去时 vs 现在完成时辨析；spend time doing / had better do', vocab: 'unique, height/high, confident/confidence, crowd/crowded, difference(s), true, advice/suggestion(s)', examMap: '语法选择 / 短文填空 / 记叙文写作', verified: 'official' },
+      { id: 'syl_8a_u2', grade: 'g8a', code: '8A-U2', title: 'Getting along · 人际和谐与 since/for 完成时', grammar: '现在完成时 + since(时间点) / for(时间段) + 延续性动词；in recent years 铁标志；副词修饰实义动词（grew poorly）；one of + 最高级 + 复数', vocab: 'harmony, argue with, be satisfied with, priceless/useless(-less词缀), pass away, patient/patiently', examMap: '语法选择 / 完形填空 / 人际主题作文', verified: 'official' },
+      { id: 'syl_8a_u3', grade: 'g8a', code: '8A-U3', title: 'Make it happen! · 发明创造与非谓语作宾语', grammar: '动词不定式(to do)与动名词(doing)作宾语：hope/decide/allow/expect to do vs mind/finish/practise/spend doing；被动语态初识（was invented by）', vocab: 'invention vs inventor, explore/exploration, curious/curiosity, artificial, look over, cost/take/spend', examMap: '短文填空 / 阅读B篇(科普说明) / 发明介绍写作', verified: 'official' },
+      { id: 'syl_8a_u4', grade: 'g8a', code: '8A-U4', title: 'Digital life · 数字生活与不定式作宾语补足语', grammar: '动词不定式作宾补：ask/allow/encourage/control sb./sth. to do；省to使役动词 make/let/help sb. do；It is + adj. + for sb. + to do；few/a few', vocab: 'mobile phone(≠photo), tired(≠tried), expect(≠except), develop/development, convenient, come up with, knowledge(不可数)', examMap: '语法选择 / 短文填空 / 科技利弊议论文', verified: 'official' },
+      { id: 'syl_8a_u5', grade: 'g8a', code: '8A-U5', title: 'Play by the rules? · 规则意识与不定式作目的状语', grammar: '动词不定式作目的状语（to do / in order to / so as to）；情态动词 must / mustn\'t / should / have to 表规则与义务；祈使句规范表达', vocab: 'rule, obey/break rules, public, polite/impolite, responsibility, avoid doing, reduce', examMap: '语法选择 / 回答问题(Why→To do) / 倡议书写作', verified: 'official' },
+      { id: 'syl_8a_u6', grade: 'g8a', code: '8A-U6', title: 'When disaster strikes · 自然灾害与过去进行时', grammar: '过去进行时（was/were + doing）；when vs while 引导的时间状语从句（长短动作配合）；突发事件叙事时态链一致性', vocab: 'disaster, earthquake, warn sb. (not) to do, stay calm, keep away from, protect...from', examMap: '完形填空 / 阅读理解 / 叙事与安全建议写作', verified: 'official' },
+      // 初二下（外研社初二对应级进阶，待拿到纸质大纲后可一键微调校准）
+      { id: 'syl_8b_01', grade: 'g8b', code: '8B-G1', title: '感官系动词与形容词/副词三级比较体系', grammar: 'look/sound/smell/taste/feel + adj.（不可接adv.）；比较级与最高级不规则变化及修饰词（much/even/far + 比较级）', vocab: 'nervous, proud, lively, softly, compared with, as...as / not so...as', examMap: '语法选择 / 短文填空 / 人物描写', verified: 'draft' },
+      { id: 'syl_8b_02', grade: 'g8b', code: '8B-G2', title: '并列复合句与四大状语从句（条件/原因/结果/让步）', grammar: 'if / unless（主将从现）；so...that vs such...that；although/though 不与 but 连用；because 不与 so 连用', vocab: 'unless, although, however vs instead, therefore, as long as, as soon as', examMap: '语法选择 / 完形逻辑题 / 作文高级连词', verified: 'draft' },
+      { id: 'syl_8b_03', grade: 'g8b', code: '8B-G3', title: '宾语从句三要素（引导词 · 陈述语序 · 时态呼应）', grammar: 'that / if / whether / 特殊疑问词引导；主过从必过（客观真理除外）；从句一律用陈述语序（结合听说询问信息防倒装错）', vocab: 'wonder, doubt, explain, suggest, whether...or not', examMap: '语法选择 / 书面表达升格 / 佛山听说询问', verified: 'draft' },
+      { id: 'syl_8b_04', grade: 'g8b', code: '8B-G4', title: '名词所有格、代词全格与主谓一致综合', grammar: '单复数名词所有格（company\'s / students\'）；不定代词（something/anything + adj. 后置）；反身代词；就近原则与复合主语主谓一致', vocab: 'ourselves, another/other/the other/others, neither...nor, not only...but also', examMap: '短文填空 / 语法选择 / 作文零低级错', verified: 'draft' },
+      // 初三中考级（四级总纲综合）
+      { id: 'syl_9_01', grade: 'g9', code: '9-G1', title: '初中八大时态综合判定与信号词网络', grammar: '一般现在/过去/将来、现在/过去进行、现在完成、过去将来在语篇中的交叉切换；跨句隐藏时间锚点定位', vocab: 'by the end of, so far, ever since, in the past few years, at that moment', examMap: '语法选择 / 短文填空 / 回答问题时态铁律', verified: 'official' },
+      { id: 'syl_9_02', grade: 'g9', code: '9-G2', title: '被动语态全时态（一般现在/过去/将来/含情态动词）', grammar: 'am/is/are done；was/were done；will be done；can/must be done；主动表被动特例与“举办活动 will be held”高频写作刚需', vocab: 'be held, be invented by, be made of/from, be allowed to, be known for', examMap: '语法选择 / 短文填空 / 书面表达必考句式', verified: 'official' },
+      { id: 'syl_9_03', grade: 'g9', code: '9-G3', title: '定语从句（that / which / who / whose）中考满分核心', grammar: '先行词为人/物时的关系代词选择；只能用 that 的高频情形；用定语从句替换中式长定语（彻底消灭 have not arms\' people 式语病）', vocab: 'who/that(人), which/that(物), whose(所属), the one that', examMap: '语法选择 / 长难句阅读拆解 / 15分满分作文', verified: 'official' },
+      { id: 'syl_9_04', grade: 'g9', code: '9-R1', title: '中考深层阅读 SOP（词义猜测 · 主旨结构 · 任务型填表/五选五）', grammar: '词义题（破折号/因果/同义释义）；主旨题（高频核心对象+首尾段）；填表题（限词与名词短语完整性）；回答问题（介词开头+代词指代）', vocab: 'affordable/budget-friendly, main idea, structure, refer to, infer', examMap: '阅读B篇(10分) / C篇配对&新题型 / 回答问题(10分)', verified: 'official' },
+      { id: 'syl_9_05', grade: 'g9', code: '9-W1', title: '广东省中考 15 分满分作文三大主题群与升格体系', grammar: '人与自我（成长/健康/学习）、人与社会（文化/科技/公益/人际）、人与自然（环保/科普）；三段式结构 + 十大红线清零 + 3组高级句式', vocab: 'Not only...but also, It is + adj. + to do, what/which 从句, In addition / All in all', examMap: '书面表达（15分冲 14.5–15 分满分）', verified: 'official' },
+      { id: 'syl_9_06', grade: 'g9', code: '9-S1', title: '佛山中考听说 30 分满分攻坚（模仿朗读 · 信息获取 · 转述询问）', grammar: '意群断句与连读弱读；速记符号体系（7秒抓 6 个转述得分点）；第三人称转述时态零失误；一般/特殊疑问句精准提问', vocab: '连读/爆破/重音, 5W1H 黄金提问模板, 转述衔接词 First/Then/Finally', examMap: '佛山人机对话听说考试（28→30分满分）', verified: 'official' }
+    ];
+
+    // ==================== 2. STUDENT DATA (学生独立档案数据) ====================
+    const CAT_META = {
+      syntax:  { label: '病灶1：句法骨架与谓语', color: 'var(--error)' },
+      pos:     { label: '病灶2：词性判别与变形', color: 'var(--warning)' },
+      vocab:   { label: '病灶3：形近/核心词串台', color: 'var(--chart-4)' },
+      phrase:  { label: '病灶4：固定搭配与逻辑', color: 'var(--chart-2)' },
+      reading: { label: '病灶5：深层阅读与读写细节', color: 'var(--primary)' }
+    };
+
+    let DEFAULT_STUDENTS = [];
+
+    const DRILLS = {
+      grammar: {
+        title: '重组语法选择微篇（10小题 · 全新主题：AI 校园绿植管家）',
+        desc: '将高频失分点（one of + 复数、in a ... way、since+完成时、so...that、spend doing、had better do、few/a few、副词修饰、It is adj. to do）打散重组进全新短文中。',
+        passage: `Last term, our school started a "Smart Garden" club. It has become one of the most popular <b>(1)</b> in our school. Students manage the garden <b>(2)</b> a digital way using small sensors.<br><br><b>(3)</b> last September, the club members <b>(4)</b> over 20 kinds of vegetables. At first, <b>(5)</b> students knew how to use the smart water system, so the plants grew <b>(6)</b>. Our science teacher told us, "It is not hard for you <b>(7)</b> the system if you read the guide carefully. You had better <b>(8)</b> the data every afternoon."<br><br>After spending two weeks <b>(9)</b> the watering plan, we were <b>(10)</b> excited that we shared our fresh tomatoes with the whole class!`,
+        questions: [
+          { q: '1. one of the most popular ___', opts: ['A. club', 'B. clubs', 'C. club\'s'], ans: 1, tag: '8A-U2 · one of+复数', exp: 'one of + the + 最高级 + 复数名词（clubs）。' },
+          { q: '2. manage the garden ___ a digital way', opts: ['A. in', 'B. by', 'C. with'], ans: 0, tag: '固定介词搭配', exp: '固定搭配 in a ... way（用一种……的方式）。' },
+          { q: '3. ___ last September, ...', opts: ['A. In', 'B. For', 'C. Since'], ans: 2, tag: '8A-U2 · 现在完成时', exp: 'since + 过去时间点，与后文现在完成时呼应。' },
+          { q: '4. the club members ___ over 20 kinds of vegetables.', opts: ['A. grew', 'B. have grown', 'C. grow'], ans: 1, tag: '8A-U2 · 现在完成时', exp: '句首 Since last September 提示用现在完成时 have grown。' },
+          { q: '5. At first, ___ students knew how to use it, so the plants...', opts: ['A. a few', 'B. few', 'C. little'], ans: 1, tag: '8A-U4 · few/a few', exp: '表否定“几乎没有学生懂”，students 可数选 few。' },
+          { q: '6. so the plants grew ___.', opts: ['A. poor', 'B. poorly', 'C. poorness'], ans: 1, tag: '8A-U2 · 副词修饰动词', exp: '修饰实义动词 grew 必须用副词 poorly。' },
+          { q: '7. It is not hard for you ___ the system', opts: ['A. understand', 'B. understanding', 'C. to understand'], ans: 2, tag: '8A-U4 · It is adj. to do', exp: '固定句型 It is + adj. + for sb. + to do sth.。' },
+          { q: '8. You had better ___ the data every afternoon.', opts: ['A. check', 'B. to check', 'C. checking'], ans: 0, tag: '8A-U1 · had better do', exp: 'had better 后接动词原形 check。' },
+          { q: '9. After spending two weeks ___ the watering plan', opts: ['A. improve', 'B. to improve', 'C. improving'], ans: 2, tag: '8A-U3 · spend doing', exp: 'spend + 时间 + (in) doing sth.。' },
+          { q: '10. we were ___ excited that we shared...', opts: ['A. very', 'B. so', 'C. such'], ans: 1, tag: '8B-G2 · so...that', exp: 'so + 形容词 + that 从句。' }
+        ]
+      },
+      cloze: {
+        title: '短文填空“两步法”重组训练（10空 · 12选10需变形）',
+        desc: '备选词库（2词多余）：<code>suggestion / difference / step / crowd / understand / invent / cost / company / patient / since / tire / with</code>',
+        passage: `Last month, Leo visited a science museum. The hall was <b>(1)</b> with young visitors. Leo wanted to see a new <b>(2)</b> — a solar-powered backpack. When he <b>(3)</b> onto the display stage, a guide greeted him warmly.<br><br>The guide explained the <b>(4)</b> between old backpacks and smart ones <b>(5)</b>. She also helped Leo <b>(6)</b> how the solar panel works. "This new model only <b>(7)</b> 120 yuan, so most students can afford it," she said. It was designed by a local <b>(8)</b> young engineers.<br><br>Before leaving, the guide gave Leo many useful <b>(9)</b> on how to build his own model. <b>(10)</b> that day, Leo has fallen in love with engineering.`,
+        blanks: [
+          { num: 1, hint: 'be ___ with（形容词）', ans: ['crowded'], exp: 'be crowded with（挤满……）。' },
+          { num: 2, hint: 'a new ___（单数名词：发明物）', ans: ['invention'], exp: '发明物是 invention，非 inventor！' },
+          { num: 3, hint: '从句谓语（过去式）', ans: ['stepped'], exp: 'step 过去式双写 p 加 ed → stepped。' },
+          { num: 4, hint: 'the ___ between A and B（复数名词）', ans: ['differences'], exp: 'the + 名词，between 提示复数 differences。' },
+          { num: 5, hint: '修饰动词 explained（副词）', ans: ['patiently'], exp: '副词 patiently 修饰 explained。' },
+          { num: 6, hint: 'help sb. ___（动词原形）', ans: ['understand'], exp: 'help sb. do sth. 必须用原形 understand。' },
+          { num: 7, hint: '一般现在时三单（花费钱）', ans: ['costs'], exp: '物作主语三单用 costs。' },
+          { num: 8, hint: '修饰 young engineers（名词所有格）', ans: ['company\'s'], exp: '名词所有格 company\'s。' },
+          { num: 9, hint: 'many useful ___（可数名词复数）', ans: ['suggestions'], exp: 'many 接可数复数 suggestions（advice 不可数）。' },
+          { num: 10, hint: '主句为现在完成时（介词/连词）', ans: ['since', 'Since'], exp: '主句 has fallen 提示句首填 Since。' }
+        ]
+      },
+      writing: {
+        title: '作文“十大红线”实战排雷诊所（8道重组病句）',
+        desc: '选出唯一零语法/拼写/语序硬伤的 15 分满分改写版！',
+        questions: [
+          { q: '病句 1：The Science Festival on next Friday in our hall. It is attract many students.', opts: ['A. The Science Festival will hold next Friday. It is attracting many students.', 'B. The Science Festival will be held next Friday in our hall. It attracts many students.', 'C. The Science Festival is on next Friday. It attract many students.'], ans: 1, tag: '9-G2 · 被动+唯一谓语', exp: '活动“被举办”用 will be held；第二句主语三单直接用 attracts。' },
+          { q: '病句 2：We will share our inventors to each other and talk about our mobile photoes.', opts: ['A. We will share our inventions with each other and talk about our mobile phones.', 'B. We will share our inventors with each other and talk about our mobile phones.', 'C. We will share our inventions to each other and talk about our mobile photos.'], ans: 0, tag: '8A-U3/U4 · 形近词+搭配', exp: 'invention（发明物）、share sth. with sb.、mobile phones。' },
+          { q: '病句 3：This smart tool can help many have not hands\' people and make their life gets easier.', opts: ['A. This smart tool can help many no-hands people and make their life getting easier.', 'B. This smart tool can help many people without hands and make their life get easier.', 'C. This smart tool can help many people without hands and make their life gets easier.'], ans: 1, tag: '8A-U4 · make do+后置定语', exp: 'people without hands + make their life get easier。' },
+          { q: '病句 4：She gave me some useful advices and helped me learned more knowledges.', opts: ['A. She gave me some useful advice and helped me learn more knowledge.', 'B. She gave me some useful advices and helped me learn more knowledge.', 'C. She gave me some useful suggestions and helped me learned more knowledge.'], ans: 0, tag: '8A-U1 · 不可数+help do', exp: 'advice/knowledge 不可数；help sb. do 用原形 learn。' },
+          { q: '病句 5：When I was young, I were not confidence and my classmates didn\'t liked me.', opts: ['A. When I was young, I wasn\'t confidence and my classmates didn\'t like me.', 'B. When I was young, I wasn\'t confident and my classmates didn\'t like me.', 'C. When I was young, I weren\'t confident and my classmates didn\'t liked me.'], ans: 1, tag: '8A-U1 · be+词性+didn\'t', exp: 'wasn\'t confident + didn\'t like。' },
+          { q: '病句 6：Because of his curious, he let us to see a ture world.', opts: ['A. Because of his curiosity, he let us see a true world.', 'B. Because of his curious, he let us see a true world.', 'C. Because of his curiosity, he let us to see a ture world.'], ans: 0, tag: '8A-U3 · 词性+let do+拼写', exp: 'his curiosity + let us see + true。' },
+          { q: '病句 7：Using screens too long makes my eyes feel tried. I except we can use them wisely.', opts: ['A. Using screens too long makes my eyes feel tried. I expect we can use them wisely.', 'B. Using screens too long makes my eyes feel tired. I except we can use them wisely.', 'C. Using screens too long makes my eyes feel tired. I expect we can use them wisely.'], ans: 2, tag: '8A-U4 · tired/expect', exp: 'tired（累的）、expect（期待）。' },
+          { q: '病句 8：In the end. I hope everyone can find your interesed activity and share it for me.', opts: ['A. In the end, I hope everyone can find the activity they are interested in and share it with me.', 'B. In the end. I hope everyone can find their interesting activity and share it with me.', 'C. In the end, I hope everyone can find their interested activity and share it to me.'], ans: 0, tag: '9-W1 · 标点+搭配', exp: 'In the end, 逗号 + be interested in + share with。' }
+        ]
+      },
+      qa: {
+        title: '回答问题“防扣分 SOP”重组演练（5题 · 满分10分标准）',
+        desc: '检测三大扣分习惯：① 疑问词介词开头（In/By/To/Because）② 时态一致 ③ 代词指代精准。',
+        passage: `In 2024, a 14-year-old boy named Lin Tao built a "Voice Library" in his community. Many blind old people couldn't read newspapers easily, so he wanted to help them by recording daily news on his phone. He placed a small smart speaker inside the community reading room, and the elderly can listen to the news there every morning. "Hearing young voices makes us feel warm," said Grandma Li.`,
+        questions: [
+          { q: '1. When did Lin Tao build the "Voice Library"?', placeholder: '注意介词！如：In ...', accept: ['in 2024'], std: 'In 2024.', exp: 'When 问年份必须带介词 In。' },
+          { q: '2. Why did Lin Tao build the "Voice Library"?', placeholder: '注意 Because 或 To 开头...', accept: ['because many blind old people couldn\'t read newspapers easily', 'because he wanted to help blind old people', 'to help blind old people', 'to help them'], std: 'Because many blind old people couldn\'t read newspapers easily. / To help blind old people.', exp: 'Why 用 Because + 过去时完整句，或 To do 表目的。' },
+          { q: '3. How did he help the blind old people?', placeholder: '注意方式介词 By...', accept: ['by recording daily news on his phone', 'by recording daily news'], std: 'By recording daily news on his phone.', exp: 'How 问方式必须用 By + doing。' },
+          { q: '4. Where can the elderly listen to the news every morning?', placeholder: '注意 there 指哪里 + 介词！', accept: ['in the community reading room', 'inside the community reading room'], std: 'In/Inside the community reading room.', exp: 'there 指 community reading room（非 speaker），且必带 In/Inside。' },
+          { q: '5. How does hearing young voices make Grandma Li feel?', placeholder: '形容词或完整句...', accept: ['warm', 'it makes her feel warm', 'she feels warm'], std: 'Warm. / It makes her feel warm.', exp: '简答 Warm. 或注意人称与三单转换。' }
+        ]
+      }
+    };
+
+    // ==================== 3. STATE & STORAGE ====================
+    const KEY_SYLLABUS = 'zhongkao_master_fltrp_syllabus_v1';
+    const KEY_STUDENTS = 'zhongkao_master_students_v1';
+
+    let masterSyllabus = JSON.parse(localStorage.getItem(KEY_SYLLABUS) || 'null') || DEFAULT_SYLLABUS;
+    let students = [];
+
+    let activeGlobalView = 'syllabus';
+    let activeSylGrade = 'all';
+    let activeStudentId = 'stu_yifei';
+    let activeStudentTab = 'overview';
+    let activeMistakeCat = 'all';
+    let currentDrillMode = 'grammar';
+    let drillAnswers = {};
+    let expandedPapers = {};
+    let modalState = { paperId: null, pageIdx: 0, zoom: 100, showAnalysis: true };
+
+    function saveSyllabus() { localStorage.setItem(KEY_SYLLABUS, JSON.stringify(masterSyllabus)); }
+    function saveStudents() {
+      localStorage.setItem(KEY_STUDENTS, JSON.stringify(students));
+      document.getElementById('navStudentCount').textContent = students.length;
+    }
+    function getStudent() { return students.find(s => s.id === activeStudentId) || students[0]; }
+
+    // ==================== 4. GLOBAL NAVIGATION ====================
+    function showGlobalView(viewName) {
+      activeGlobalView = viewName;
+      document.querySelectorAll('.global-view').forEach(v => v.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const navBtn = document.querySelector(`.nav-btn[data-global="${viewName}"]`);
+      if (navBtn) navBtn.classList.add('active');
+      if (viewName === 'student-workspace') {
+        const sbtn = document.querySelector('.nav-btn[data-global="students"]');
+        if (sbtn) sbtn.classList.add('active');
+      }
+      document.getElementById('view-' + viewName).classList.remove('hidden');
+
+      if (viewName === 'syllabus') renderMasterSyllabus();
+      else if (viewName === 'students') renderStudentRoster();
+      else if (viewName === 'student-workspace') renderStudentWorkspace();
+    }
+
+    // ==================== 5. RENDER MASTER SYLLABUS BOARD ====================
+    function renderMasterSyllabus() {
+      const g8a = masterSyllabus.filter(x => x.grade === 'g8a').length;
+      const g8b = masterSyllabus.filter(x => x.grade === 'g8b').length;
+      const g9  = masterSyllabus.filter(x => x.grade === 'g9').length;
+      const off = masterSyllabus.filter(x => x.verified === 'official').length;
+
+      document.getElementById('syllabusStats').innerHTML = `
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3">
+          <div class="text-[var(--muted-foreground)]">总考纲标准节点</div>
+          <div class="text-lg font-bold tabular-nums text-[var(--primary)]">${masterSyllabus.length} 条</div>
+          <div class="text-[var(--muted-foreground)]">已校准 ${off} 条 · 支持随时增补</div>
+        </div>
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3">
+          <div class="text-[var(--muted-foreground)]">初二上（八上 U1–U6）</div>
+          <div class="text-lg font-bold tabular-nums">${g8a} 条</div>
+          <div class="text-[var(--muted-foreground)]">2024新版外研社同步大纲</div>
+        </div>
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3">
+          <div class="text-[var(--muted-foreground)]">初二下（八下核心）</div>
+          <div class="text-lg font-bold tabular-nums">${g8b} 条</div>
+          <div class="text-[var(--muted-foreground)]">三级+ 向中考过渡枢纽</div>
+        </div>
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3">
+          <div class="text-[var(--muted-foreground)]">初三中考级（四级总纲）</div>
+          <div class="text-lg font-bold tabular-nums text-[var(--warning)]">${g9} 条</div>
+          <div class="text-[var(--muted-foreground)]">直锚佛山120分满分综合考法</div>
+        </div>`;
+
+      const filters = [
+        { k: 'all', l: `全部考纲 (${masterSyllabus.length})` },
+        { k: 'g8a', l: `初二上 · 八上 (${g8a})` },
+        { k: 'g8b', l: `初二下 · 八下 (${g8b})` },
+        { k: 'g9',  l: `初三中考总纲 (${g9})` }
+      ];
+      const fWrap = document.getElementById('syllabusGradeFilters');
+      fWrap.innerHTML = filters.map(f => `
+        <button data-sg="${f.k}" class="pill-btn ${activeSylGrade === f.k ? 'active' : ''} px-3 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--content)] cursor-pointer transition">${f.l}</button>`).join('');
+      fWrap.querySelectorAll('button').forEach(btn => {
+        btn.onclick = () => { activeSylGrade = btn.dataset.sg; renderMasterSyllabus(); };
+      });
+
+      const q = (document.getElementById('syllabusSearch').value || '').trim().toLowerCase();
+      const list = masterSyllabus.filter(item => {
+        if (activeSylGrade !== 'all' && item.grade !== activeSylGrade) return false;
+        if (!q) return true;
+        return (item.code + item.title + item.grammar + item.vocab + item.examMap).toLowerCase().includes(q);
+      });
+
+      const grid = document.getElementById('syllabusGrid');
+      grid.innerHTML = list.map(item => {
+        const gm = GRADE_META[item.grade] || GRADE_META.g9;
+        return `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-2.5 text-xs flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 rounded font-mono font-bold bg-[var(--content)] border border-[var(--border)]" style="color:${gm.color}">${item.code}</span>
+                  <span class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)]">${gm.short}</span>
+                </div>
+                <span class="px-2 py-0.5 rounded border ${item.verified === 'official' ? 'border-[var(--success)] text-[var(--success)]' : 'border-[var(--warning)] text-[var(--warning)]'} bg-[var(--content)]">
+                  ${item.verified === 'official' ? '已对齐标准' : '待官方大纲校准'}
+                </span>
+              </div>
+              <h3 class="text-sm font-bold leading-snug">${item.title}</h3>
+              <div class="bg-[var(--content)] rounded-lg p-2.5 space-y-1.5 leading-relaxed">
+                <div><strong class="text-[var(--foreground)]">核心语法/能力：</strong><span class="text-[var(--muted-foreground)]">${item.grammar}</span></div>
+                ${item.vocab ? `<div><strong class="text-[var(--foreground)]">高频词与派生：</strong><span class="text-[var(--muted-foreground)]">${item.vocab}</span></div>` : ''}
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border)]">
+              <span class="text-[var(--muted-foreground)]">中考映射：<strong class="text-[var(--foreground)]">${item.examMap}</strong></span>
+              <button data-toggle-verify="${item.id}" class="text-[var(--link)] hover:underline cursor-pointer">切换校准状态</button>
+            </div>
+          </div>`;
+      }).join('') || `<div class="md:col-span-2 text-center py-8 text-xs text-[var(--muted-foreground)]">未匹配到考纲条目</div>`;
+
+      grid.querySelectorAll('[data-toggle-verify]').forEach(btn => {
+        btn.onclick = () => {
+          const it = masterSyllabus.find(x => x.id === btn.dataset.toggleVerify);
+          it.verified = it.verified === 'official' ? 'draft' : 'official';
+          saveSyllabus();
+          renderMasterSyllabus();
+        };
+      });
+    }
+
+    // ==================== 6. RENDER STUDENT ROSTER ====================
+    function renderStudentRoster() {
+      const grid = document.getElementById('studentRosterGrid');
+      grid.innerHTML = students.map(s => {
+        const mCount = (s.mistakes || []).length;
+        const cleared = (s.mistakes || []).filter(m => m.status === 'cleared').length;
+        const pCount = (s.papers || []).length;
+        const greenSyl = Object.values(s.syllabusMastery || {}).filter(v => v === 'green').length;
+        const redSyl = Object.values(s.syllabusMastery || {}).filter(v => v === 'red').length;
+        return `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3.5 flex flex-col justify-between">
+            <div class="space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-base font-bold">${s.name}</h3>
+                    <span class="px-2 py-0.5 rounded-full text-xs bg-[var(--content)] border border-[var(--border)] text-[var(--primary)] font-semibold">${s.cadence}</span>
+                  </div>
+                  <p class="text-xs text-[var(--muted-foreground)] mt-0.5">${s.meta}</p>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs text-[var(--muted-foreground)]">现值 → 目标</div>
+                  <div class="text-base font-bold font-mono">
+                    <span class="text-[var(--warning)]">${s.currentScore}</span> → <span class="text-[var(--success)]">${s.targetScore}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">${s.summary}</p>
+              <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-2 text-center">
+                  <div class="text-[var(--muted-foreground)]">已录原卷</div>
+                  <div class="font-bold font-mono">${pCount} 套</div>
+                </div>
+                <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-2 text-center">
+                  <div class="text-[var(--muted-foreground)]">错题清零</div>
+                  <div class="font-bold font-mono">${cleared} / ${mCount}</div>
+                </div>
+                <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-2 text-center">
+                  <div class="text-[var(--muted-foreground)]">考纲红/绿</div>
+                  <div class="font-bold font-mono"><span class="text-[var(--error)]">${redSyl}</span> / <span class="text-[var(--success)]">${greenSyl}</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-[var(--border)]">
+              ${s.driveUrl ? `<a href="${s.driveUrl}" target="_blank" rel="noopener noreferrer" class="text-xs text-[var(--link)] hover:underline">Drive 个人文件夹 ↗</a>` : `<span class="text-xs text-[var(--muted-foreground)]">待绑定 Drive 文件夹</span>`}
+              <button data-enter-student="${s.id}" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer hover:opacity-90 transition">
+                进入个人学情工作台 →
+              </button>
+            </div>
+          </div>`;
+      }).join('');
+
+      grid.querySelectorAll('[data-enter-student]').forEach(btn => {
+        btn.onclick = () => {
+          activeStudentId = btn.dataset.enterStudent;
+          activeStudentTab = 'overview';
+          showGlobalView('student-workspace');
+        };
+      });
+    }
+
+    // ==================== 7. STUDENT WORKSPACE RENDERER ====================
+    function renderStudentWorkspace() {
+      const s = getStudent();
+      document.getElementById('wsBreadcrumbName').textContent = s.name;
+      document.getElementById('wsBreadcrumbMeta').textContent = s.meta;
+
+      const sel = document.getElementById('wsStudentSelect');
+      sel.innerHTML = students.map(x => `<option value="${x.id}" ${x.id === s.id ? 'selected' : ''}>${x.name}（${x.currentScore}→${x.targetScore}）</option>`).join('');
+      sel.onchange = () => { activeStudentId = sel.value; renderStudentWorkspace(); };
+
+      const cleared = (s.mistakes || []).filter(m => m.status === 'cleared').length;
+      document.getElementById('wsStudentBanner').innerHTML = `
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)]">个人专属学情档案</span>
+            <span class="text-xs text-[var(--muted-foreground)]">${s.cadence}</span>
+          </div>
+          <h2 class="text-base font-bold">${s.name} · 英语中考 ${s.targetScore} 分冲刺工作台</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">${s.summary}</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5 text-right">
+            <div class="text-[11px] text-[var(--muted-foreground)]">现值 → 目标</div>
+            <div class="text-base font-bold font-mono"><span class="text-[var(--warning)]">${s.currentScore}</span> → <span class="text-[var(--success)]">${s.targetScore}</span></div>
+          </div>
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5 text-right">
+            <div class="text-[11px] text-[var(--muted-foreground)]">错题清零</div>
+            <div class="text-base font-bold font-mono text-[var(--primary)]">${cleared} / ${(s.mistakes || []).length}</div>
+          </div>
+        </div>`;
+
+      document.querySelectorAll('#studentSubNav .tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.stab === activeStudentTab);
+      });
+      document.querySelectorAll('.stab-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById('stab-' + activeStudentTab).classList.remove('hidden');
+
+      if (activeStudentTab === 'overview') renderStudentOverview(s);
+      else if (activeStudentTab === 'sylmap') renderStudentSyllabusMap(s);
+      else if (activeStudentTab === 'mistakes') renderStudentMistakes(s);
+      else if (activeStudentTab === 'drill') renderStudentDrill(s);
+      else if (activeStudentTab === 'roadmap') renderStudentRoadmap(s);
+    }
+
+    function renderStudentOverview(s) {
+      const wrap = document.getElementById('stab-overview');
+      const hasCharts = s.trendData && s.trendData.length > 0;
+      const gapTotal = (s.targetScore - s.currentScore).toFixed(1);
+
+      wrap.innerHTML = `
+        ${s.kpis ? `
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            ${s.kpis.map(k => `
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-1">
+                <div class="text-xs text-[var(--muted-foreground)]">${k.label}</div>
+                <div class="text-2xl font-bold tabular-nums" style="color:${k.color}">${k.val}</div>
+                <div class="text-xs text-[var(--muted-foreground)]">${k.sub}</div>
+              </div>`).join('')}
+          </div>` : ''}
+
+        ${hasCharts ? `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <div>
+                  <h3 class="text-sm font-bold">全科总得分率 vs 英语得分率剪刀差趋势</h3>
+                  <p class="text-xs text-[var(--muted-foreground)]">七上期中至八上期中 5 次大考真实轨迹（%）</p>
+                </div>
+                <div class="flex items-center gap-3 text-xs flex-wrap">
+                  <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-1.5 rounded bg-[var(--chart-1)]"></span>英语得分率</span>
+                  <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-1.5 rounded bg-[var(--chart-2)]"></span>全科总得分率</span>
+                  ${s.scoreSheetUrl ? `<a href="${s.scoreSheetUrl}" target="_blank" rel="noopener noreferrer" class="px-2 py-0.5 rounded border border-[var(--border)] bg-[var(--content)] text-[var(--link)] hover:underline">查看成绩原表 ↗</a>` : ''}
+                </div>
+              </div>
+              <canvas id="trendCanvas" class="w-full" style="height:250px;"></canvas>
+            </div>
+            <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+              <div>
+                <h3 class="text-sm font-bold">佛山中考六大板块能力画像</h3>
+                <p class="text-xs text-[var(--muted-foreground)]">基于实测原卷与成绩表折算得分率</p>
+              </div>
+              <canvas id="radarCanvas" class="w-full" style="height:250px;"></canvas>
+            </div>
+          </div>` : `<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6 text-center text-xs text-[var(--muted-foreground)]">该学生档案尚未导入历史成绩走势，上传试卷与成绩表后将自动生成折线图与雷达图。</div>`}
+
+        ${s.gapItems && s.gapItems.length ? `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-bold">${s.currentScore}分 → ${s.targetScore}分 逐板块提分拆解</h3>
+                <p class="text-xs text-[var(--muted-foreground)]">锚定广东省统一笔试（90分）+ 佛山人机对话听说（30分）</p>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded bg-[var(--content)] border border-[var(--border)] font-mono">总缺口：+${gapTotal} 分</span>
+            </div>
+            <div class="space-y-2.5">
+              ${s.gapItems.map(item => {
+                const pct = Math.round((item.now / item.full) * 100);
+                const gap = (item.full - item.now).toFixed(1);
+                return `
+                  <div class="space-y-1">
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                      <div class="font-semibold">${item.name} <span class="text-[var(--muted-foreground)] font-normal">— ${item.lever}</span></div>
+                      <div class="font-mono tabular-nums">${item.now} / ${item.full}分 <span class="ml-1 px-1.5 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--success)] font-bold">+${gap}分</span></div>
+                    </div>
+                    <div class="w-full h-2.5 rounded-full bg-[var(--content)] overflow-hidden border border-[var(--border)]">
+                      <div class="h-full rounded-full" style="width:${pct}%; background:${pct >= 90 ? 'var(--success)' : pct >= 80 ? 'var(--primary)' : 'var(--warning)'};"></div>
+                    </div>
+                  </div>`;
+              }).join('')}
+            </div>
+          </div>` : ''}
+
+        <!-- Original Papers Section with Thumbnails + 4:1 Flipbook Modal -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold">个人实测原卷全景体检（${(s.papers || []).length} 套 · 缩略图直览 · 4:1 弹窗翻页精阅）</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">点击左侧原卷缩略图或按钮直接页内弹窗翻页看大图，右侧 1/5 同步呈现本卷分析说明</p>
+            </div>
+            ${s.driveUrl ? `<a href="${s.driveUrl}" target="_blank" rel="noopener noreferrer" class="text-xs px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] text-[var(--link)] hover:underline">Drive 原卷文件夹 ↗</a>` : ''}
+          </div>
+          <div id="paperAuditList" class="space-y-3"></div>
+        </div>
+      `;
+
+      renderPaperList(s);
+      if (hasCharts) setTimeout(() => drawStudentCharts(s), 40);
+    }
+
+    function renderPaperList(s) {
+      const container = document.getElementById('paperAuditList');
+      if (!container) return;
+      const papers = s.papers || [];
+      if (!papers.length) {
+        container.innerHTML = `<div class="text-center py-6 text-xs text-[var(--muted-foreground)]">暂未上传该学生的扫描原卷。</div>`;
+        return;
+      }
+      container.innerHTML = papers.map(p => {
+        const isOpen = !!expandedPapers[p.id];
+        const media = PAPER_IMAGES[p.id];
+        const pageCount = media && media.pages ? media.pages.length : 0;
+        const thumbSrc = media ? media.thumb : '';
+        return `
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-3.5 text-xs flex flex-col sm:flex-row gap-3.5">
+            <button data-open-paper="${p.id}" class="paper-thumb-box relative w-24 h-32 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--card)] cursor-pointer self-start text-left p-0" title="点击弹窗大图翻阅原卷">
+              ${thumbSrc ? `<img data-enc-src="${thumbSrc}" alt="${p.name}" class="w-full h-full object-cover object-top" />` : `<div class="w-full h-full flex items-center justify-center text-[var(--muted-foreground)]">原卷</div>`}
+              <div class="absolute inset-x-0 bottom-0 bg-black/70 text-white text-[11px] font-semibold px-1.5 py-0.5 flex items-center justify-between">
+                <span>🔍 翻阅</span><span class="font-mono">${pageCount}页</span>
+              </div>
+            </button>
+            <div class="flex-1 min-w-0 space-y-2">
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div class="space-y-1 min-w-0">
+                  <div class="font-bold text-sm leading-snug">${p.name}</div>
+                  <div class="font-mono text-[var(--primary)]">${p.score}</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 shrink-0">
+                  <button data-open-paper="${p.id}" class="px-2.5 py-1 rounded-lg font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 cursor-pointer transition">翻阅原卷大图 (${pageCount}页)</button>
+                  <button data-expand-paper="${p.id}" class="px-2.5 py-1 rounded-lg font-semibold border border-[var(--border)] bg-[var(--card)] cursor-pointer transition">${isOpen ? '收起明细 ▲' : '展开逐题明细 ▼'}</button>
+                </div>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5">
+                ${p.tags.map(t => `<span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">${t}</span>`).join('')}
+                <span class="text-[var(--muted-foreground)]">${p.ex}</span>
+              </div>
+              ${isOpen ? `
+                <div class="pt-2.5 mt-1 border-t border-[var(--border)] space-y-1.5">
+                  <div class="font-semibold text-[var(--foreground)]">本卷逐题实测失分明细：</div>
+                  <ul class="list-disc pl-4 space-y-1 text-[var(--muted-foreground)] leading-relaxed">
+                    ${p.details.map(d => `<li>${d}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+
+      hydrateEncryptedImages(container);
+      container.querySelectorAll('[data-open-paper]').forEach(el => {
+        el.onclick = () => openPaperModal(el.dataset.openPaper, 0);
+      });
+      container.querySelectorAll('[data-expand-paper]').forEach(btn => {
+        btn.onclick = () => { expandedPapers[btn.dataset.expandPaper] = !expandedPapers[btn.dataset.expandPaper]; renderPaperList(s); };
+      });
+    }
+
+    // STUDENT TAB 2: PERSONAL SYLLABUS MASTERY MAP (AUTOMATICALLY LINKED TO MASTER SYLLABUS)
+    function renderStudentSyllabusMap(s) {
+      const wrap = document.getElementById('stab-sylmap');
+      const map = s.syllabusMastery || {};
+      const stMeta = {
+        red:    { label: '薄弱红灯 · 急需攻克', cls: 'border-[var(--error)] text-[var(--error)]' },
+        yellow: { label: '训练中 · 巩固提升',   cls: 'border-[var(--warning)] text-[var(--warning)]' },
+        green:  { label: '已达满分标准 ✓',      cls: 'border-[var(--success)] text-[var(--success)]' },
+        none:   { label: '未开课 / 待测评',     cls: 'border-[var(--border)] text-[var(--muted-foreground)]' }
+      };
+      const counts = { red: 0, yellow: 0, green: 0, none: 0 };
+      masterSyllabus.forEach(item => { counts[map[item.id] || 'none']++; });
+
+      wrap.innerHTML = `
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold">${s.name} · 个人外研社考纲点亮图（实时同步总版面 ${masterSyllabus.length} 条标准）</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">点击任意考纲卡片右侧状态按钮即可点亮/切换（未测 → 红灯 → 黄灯 → 满分绿灯）；总版面新增考纲会自动出现在此处</p>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <span class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--error)] text-[var(--error)]">红灯 ${counts.red}</span>
+              <span class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--warning)] text-[var(--warning)]">黄灯 ${counts.yellow}</span>
+              <span class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--success)] text-[var(--success)]">满分绿 ${counts.green}</span>
+              <span class="px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)]">待测 ${counts.none}</span>
+            </div>
+          </div>
+        </div>
+        ${['g8a', 'g8b', 'g9'].map(gKey => {
+          const items = masterSyllabus.filter(x => x.grade === gKey);
+          const gm = GRADE_META[gKey];
+          return `
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold" style="color:${gm.color}">${gm.label}</h4>
+                <span class="text-xs text-[var(--muted-foreground)]">${items.length} 个考纲节点</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+                ${items.map(item => {
+                  const st = map[item.id] || 'none';
+                  const sm = stMeta[st];
+                  const linkedMistakes = (s.mistakes || []).filter(m => m.sylId === item.id);
+                  return `
+                    <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-3 space-y-2 flex flex-col justify-between">
+                      <div class="space-y-1">
+                        <div class="flex items-center justify-between gap-2">
+                          <span class="font-mono font-bold">${item.code}</span>
+                          <button data-cycle-syl="${item.id}" class="px-2 py-0.5 rounded border ${sm.cls} bg-[var(--card)] font-semibold cursor-pointer transition">${sm.label}</button>
+                        </div>
+                        <div class="font-bold text-[var(--foreground)]">${item.title}</div>
+                        <div class="text-[var(--muted-foreground)]">${item.grammar}</div>
+                      </div>
+                      <div class="flex items-center justify-between pt-1.5 border-t border-[var(--border)] text-[11px] text-[var(--muted-foreground)]">
+                        <span>中考题型：${item.examMap}</span>
+                        <span>关联错题：<strong class="${linkedMistakes.length ? 'text-[var(--error)]' : ''}">${linkedMistakes.length} 条</strong></span>
+                      </div>
+                    </div>`;
+                }).join('')}
+              </div>
+            </div>`;
+        }).join('')}
+      `;
+
+      wrap.querySelectorAll('[data-cycle-syl]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.cycleSyl;
+          const order = ['none', 'red', 'yellow', 'green'];
+          if (!s.syllabusMastery) s.syllabusMastery = {};
+          const cur = s.syllabusMastery[id] || 'none';
+          s.syllabusMastery[id] = order[(order.indexOf(cur) + 1) % order.length];
+          saveStudents();
+          renderStudentSyllabusMap(s);
+        };
+      });
+    }
+
+    // STUDENT TAB 3: PERSONAL MISTAKE TRACKER
+    function renderStudentMistakes(s) {
+      const wrap = document.getElementById('stab-mistakes');
+      const mList = s.mistakes || [];
+      const counts = { all: mList.length };
+      Object.keys(CAT_META).forEach(k => counts[k] = mList.filter(m => m.cat === k).length);
+      const filtered = activeMistakeCat === 'all' ? mList : mList.filter(m => m.cat === activeMistakeCat);
+      const statusMap = {
+        todo:     { text: '待攻克', cls: 'border-[var(--error)] text-[var(--error)]' },
+        practice: { text: '练习中', cls: 'border-[var(--warning)] text-[var(--warning)]' },
+        cleared:  { text: '已清零 ✓', cls: 'border-[var(--success)] text-[var(--success)]' }
+      };
+
+      wrap.innerHTML = `
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-bold">${s.name} · 五大病灶动态错题追踪库</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">每条错题均绑定总版面外研社考纲节点与对应原卷，支持点击「🔍 看原卷」直达翻页精阅器</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="btnAddMistakeToggle" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">+ 录入新错题</button>
+              <button id="btnExportMistakes" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">导出 JSON 备份</button>
+            </div>
+          </div>
+          <div id="stuCatFilters" class="flex flex-wrap gap-2">
+            ${[{ key: 'all', label: `全部 (${counts.all})` }, ...Object.entries(CAT_META).map(([k, v]) => ({ key: k, label: `${v.label} (${counts[k]})` }))].map(it => `
+              <button data-mcat="${it.key}" class="pill-btn ${activeMistakeCat === it.key ? 'active' : ''} px-3 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--content)] cursor-pointer">${it.label}</button>`).join('')}
+          </div>
+          <div id="addMistakeForm" class="hidden border-t border-[var(--border)] pt-3 grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+            <select id="newMCat" class="rounded-lg px-2.5 py-2">
+              ${Object.entries(CAT_META).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}
+            </select>
+            <select id="newMSyl" class="rounded-lg px-2.5 py-2">
+              ${masterSyllabus.map(sy => `<option value="${sy.id}">${sy.code} · ${sy.title.slice(0, 18)}</option>`).join('')}
+            </select>
+            <input id="newMSrc" type="text" placeholder="来源试卷（如：Unit 5 周测 Q8）" class="rounded-lg px-2.5 py-2" />
+            <input id="newMWrong" type="text" placeholder="学生原错写/错选" class="rounded-lg px-2.5 py-2" />
+            <input id="newMRight" type="text" placeholder="正确写法/答案" class="rounded-lg px-2.5 py-2" />
+            <input id="newMRule" type="text" placeholder="核心规则与避坑点" class="rounded-lg px-2.5 py-2" />
+            <div class="md:col-span-3 flex justify-end gap-2">
+              <button id="btnCancelM" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">取消</button>
+              <button id="btnSaveM" class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold cursor-pointer">保存错题</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          ${filtered.map(m => {
+            const meta = CAT_META[m.cat] || CAT_META.syntax;
+            const st = statusMap[m.status];
+            const syl = masterSyllabus.find(x => x.id === m.sylId);
+            const ref = getSourcePaperIdAndPage(s, m.source);
+            return `
+              <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-2.5 flex flex-col justify-between ${m.status === 'cleared' ? 'opacity-70' : ''}">
+                <div class="space-y-2">
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <span class="font-semibold px-2 py-0.5 rounded bg-[var(--content)] border border-[var(--border)]" style="color:${meta.color}">${meta.label}</span>
+                      ${syl ? `<span class="font-mono px-1.5 py-0.5 rounded bg-[var(--content)] border border-[var(--border)] text-[var(--muted-foreground)]">${syl.code}</span>` : ''}
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[var(--muted-foreground)]">${m.source}</span>
+                      ${ref.id ? `<button data-mref="${ref.id}" data-mpage="${ref.page}" class="text-[var(--link)] hover:underline cursor-pointer font-semibold">🔍 看原卷</button>` : ''}
+                    </div>
+                  </div>
+                  <div class="bg-[var(--content)] rounded-lg p-2.5 space-y-1 text-xs">
+                    <div><span class="text-[var(--error)] font-bold">原错：</span><span class="line-through text-[var(--muted-foreground)]">${m.wrong}</span></div>
+                    <div><span class="text-[var(--success)] font-bold">正解：</span><span class="font-semibold">${m.right}</span></div>
+                  </div>
+                  <p class="text-xs text-[var(--muted-foreground)] leading-relaxed"><strong class="text-[var(--foreground)]">病灶拆解：</strong>${m.rule}</p>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-[var(--border)] text-xs">
+                  <span class="text-[var(--muted-foreground)]">复测节奏：D3 / D7 / D21</span>
+                  <button data-mtoggle="${m.id}" class="px-2.5 py-1 rounded-md font-semibold border ${st.cls} bg-[var(--content)] cursor-pointer">${st.text}</button>
+                </div>
+              </div>`;
+          }).join('') || `<div class="md:col-span-2 text-center py-8 text-xs text-[var(--muted-foreground)]">该分类暂无错题记录。</div>`}
+        </div>
+      `;
+
+      wrap.querySelectorAll('[data-mcat]').forEach(b => { b.onclick = () => { activeMistakeCat = b.dataset.mcat; renderStudentMistakes(s); }; });
+      wrap.querySelectorAll('[data-mref]').forEach(b => { b.onclick = () => openPaperModal(b.dataset.mref, Number(b.dataset.mpage || 0)); });
+      wrap.querySelectorAll('[data-mtoggle]').forEach(b => {
+        b.onclick = () => {
+          const item = s.mistakes.find(x => x.id === b.dataset.mtoggle);
+          const order = ['todo', 'practice', 'cleared'];
+          item.status = order[(order.indexOf(item.status) + 1) % order.length];
+          saveStudents();
+          renderStudentWorkspace();
+        };
+      });
+      document.getElementById('btnAddMistakeToggle').onclick = () => document.getElementById('addMistakeForm').classList.toggle('hidden');
+      document.getElementById('btnCancelM').onclick = () => document.getElementById('addMistakeForm').classList.add('hidden');
+      document.getElementById('btnSaveM').onclick = () => {
+        const wrong = document.getElementById('newMWrong').value.trim();
+        const right = document.getElementById('newMRight').value.trim();
+        if (!wrong || !right) return;
+        if (!s.mistakes) s.mistakes = [];
+        s.mistakes.unshift({
+          id: 'm_' + Date.now(),
+          cat: document.getElementById('newMCat').value,
+          sylId: document.getElementById('newMSyl').value,
+          source: document.getElementById('newMSrc').value.trim() || '新录入练习',
+          wrong, right,
+          rule: document.getElementById('newMRule').value.trim() || '待补充拆解',
+          status: 'todo'
+        });
+        saveStudents();
+        renderStudentWorkspace();
+      };
+      document.getElementById('btnExportMistakes').onclick = () => {
+        downloadJson(`${s.name}_错题追踪库.json`, s.mistakes || []);
+      };
+    }
+
+    // STUDENT TAB 4: RECOMBINED DRILL STUDIO
+    function renderStudentDrill(s) {
+      const wrap = document.getElementById('stab-drill');
+      const bank = DRILLS[currentDrillMode];
+      let score = 0, total = 0, bodyHtml = '';
+
+      if (currentDrillMode === 'grammar' || currentDrillMode === 'writing') {
+        const kp = currentDrillMode + '_';
+        total = bank.questions.length;
+        bank.questions.forEach((q, i) => { if (drillAnswers[kp + i] === q.ans) score++; });
+        bodyHtml = `
+          ${bank.passage ? `<div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7">${bank.passage}</div>` : ''}
+          <div class="space-y-3">
+            ${bank.questions.map((q, idx) => {
+              const ch = drillAnswers[kp + idx], ansd = ch !== undefined, ok = ch === q.ans;
+              return `
+                <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-3.5 space-y-2">
+                  <div class="flex flex-wrap justify-between gap-2 text-xs">
+                    <strong>${q.q}</strong>
+                    <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">${q.tag}</span>
+                  </div>
+                  <div class="grid grid-cols-1 ${currentDrillMode === 'grammar' ? 'sm:grid-cols-3' : ''} gap-2">
+                    ${q.opts.map((o, oi) => {
+                      let cls = 'border-[var(--border)] bg-[var(--card)]';
+                      if (ansd) {
+                        if (oi === q.ans) cls = 'border-[var(--success)] bg-[var(--card)] font-bold text-[var(--success)]';
+                        else if (oi === ch) cls = 'border-[var(--error)] bg-[var(--card)] text-[var(--error)]';
+                      }
+                      return `<button data-dq="${idx}" data-do="${oi}" class="text-left px-3 py-2 rounded-lg text-xs border ${cls} cursor-pointer">${o}</button>`;
+                    }).join('')}
+                  </div>
+                  ${ansd ? `<div class="text-xs pt-1 border-t border-[var(--border)] ${ok ? 'text-[var(--success)]' : 'text-[var(--error)]'}"><strong>${ok ? '✓ 正确！' : '✗ 踩坑！'}</strong> <span class="text-[var(--foreground)]">${q.exp}</span></div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>`;
+      } else if (currentDrillMode === 'cloze') {
+        total = bank.blanks.length;
+        const chk = !!drillAnswers['cloze_chk'];
+        if (chk) bank.blanks.forEach(b => { if (b.ans.map(a => a.toLowerCase()).includes((drillAnswers['cloze_' + b.num] || '').trim().toLowerCase())) score++; });
+        bodyHtml = `
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7">${bank.passage}</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            ${bank.blanks.map(b => {
+              const val = drillAnswers['cloze_' + b.num] || '';
+              const ok = chk && b.ans.map(a => a.toLowerCase()).includes(val.trim().toLowerCase());
+              return `
+                <div class="bg-[var(--content)] border ${chk ? (ok ? 'border-[var(--success)]' : 'border-[var(--error)]') : 'border-[var(--border)]'} rounded-xl p-3 space-y-1.5">
+                  <div class="flex justify-between"><strong>第 (${b.num}) 空</strong><span class="text-[var(--muted-foreground)]">${b.hint}</span></div>
+                  <input data-dcl="${b.num}" type="text" value="${val.replace(/"/g, '&quot;')}" placeholder="输入变形后单词..." class="w-full rounded-lg px-2.5 py-1.5 text-xs" />
+                  ${chk ? `<div class="${ok ? 'text-[var(--success)]' : 'text-[var(--error)]'}"><strong>${ok ? '✓ 正确' : '✗ 正解：' + b.ans[0]}</strong> — <span class="text-[var(--muted-foreground)]">${b.exp}</span></div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>
+          <div class="flex justify-end"><button id="btnChkCloze" class="px-4 py-2 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">提交批改</button></div>`;
+      } else if (currentDrillMode === 'qa') {
+        total = bank.questions.length;
+        const chk = !!drillAnswers['qa_chk'];
+        if (chk) bank.questions.forEach((q, i) => {
+          const norm = (drillAnswers['qa_' + i] || '').trim().toLowerCase().replace(/[.!?]+$/, '');
+          if (q.accept.some(a => norm === a || (norm.length > 5 && norm.includes(a)))) score++;
+        });
+        bodyHtml = `
+          <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 text-sm leading-7">${bank.passage}</div>
+          <div class="space-y-3 text-xs">
+            ${bank.questions.map((q, i) => {
+              const val = drillAnswers['qa_' + i] || '';
+              const norm = val.trim().toLowerCase().replace(/[.!?]+$/, '');
+              const ok = chk && q.accept.some(a => norm === a || (norm.length > 5 && norm.includes(a)));
+              return `
+                <div class="bg-[var(--content)] border ${chk ? (ok ? 'border-[var(--success)]' : 'border-[var(--error)]') : 'border-[var(--border)]'} rounded-xl p-3.5 space-y-2">
+                  <strong>${q.q}</strong>
+                  <input data-dqa="${i}" type="text" value="${val.replace(/"/g, '&quot;')}" placeholder="${q.placeholder}" class="w-full rounded-lg px-2.5 py-2 text-xs" />
+                  ${chk ? `<div class="${ok ? 'text-[var(--success)]' : 'text-[var(--error)]'}"><strong>${ok ? '✓ 规范！' : '✗ 参考：' + q.std}</strong><br/><span class="text-[var(--muted-foreground)]">${q.exp}</span></div>` : ''}
+                </div>`;
+            }).join('')}
+          </div>
+          <div class="flex justify-end"><button id="btnChkQa" class="px-4 py-2 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] cursor-pointer">批改回答规范度</button></div>`;
+      }
+
+      wrap.innerHTML = `
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-bold">${s.name} · 知识点重组靶向训练台（外研社考纲题型映射）</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">${bank.desc}</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="bg-[var(--content)] border border-[var(--border)] rounded-lg px-3 py-1.5 font-mono">得分：<strong class="text-[var(--primary)]">${score}</strong> / ${total}</span>
+              <button id="btnResetD" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--content)] cursor-pointer">重做</button>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            ${[['grammar','A. 语法选择重组(10)'],['cloze','B. 短文填空两步法(10)'],['writing','C. 作文红线排雷(8)'],['qa','D. 回答问题防扣分(5)']].map(([k, l]) => `
+              <button data-dmode="${k}" class="pill-btn ${currentDrillMode === k ? 'active' : ''} px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--content)] cursor-pointer">${l}</button>`).join('')}
+          </div>
+        </div>
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
+          <h4 class="text-sm font-bold border-b border-[var(--border)] pb-2.5">${bank.title}</h4>
+          ${bodyHtml}
+        </div>`;
+
+      wrap.querySelectorAll('[data-dmode]').forEach(b => { b.onclick = () => { currentDrillMode = b.dataset.dmode; renderStudentDrill(s); }; });
+      document.getElementById('btnResetD').onclick = () => { Object.keys(drillAnswers).forEach(k => { if (k.startsWith(currentDrillMode + '_')) delete drillAnswers[k]; }); renderStudentDrill(s); };
+      wrap.querySelectorAll('[data-dq]').forEach(b => { b.onclick = () => { drillAnswers[currentDrillMode + '_' + b.dataset.dq] = Number(b.dataset.do); renderStudentDrill(s); }; });
+      wrap.querySelectorAll('[data-dcl]').forEach(inp => { inp.oninput = () => { drillAnswers['cloze_' + inp.dataset.dcl] = inp.value; }; });
+      wrap.querySelectorAll('[data-dqa]').forEach(inp => { inp.oninput = () => { drillAnswers['qa_' + inp.dataset.dqa] = inp.value; }; });
+      const bcl = document.getElementById('btnChkCloze'); if (bcl) bcl.onclick = () => { drillAnswers['cloze_chk'] = true; renderStudentDrill(s); };
+      const bqa = document.getElementById('btnChkQa'); if (bqa) bqa.onclick = () => { drillAnswers['qa_chk'] = true; renderStudentDrill(s); };
+    }
+
+    // STUDENT TAB 5: PERSONAL 90-MIN ROADMAP
+    function renderStudentRoadmap(s) {
+      document.getElementById('stab-roadmap').innerHTML = `
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-4">
+          <div>
+            <h3 class="text-sm font-bold">${s.name} · 外研社双轨合一 120 分满分冲刺路线（${s.cadence}）</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">每周采用「30%清旧账 : 50%用初三题型练初二新大纲 : 20%中考满分专项渗透」螺旋排课</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-1.5">
+              <div class="font-bold text-[var(--primary)]">阶段一 · 八上止跌（第1–8周）</div>
+              <div class="font-bold text-sm">目标 108–112 / 120</div>
+              <p class="text-[var(--muted-foreground)]">清零 8A-U1~U4 遗留红灯（唯一谓语/词性两步法/易混词），同步吃透 U5 不定式表目的、U6 过去进行时。</p>
+            </div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-1.5">
+              <div class="font-bold text-[var(--chart-2)]">阶段二 · 八下破壁（寒春季）</div>
+              <div class="font-bold text-sm">目标 112–115 / 120</div>
+              <p class="text-[var(--muted-foreground)]">打穿 8B 大纲（状语从句/宾语从句/比较级/所有格）与深层阅读 SOP（词义/主旨/填表/五选五）。</p>
+            </div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-1.5">
+              <div class="font-bold text-[var(--warning)]">阶段三 · 初三升格（九年级上）</div>
+              <div class="font-bold text-sm">目标 116–118 / 120</div>
+              <p class="text-[var(--muted-foreground)]">贯通九年级总纲（八大时态/全被动/定语从句），作文从零硬伤升格至 14.5–15 分高阶表达。</p>
+            </div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 space-y-1.5">
+              <div class="font-bold text-[var(--success)]">阶段四 · 满分封顶（九下冲刺）</div>
+              <div class="font-bold text-sm">目标 118–120 / 120</div>
+              <p class="text-[var(--muted-foreground)]">4月佛山听说机考冲 30/30 满分；6月省卷笔试靠全真重组押题卷与2分钟红线体检冲 88–90/90。</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 space-y-3">
+          <h3 class="text-sm font-bold">单次 90 分钟 1对1 课堂黄金 SOP</h3>
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3 space-y-1"><div class="font-mono font-bold text-[var(--primary)]">00–10 min</div><div class="font-bold">① 错题闪电回测</div><p class="text-[var(--muted-foreground)]">快测上周10个高频易混词/病句，过关即在错题库标绿。</p></div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3 space-y-1"><div class="font-mono font-bold text-[var(--chart-2)]">10–30 min</div><div class="font-bold">② 大纲微考点建模</div><p class="text-[var(--muted-foreground)]">紧扣外研社大纲节点，用学生原错句建立解题口诀。</p></div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3 space-y-1"><div class="font-mono font-bold text-[var(--warning)]">30–55 min</div><div class="font-bold">③ 重组题型限时战</div><p class="text-[var(--muted-foreground)]">70%新大纲+30%旧病灶重组进广东中考标准题型。</p></div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3 space-y-1"><div class="font-mono font-bold text-[var(--chart-4)]">55–78 min</div><div class="font-bold">④ 作文红线与升格</div><p class="text-[var(--muted-foreground)]">病句排雷+当堂打磨+强制2分钟十大红线自查。</p></div>
+            <div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-3 space-y-1"><div class="font-mono font-bold text-[var(--success)]">78–90 min</div><div class="font-bold">⑤ 听说微训+点亮</div><p class="text-[var(--muted-foreground)]">1组佛山听说转述询问冲30分，现场点亮个人考纲墙。</p></div>
+          </div>
+        </div>`;
+    }
+
+    // ==================== 8. 4:1 SPLIT-VIEW FLIPBOOK LIGHTBOX ====================
+    function getPaperPageLabels(paperId, count) {
+      if (count === 6) return ['P1 语法+完形', 'P2 阅读A/B', 'P3 填表/语言运用', 'P4 读写综合', 'P5 答题卡(正)', 'P6 答题卡(作文)'];
+      if (paperId === 'p_u1_comp' || paperId === 'p_u2_comp' || paperId === 'p_u4_comp') return ['P1 语法+完形', 'P2 阅读A/B/C', 'P3 答题卡(正)', 'P4 答题卡(作文)'];
+      return ['P1 语法+完形', 'P2 阅读/填空', 'P3 阅读/短文', 'P4 读写+作文'].slice(0, count);
+    }
+
+    function getSourcePaperIdAndPage(s, sourceText) {
+      if (!sourceText || !s || !s.papers || !s.papers.length) return { id: null, page: 0 };
+      let id = null;
+      if (sourceText.includes('学情诊断') || (sourceText.includes('八上期中') && !sourceText.includes('模拟') && !sourceText.includes('模考'))) id = 'p_midterm_real';
+      else if (sourceText.includes('模拟') || sourceText.includes('模考') || sourceText.includes('素养监测')) id = 'p_midterm_mock';
+      else if (sourceText.includes('Unit 1 过关') || sourceText.includes('U1过关')) id = 'p_u1_pass';
+      else if (sourceText.includes('Unit 1 综合') || sourceText.includes('U1综合')) id = 'p_u1_comp';
+      else if (sourceText.includes('Unit 2 过关') || sourceText.includes('U2过关')) id = 'p_u2_pass';
+      else if (sourceText.includes('Unit 2 综合') || sourceText.includes('U2综合')) id = 'p_u2_comp';
+      else if (sourceText.includes('Unit 3') || sourceText.includes('U3')) id = 'p_u3_comp';
+      else if (sourceText.includes('Unit 4 过关') || sourceText.includes('U4过关')) id = 'p_u4_pass';
+      else if (sourceText.includes('Unit 4 综合') || sourceText.includes('U4综合')) id = 'p_u4_comp';
+      if (!id || !s.papers.some(p => p.id === id)) return { id: null, page: 0 };
+      const pages = (PAPER_IMAGES[id] && PAPER_IMAGES[id].pages) || [];
+      let page = 0;
+      if (sourceText.includes('作文') || sourceText.includes('回答') || sourceText.includes('Q58')) page = Math.max(0, pages.length - 1);
+      else if (sourceText.includes('Q46') || sourceText.includes('Q47') || sourceText.includes('Q49') || sourceText.includes('Q40') || sourceText.includes('Q53') || sourceText.includes('填表')) page = Math.min(2, pages.length - 1);
+      else if (sourceText.includes('B篇') || sourceText.includes('Q29') || sourceText.includes('Q30')) page = Math.min(1, pages.length - 1);
+      return { id, page };
+    }
+
+    function openPaperModal(paperId, startPage = 0) {
+      const s = getStudent();
+      const paper = (s.papers || []).find(p => p.id === paperId);
+      const media = PAPER_IMAGES[paperId];
+      if (!paper || !media || !media.pages || !media.pages.length) return;
+      modalState.paperId = paperId;
+      modalState.pageIdx = Math.max(0, Math.min(startPage, media.pages.length - 1));
+      modalState.zoom = 100;
+      document.getElementById('paperModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      renderModalView(null);
+    }
+
+    function closePaperModal() {
+      document.getElementById('paperModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      modalState.paperId = null;
+    }
+
+    function flipPaperPage(delta) {
+      if (!modalState.paperId) return;
+      const pages = PAPER_IMAGES[modalState.paperId].pages;
+      const next = modalState.pageIdx + delta;
+      if (next < 0 || next >= pages.length) return;
+      modalState.pageIdx = next;
+      renderModalView(delta > 0 ? 'next' : 'prev');
+    }
+
+    function updateModalZoom() {
+      const img = document.getElementById('modalPageImg');
+      document.getElementById('modalZoomLabel').textContent = modalState.zoom + '%';
+      if (modalState.zoom === 100) { img.style.width = '100%'; img.style.maxWidth = '960px'; img.style.cursor = 'zoom-in'; }
+      else { img.style.width = modalState.zoom + '%'; img.style.maxWidth = 'none'; img.style.cursor = modalState.zoom >= 150 ? 'zoom-out' : 'zoom-in'; }
+    }
+
+    function renderModalView(direction) {
+      const s = getStudent();
+      const paper = (s.papers || []).find(p => p.id === modalState.paperId);
+      const media = PAPER_IMAGES[modalState.paperId];
+      if (!paper || !media) return;
+      const pages = media.pages;
+      const labels = getPaperPageLabels(paper.id, pages.length);
+
+      document.getElementById('modalPaperTitle').textContent = paper.name;
+      document.getElementById('modalPageCounter').textContent = `第 ${modalState.pageIdx + 1} / ${pages.length} 页 · ${labels[modalState.pageIdx] || ''}`;
+      document.getElementById('modalDriveLink').href = paper.url;
+
+      const img = document.getElementById('modalPageImg');
+      img.classList.remove('flip-next', 'flip-prev');
+      void img.offsetWidth;
+      setEncryptedImg(img, pages[modalState.pageIdx]);
+      if (direction === 'next') img.classList.add('flip-next');
+      else if (direction === 'prev') img.classList.add('flip-prev');
+      document.getElementById('modalStageScroll').scrollTop = 0;
+      updateModalZoom();
+
+      document.getElementById('btnPrevPage').disabled = modalState.pageIdx <= 0;
+      document.getElementById('btnNextPage').disabled = modalState.pageIdx >= pages.length - 1;
+
+      const strip = document.getElementById('modalFilmstrip');
+      strip.innerHTML = pages.map((src, i) => `
+        <button data-jp="${i}" class="flex items-center gap-1.5 px-2 py-1 rounded-lg border text-xs shrink-0 cursor-pointer transition ${i === modalState.pageIdx ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)] font-bold' : 'border-[var(--border)] bg-[var(--content)] text-[var(--foreground)]'}">
+          <img data-enc-src="${src}" class="w-5 h-7 object-cover rounded border border-black/15" alt="P${i+1}" />
+          <span>${labels[i] || ('P' + (i + 1))}</span>
+        </button>`).join('');
+      hydrateEncryptedImages(strip);
+      strip.querySelectorAll('[data-jp]').forEach(btn => {
+        btn.onclick = () => {
+          const target = Number(btn.dataset.jp);
+          if (target === modalState.pageIdx) return;
+          const dir = target > modalState.pageIdx ? 'next' : 'prev';
+          modalState.pageIdx = target;
+          renderModalView(dir);
+        };
+      });
+
+      const relatedMistakes = (s.mistakes || []).filter(m => getSourcePaperIdAndPage(s, m.source).id === paper.id);
+      document.getElementById('modalAnalysisBody').innerHTML = `
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-3 space-y-1.5">
+          <div class="text-[var(--muted-foreground)] font-semibold">本卷实测表现</div>
+          <div class="font-mono font-bold text-[var(--primary)] leading-snug">${paper.score}</div>
+          <div class="flex flex-wrap gap-1 pt-1">${paper.tags.map(t => `<span class="px-1.5 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">${t}</span>`).join('')}</div>
+        </div>
+        <div class="space-y-1.5">
+          <div class="font-bold">核心诊断结论</div>
+          <p class="text-[var(--muted-foreground)] bg-[var(--content)] border border-[var(--border)] rounded-lg p-2.5">${paper.ex}</p>
+        </div>
+        <div class="space-y-1.5">
+          <div class="font-bold">逐题/逐板块失分拆解</div>
+          <ul class="space-y-1.5">${paper.details.map(d => `<li class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-2 text-[var(--muted-foreground)]">${d}</li>`).join('')}</ul>
+        </div>
+        ${relatedMistakes.length ? `
+          <div class="space-y-1.5">
+            <div class="font-bold">已入库重点错题（${relatedMistakes.length}条）</div>
+            <div class="space-y-1.5">
+              ${relatedMistakes.map(m => `<div class="bg-[var(--content)] border border-[var(--border)] rounded-lg p-2 space-y-0.5"><div class="text-[var(--error)] line-through">${m.wrong}</div><div class="text-[var(--success)] font-semibold">→ ${m.right}</div></div>`).join('')}
+            </div>
+          </div>` : ''}`;
+    }
+
+    // ==================== 9. CANVAS CHARTS (LIVE THEME SYNC) ====================
+    function getVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#64748b'; }
+
+    function drawStudentCharts(s) {
+      if (!s || !s.trendData) return;
+      drawTrend(s.trendData);
+      drawRadar(s.radarData);
+    }
+
+    function drawTrend(data) {
+      const canvas = document.getElementById('trendCanvas');
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1, rect = canvas.getBoundingClientRect();
+      if (!rect.width) return;
+      canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+      const W = rect.width, H = rect.height, pad = { top: 24, right: 24, bottom: 36, left: 42 };
+      const cw = W - pad.left - pad.right, ch = H - pad.top - pad.bottom;
+      const fg = getVar('--foreground'), muted = getVar('--muted-foreground'), border = getVar('--border'), c1 = getVar('--chart-1'), c2 = getVar('--chart-2'), err = getVar('--error');
+      const minY = 74, maxY = 94;
+      ctx.font = '11px sans-serif';
+      for (let v = 75; v <= 95; v += 5) {
+        const y = pad.top + ch - ((v - minY) / (maxY - minY)) * ch;
+        ctx.strokeStyle = border; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+        ctx.fillStyle = muted; ctx.textAlign = 'right'; ctx.fillText(v + '%', pad.left - 8, y + 4);
+      }
+      const xs = data.map((_, i) => pad.left + (cw / (data.length - 1)) * i);
+      const yOf = val => pad.top + ch - ((val - minY) / (maxY - minY)) * ch;
+      data.forEach((d, i) => { ctx.fillStyle = muted; ctx.textAlign = 'center'; ctx.fillText(d.label, xs[i], H - 12); });
+
+      function plot(key, color, dashed) {
+        ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 2.5; if (dashed) ctx.setLineDash([5, 4]);
+        ctx.beginPath(); data.forEach((d, i) => { const x = xs[i], y = yOf(d[key]); i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }); ctx.stroke(); ctx.restore();
+        data.forEach((d, i) => {
+          const x = xs[i], y = yOf(d[key]);
+          ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fillStyle = (key === 'eng' && i === data.length - 1) ? err : color; ctx.fill();
+          ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.font = 'bold 11px sans-serif';
+          const off = (key === 'eng') ? (i === data.length - 1 ? 16 : -10) : (i === data.length - 1 ? -10 : 16);
+          ctx.fillText(d[key] + '%', x, y + off);
+        });
+      }
+      plot('all', c2, true); plot('eng', c1, false);
+    }
+
+    function drawRadar(data) {
+      const canvas = document.getElementById('radarCanvas');
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1, rect = canvas.getBoundingClientRect();
+      if (!rect.width) return;
+      canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+      const W = rect.width, H = rect.height, cx = W / 2, cy = H / 2 + 4, R = Math.min(W, H) * 0.34, N = data.length;
+      const fg = getVar('--foreground'), muted = getVar('--muted-foreground'), border = getVar('--border'), primary = getVar('--primary'), success = getVar('--success');
+      [0.4, 0.6, 0.8, 1.0].forEach(ratio => {
+        ctx.beginPath();
+        for (let i = 0; i < N; i++) { const a = -Math.PI / 2 + (Math.PI * 2 * i) / N; const x = cx + Math.cos(a) * R * ratio, y = cy + Math.sin(a) * R * ratio; i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+        ctx.closePath(); ctx.strokeStyle = ratio === 1.0 ? success : border; ctx.lineWidth = ratio === 1.0 ? 1.5 : 1; ctx.setLineDash(ratio === 1.0 ? [4, 3] : []); ctx.stroke();
+      });
+      ctx.setLineDash([]); ctx.font = '11px sans-serif';
+      data.forEach((d, i) => {
+        const a = -Math.PI / 2 + (Math.PI * 2 * i) / N;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R); ctx.strokeStyle = border; ctx.stroke();
+        const lx = cx + Math.cos(a) * (R + 24), ly = cy + Math.sin(a) * (R + 20);
+        ctx.fillStyle = muted; ctx.textAlign = 'center';
+        d.label.split('\n').forEach((ln, li) => ctx.fillText(ln, lx, ly + li * 13 - 4));
+      });
+      ctx.beginPath();
+      data.forEach((d, i) => { const a = -Math.PI / 2 + (Math.PI * 2 * i) / N, r = R * (d.val / 100); const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r; i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); });
+      ctx.closePath(); ctx.fillStyle = primary + '33'; ctx.fill(); ctx.strokeStyle = primary; ctx.lineWidth = 2.2; ctx.stroke();
+      data.forEach((d, i) => {
+        const a = -Math.PI / 2 + (Math.PI * 2 * i) / N, r = R * (d.val / 100); const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fillStyle = primary; ctx.fill();
+        ctx.fillStyle = fg; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(d.val + '%', x, y - 7);
+      });
+    }
+
+    function downloadJson(filename, obj) {
+      const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ==================== 10. GLOBAL & MODAL EVENTS ====================
+    document.querySelectorAll('.nav-btn').forEach(btn => { btn.onclick = () => showGlobalView(btn.dataset.global); });
+    document.getElementById('btnBackToMaster').onclick = () => showGlobalView('syllabus');
+    document.getElementById('btnBackToRoster').onclick = () => showGlobalView('students');
+    document.querySelectorAll('#studentSubNav .tab-btn').forEach(btn => {
+      btn.onclick = () => { activeStudentTab = btn.dataset.stab; renderStudentWorkspace(); };
+    });
+
+    // Master Syllabus Events
+    document.getElementById('btnToggleAddSyllabus').onclick = () => document.getElementById('addSyllabusForm').classList.toggle('hidden');
+    document.getElementById('btnCancelSyl').onclick = () => document.getElementById('addSyllabusForm').classList.add('hidden');
+    document.getElementById('btnSaveSyl').onclick = () => {
+      const code = document.getElementById('sylCode').value.trim();
+      const title = document.getElementById('sylTitle').value.trim();
+      if (!code || !title) return;
+      masterSyllabus.push({
+        id: 'syl_' + Date.now(),
+        grade: document.getElementById('sylGrade').value,
+        code, title,
+        grammar: document.getElementById('sylGrammar').value.trim() || '待补充语法细则',
+        vocab: document.getElementById('sylVocab').value.trim(),
+        examMap: document.getElementById('sylExamMap').value.trim() || '中考综合',
+        verified: document.getElementById('sylVerified').value
+      });
+      saveSyllabus();
+      document.getElementById('sylCode').value = ''; document.getElementById('sylTitle').value = '';
+      document.getElementById('sylGrammar').value = ''; document.getElementById('sylVocab').value = '';
+      document.getElementById('addSyllabusForm').classList.add('hidden');
+      renderMasterSyllabus();
+    };
+    document.getElementById('btnExportSyllabus').onclick = () => downloadJson('外研社分级考纲总表.json', masterSyllabus);
+    document.getElementById('syllabusSearch').oninput = () => renderMasterSyllabus();
+
+    // New Student Events
+    document.getElementById('btnToggleNewStudent').onclick = () => document.getElementById('newStudentForm').classList.toggle('hidden');
+    document.getElementById('btnCancelStu').onclick = () => document.getElementById('newStudentForm').classList.add('hidden');
+    document.getElementById('btnSaveStu').onclick = () => {
+      const name = document.getElementById('stuName').value.trim();
+      if (!name) return;
+      const cur = Number(document.getElementById('stuScore').value) || 90;
+      const tgt = Number(document.getElementById('stuTarget').value) || 120;
+      const newStu = {
+        id: 'stu_' + Date.now(),
+        name,
+        meta: document.getElementById('stuMeta').value.trim() || '外研社初中在读',
+        currentScore: cur, targetScore: tgt,
+        cadence: '每周 1 课 × 90 分钟',
+        summary: '已接入总版面外研社分级考纲标准，上传该学生试卷后即可生成专属错题库与原卷精阅档案。',
+        syllabusMastery: {}, papers: [], mistakes: []
+      };
+      students.push(newStu);
+      saveStudents();
+      document.getElementById('stuName').value = ''; document.getElementById('stuMeta').value = ''; document.getElementById('stuScore').value = '';
+      document.getElementById('newStudentForm').classList.add('hidden');
+      renderStudentRoster();
+    };
+
+    // Modal Events
+    document.getElementById('btnCloseModal').onclick = closePaperModal;
+    document.getElementById('btnPrevPage').onclick = () => flipPaperPage(-1);
+    document.getElementById('btnNextPage').onclick = () => flipPaperPage(1);
+    document.getElementById('btnZoomIn').onclick = () => { modalState.zoom = Math.min(220, modalState.zoom + 25); updateModalZoom(); };
+    document.getElementById('btnZoomOut').onclick = () => { modalState.zoom = Math.max(75, modalState.zoom - 25); updateModalZoom(); };
+    document.getElementById('btnZoomReset').onclick = () => { modalState.zoom = 100; updateModalZoom(); };
+    document.getElementById('modalPageImg').onclick = () => { modalState.zoom = modalState.zoom >= 150 ? 100 : 155; updateModalZoom(); };
+    document.getElementById('btnToggleAnalysis').onclick = () => {
+      modalState.showAnalysis = !modalState.showAnalysis;
+      document.getElementById('modalAnalysisPane').classList.toggle('md:hidden', !modalState.showAnalysis);
+      document.getElementById('modalLeftPane').classList.toggle('md:w-4/5', modalState.showAnalysis);
+      document.getElementById('btnToggleAnalysis').textContent = modalState.showAnalysis ? '收起分析栏' : '展开分析栏';
+    };
+    document.getElementById('paperModal').onclick = (e) => { if (e.target.id === 'paperModal') closePaperModal(); };
+    window.addEventListener('keydown', (e) => {
+      if (!modalState.paperId) return;
+      if (e.key === 'Escape') closePaperModal();
+      else if (e.key === 'ArrowRight') flipPaperPage(1);
+      else if (e.key === 'ArrowLeft') flipPaperPage(-1);
+      else if (e.key === '+' || e.key === '=') { modalState.zoom = Math.min(220, modalState.zoom + 25); updateModalZoom(); }
+      else if (e.key === '-') { modalState.zoom = Math.max(75, modalState.zoom - 25); updateModalZoom(); }
+    });
+
+    window.addEventListener('resize', () => { if (activeGlobalView === 'student-workspace' && activeStudentTab === 'overview') drawStudentCharts(getStudent()); });
+    window.addEventListener('themechange', () => { if (activeGlobalView === 'student-workspace' && activeStudentTab === 'overview') drawStudentCharts(getStudent()); });
+
+    // Init
+    document.getElementById('navStudentCount').textContent = students.length;
+    showGlobalView('syllabus');
+
+    // ==================== AES-256-GCM ENCRYPTED VAULT & THEME TOGGLE ====================
+    const VAULT_KEY_STORAGE = "zhongkao_hub_aes_jwk_v1";
+    const VAULT_SALT = new TextEncoder().encode("zhongkao-english-hub-v1-salt-2026");
+    let activeAesKey = null;
+    const decryptedBlobUrlCache = new Map();
+
+    async function deriveKeyFromPassword(password) {
+      const baseKey = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: VAULT_SALT, iterations: 100000, hash: "SHA-256" },
+        baseKey,
+        { name: "AES-GCM", length: 256 },
+        true,
+        ["decrypt"]
+      );
+    }
+
+    async function decryptUrlToBytes(url, key) {
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error("Fetch failed: " + url);
+      const buf = new Uint8Array(await resp.arrayBuffer());
+      const iv = buf.slice(0, 12);
+      const cipherWithTag = buf.slice(12);
+      const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, cipherWithTag);
+      return new Uint8Array(plain);
+    }
+
+    async function getDecryptedObjectUrl(encUrl) {
+      if (!activeAesKey || !encUrl) return "";
+      if (decryptedBlobUrlCache.has(encUrl)) return decryptedBlobUrlCache.get(encUrl);
+      const bytes = await decryptUrlToBytes(encUrl, activeAesKey);
+      const blobUrl = URL.createObjectURL(new Blob([bytes], { type: "image/webp" }));
+      decryptedBlobUrlCache.set(encUrl, blobUrl);
+      return blobUrl;
+    }
+
+    function setEncryptedImg(imgEl, encUrl) {
+      if (!imgEl || !encUrl) return;
+      if (decryptedBlobUrlCache.has(encUrl)) { imgEl.src = decryptedBlobUrlCache.get(encUrl); return; }
+      getDecryptedObjectUrl(encUrl).then(url => { if (url) imgEl.src = url; }).catch(() => {});
+    }
+
+    function hydrateEncryptedImages(rootEl) {
+      if (!rootEl) return;
+      rootEl.querySelectorAll("img[data-enc-src]").forEach(img => {
+        const encUrl = img.getAttribute("data-enc-src");
+        setEncryptedImg(img, encUrl);
+      });
+    }
+
+    async function unlockWithKey(key) {
+      const bytes = await decryptUrlToBytes("./vault/students.enc", key);
+      const decryptedStudents = JSON.parse(new TextDecoder().decode(bytes));
+      activeAesKey = key;
+      DEFAULT_STUDENTS = decryptedStudents;
+      const savedLocal = JSON.parse(localStorage.getItem(KEY_STUDENTS) || "null");
+      if (savedLocal && Array.isArray(savedLocal) && savedLocal.length) {
+        students = savedLocal;
+      } else {
+        students = decryptedStudents;
+      }
+      document.getElementById("navStudentCount").textContent = students.length;
+      document.getElementById("authError").classList.add("hidden");
+      document.getElementById("authGate").classList.add("hidden");
+      showGlobalView(activeGlobalView || "syllabus");
+    }
+
+    async function checkAuthSession() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(VAULT_KEY_STORAGE) || "null");
+        if (saved && saved.jwk && saved.exp > Date.now()) {
+          const key = await crypto.subtle.importKey("jwk", saved.jwk, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
+          await unlockWithKey(key);
+          return;
+        }
+      } catch (e) {
+        localStorage.removeItem(VAULT_KEY_STORAGE);
+      }
+      document.getElementById("authGate").classList.remove("hidden");
+      setTimeout(() => document.getElementById("authInput").focus(), 50);
+    }
+
+    document.getElementById("authForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const val = document.getElementById("authInput").value;
+      const btn = e.target.querySelector("button[type=submit]");
+      const oldTxt = btn.textContent;
+      btn.textContent = "正在解密进入...";
+      btn.disabled = true;
+      try {
+        const key = await deriveKeyFromPassword(val);
+        await unlockWithKey(key);
+        if (document.getElementById("authRemember").checked) {
+          const jwk = await crypto.subtle.exportKey("jwk", key);
+          localStorage.setItem(VAULT_KEY_STORAGE, JSON.stringify({ jwk, exp: Date.now() + 30 * 86400 * 1000 }));
+        }
+        document.getElementById("authInput").value = "";
+      } catch (err) {
+        document.getElementById("authError").classList.remove("hidden");
+      } finally {
+        btn.textContent = oldTxt;
+        btn.disabled = false;
+      }
+    };
+
+    document.getElementById("btnLockSite").onclick = () => {
+      localStorage.removeItem(VAULT_KEY_STORAGE);
+      activeAesKey = null;
+      students = [];
+      document.getElementById("authGate").classList.remove("hidden");
+      document.getElementById("authInput").focus();
+    };
+
+    // Theme Init & Toggle
+    const THEME_KEY = "zhongkao_hub_theme_v1";
+    function applyTheme(mode) {
+      document.documentElement.setAttribute("data-theme", mode);
+      document.getElementById("btnThemeToggle").textContent = mode === "dark" ? "☀️" : "🌙";
+      localStorage.setItem(THEME_KEY, mode);
+      if (activeGlobalView === "student-workspace" && activeStudentTab === "overview") {
+        setTimeout(() => drawStudentCharts(getStudent()), 30);
+      }
+    }
+    const initTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    applyTheme(initTheme);
+    document.getElementById("btnThemeToggle").onclick = () => {
+      applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    };
+
+    checkAuthSession();
+
+  </script>
+</body>
+</html>
